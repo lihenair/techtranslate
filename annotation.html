@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>annotation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+<body>
+<h2 id="-">课程：注解</h2>
+<p><em>注解</em>，元数据格式，提供关于程序的数据，这些数据不是程序的一部分。注解对它们注解的代码的操作不产生直接影响。</p>
+<p>注解有多种用途，包括：</p>
+<ul>
+<li>向编译器提供信息 —— 编译器使用注解检查错误或忽略警告</li><li>编译时和部署时处理 —— 软件工具可以处理注解信息来生成代码，XML文件等等</li><li>运行时处理 —— 一些注解在运行时进行审查</li></ul>
+<p>本课程解释哪里可以使用注解，如何使用注解，以及Java平台有哪些预定义注解类型。</p>
+<h2 id="-">注解基础</h2>
+<h4 id="-">注解格式</h4>
+<p>简单格式，注解看起来是这样的：</p>
+<pre><code>@Entity
+</code></pre><p>at符(@)指示编译器接下来是一个注解。下面的例子，注解的名字是Override:</p>
+<pre><code>@Override
+vode mySuperMethod() {...}
+</code></pre><p>注解可以包含<em>元素</em>，元素可以命名或不命名，元素可赋值：</p>
+<pre><code>@Author(
+    name = &quot;Benjamin Franklin&quot;,
+    date = &quot;3/27/2003&quot;
+)
+class MyClass() {...}
+</code></pre><p>或者</p>
+<pre><code>@SuppressWarnings(value = &quot;unchecked&quot;)
+void myMethod() { ... }
+</code></pre><p>如果注解没有元素，则括号可以省略，就如前面的@Override一样。</p>
+<p>可给声明使用多个注解：</p>
+<pre><code>@Author(name = &quot;Jane Doe&quot;)
+@EBook
+class MyClass { ... }
+</code></pre><p>如果注解有相同类型，则这被称为重复注解：</p>
+<pre><code>@Author(name = &quot;Jane Doe&quot;)
+@Author(name = &quot;John Smith&quot;)
+class MyClass { ... }
+</code></pre><p>随着Java SE 8的发布，重复注解得到了支持。更多信息，详见<a href="https://docs.oracle.com/javase/tutorial/java/annotations/repeating.html">重复注解</a>。</p>
+<p>注解类型可以是Java SE API中java.lang或java.lang.annotation包中定义的类型之一。在前面的例子中，Override和SuppressWarnings是<a href="https://docs.oracle.com/javase/tutorial/java/annotations/predefined.html">预定义Java注解</a>。也可以自定义注解类型。前例中的Author和Ebook注解都是自定义注解类型。</p>
+<h4 id="-">注解用于何处</h4>
+<p>注解可以用在声明：声明类，域，方法和其他程序元素。当用于声明时，每个注解按照惯例都单独一行。</p>
+<p>随着Java SE 8的发布，注解也可以应用到类型<em>使用</em>。例子如下：</p>
+<ul>
+<li>类实例创建表达式：<br>  <code>new @Interned MyObject();</code></li><li>强制转换：<br>  <code>myString = (@NonNull String) str;</code></li><li>实现接口：<br>  <code>class UnmodifiableList&lt;T&gt; implements @Readonly List&lt;@Readonly T&gt; { ... }</code></li><li>抛出异常声明：<br>  <code>void monitorTemperature() throws @Critical TemperatureException { ... }</code><br>这种类型的注解称为类型注解。更多详情，请查看<a href="https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html">类型注解与可插拔类型系统</a>。</li></ul>
+<h2 id="-">声明注解</h2>
+<p>很多注解替代代码中的注释。</p>
+<p>假设一个软件集团通常在每个类文件的起始都会增加重要信息的注释：</p>
+<pre><code>public class Generation3List extends Generation2List {
+
+   // Author: John Doe
+   // Date: 3/17/2002
+   // Current revision: 6
+   // Last modified: 4/12/2004
+   // By: Jane Doe
+   // Reviewers: Alice, Bill, Cindy
+   // class code goes here
+}
+</code></pre><p>为了使用注释增加相同的元数据，首先必须定义<em>注解类型</em>。语法如下：</p>
+<pre><code>@interface ClassPreamble {
+   String author();
+   String date();
+   int currentRevision() default 1;
+   String lastModified() default &quot;N/A&quot;;
+   String lastModifiedBy() default &quot;N/A&quot;;
+   // Note use of array
+   String[] reviewers();
+}
+</code></pre><p>注解类型定义看起来类似接口定义，关键字<strong>interface</strong>前增加at符(@)(@ = AT，用于注解类型)。注解类型是一种<em>接口</em>，接口将在后续章节中讲解。现在，你不需要理解接口。</p>
+<p>前面的注解定义的主体包含<em>注解类型元素</em>声明，这看起来很像方法。注意，可以定义可选的默认值。</p>
+<p>注解类型定以后，可以使用这种注解，并填充一些值，例如：</p>
+<pre><code>@ClassPreamble (
+   author = &quot;John Doe&quot;,
+   date = &quot;3/17/2002&quot;,
+   currentRevision = 6,
+   lastModified = &quot;4/12/2004&quot;,
+   lastModifiedBy = &quot;Jane Doe&quot;,
+   // Note array notation
+   reviewers = {&quot;Alice&quot;, &quot;Bob&quot;, &quot;Cindy&quot;}
+)
+public class Generation3List extends Generation2List {
+
+// class code goes here
+
+}
+</code></pre><h2 id="-">预定义注解类型</h2>
+<p>Java SE API预定义了一组注解类型。某些注解用于Java编译器，一些适用于其他注解。</p>
+<h4 id="java-">Java语言使用的注解类型</h4>
+<p>java.lang预定义的注解类型包括@Deprecated,，@Override，和@SuppressWarnings。</p>
+<p><strong>@Dreprecated</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html">@Dreprecated</a>注解表示标记的元素已经<em>弃用</em>，将来不再使用。当程序使用带@Deprecated注解的方法，类或者域时，编译器将产生警告。当一个元素弃用时，在文档中应当使用Javadoc的@deprecated标签，如下例所示。Javadoc注释和注解中使用at符(@)不是巧合：它们概念上有联系。另外，Javadoc中以小写d开通，注解以大写D开头。</p>
+<pre><code>// Javadoc comment follows
+/**
+ * @deprecated
+ * explanation of why it was deprecated
+ */
+@Deprecated
+static void deprecatedMethod() { }
+}
+</code></pre><p><strong>@Override</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Override.html">@Override</a>注解通知编译器该元素冲在了超类中声明的元素。重写方法将在<a href="https://docs.oracle.com/javase/tutorial/java/IandI/index.html">接口与继承</a>中讨论。</p>
+<pre><code>// mark method as a superclass method
+// that has been overridden
+@Override 
+int overriddenMethod() { }
+</code></pre><p>然而使用这个注解重写方法不是必须的，它有助于防止错误。如果标记@Override的方法不能正确重写超类中的方法，编译器将产生一个错误。</p>
+<p><strong>@SuppressWarnings</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html">@SuppressWarnings</a>注解告诉编译器忽略指定的警告。下面的例子，使用了一个弃用的方法，编译器通常产生一个警告。这种情况下，使用该注解将忽略这个警告。</p>
+<pre><code>// use a deprecated method and tell 
+// compiler not to generate a warning
+@SuppressWarnings(&quot;deprecation&quot;)
+void useDeprecatedMethod() {
+// deprecation warning
+// - suppressed
+objectOne.deprecatedMethod();
+}
+</code></pre><p>编译器对警告进行分类。Java语言规范分成两类：弃用和未选中。<a href="https://docs.oracle.com/javase/tutorial/java/generics/index.html">泛型</a>之前包含旧代码的接口将产生未选中警告。为了忽略多种类型的警告，使用以下语法：</p>
+<p><code>@SuppressWarnings({&quot;unchecked&quot;, &quot;deprecation&quot;})</code></p>
+<p><strong>@SafeVarargs</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/SafeVarargs.html">@SafeVarargs</a>标注，适用于方法或构造函数，断言不对指定代码中的可变参数执行潜在的不安全操作。当使用这种注解类型时，可变参数相关的未选中警告将被忽略。</p>
+<p><strong>@FunctionalInterface</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html">@FunctionalInterface</a>注解，在Java SE 8中引入，表示该类型声明代表如Java语言规范所定义的函数接口。</p>
+<h4 id="-">应用于其他注解的注解</h4>
+<p>应用于其他注解的注解称为<em>元注解</em>，java.lang.annotation中定义了一些元注解。</p>
+<p><strong>@Retention</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html">@Rentention</a>注解指定标记注解的存储方式：</p>
+<ul>
+<li>RetentionPolicy.SOURCE —— 标记注解只在代码级持有，由编译器忽略。</li><li>RetentionPolicy.CLASS —— 标记注解在编译时由编译器持有，由Java虚拟机(JVM)忽略。</li><li>RetentionPolicy.RUNTIME —— 标记注解又JVM持有，可在运行环境使用。</li></ul>
+<p><strong>@Documented</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Documented.html">@Documented</a>注解表明使用指定注解的那些元素应当使用Javadoc工具文档化。(默认，注解不包含在Javadoc中。)更多信息，请参见<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/javadoc/index.html">Javadoc工具页</a>。</p>
+<p><strong>@Target</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html">@Target</a>注解标记其他注解，来限制目标注解可以适用于何种Java元素。目标注解指定以下元素作为它的值：</p>
+<ul>
+<li>ElementType.ANNOTATION_TYPE 可以适用于注解类型</li><li>ElementType.CONSTRUCTOR 可以适用于构造器</li><li>ElementType.FIELD 可以适用于域或属性</li><li>ElementType.LOCAL_VARIABLE 可以适用于本地变量</li><li>ElementType.METHOD 可以适用于方法级注解</li><li>ElementType.PACKAGE可以适用于包注解</li><li>ElementType.PARAMETE 可以适用于方法的参数</li><li>ElementType.TYPE 可以适用于类的任何元素</li></ul>
+<p><strong>@Inherited</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Inherited.html">@Inherited</a>注解表明注解类型可以从超类继承。(默认为false。)当用户查询注解类型，该类没有标记这种类型的注解，将会查询父类的注解类型。这种注解只适用于类声明。</p>
+<p><strong>@Repeatable</strong> <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Repeatable.html">@Repeatable</a>注解，Java SE 8引入，表明标记的注解可被重复使用相同的声明或类型。更多信息，参见<a href="https://docs.oracle.com/javase/tutorial/java/annotations/repeating.html">重复注解</a>。</p>
+<h2 id="-">类型注解与可插拔类型系统</h2>
+<p>Java SE 8发布之前，注解只能用于声明。随着Java SE 8的发布，注解也适用于任何<em>类型使用</em>。这意味着，注解可以适用于任何使用类型的地方。类型可以使用的方式有类实例化创建表达式(new)，强制转换，接口实现和抛出异常。这种形式的注解被称为类型注解，<a href="https://docs.oracle.com/javase/tutorial/java/annotations/basics.html">注解基础</a>提供了一些栗子。</p>
+<p>类型注解的引入是为了支持改进确保强类型检查的Java程序的方式分析。Java SE 8没提供一个类型检查框架，但是允许写(或下载)类型检查框架，该框架作为一个或多个可插拔模块用于与Java编译器结合。</p>
+<p>例如，你想确定程序中的一个特殊变量从不被置为null；你想避免出发NullPointerException。你可以写一个自定义插入模块来检查它。你可以修改代码来注解这个特殊的变量，指明它永不被分配为null。变量声明可能是这样：</p>
+<p><code>@NonNull String str;</code></p>
+<p>编译代码时，命令行包括NonNull模块，编译器如果检查到潜在的问题会打印一个警告，提醒你修改代码来避免发生错误。修改所有警告后，改特殊的错误在程序执行时将不会发生。</p>
+<p>可使用多类型检查模块，每个模块检查一种类型的错误。这样，可以基于Java类型系统进行构建，何时何地只要需要就可以增加指定类型的检查。</p>
+<p>随着明智的使用注解以及可插拔类型检查的存在，代码质量提高了，错误减少了。</p>
+<p>很多情况想，不需要写类型检查模块。第三方工具已经实现了。例如，可以使用华盛顿大学创造的检查框架。这个框架包括NonNull模块，还有正则表达式模块，和互斥锁模块。更多信息，查阅<a href="http://types.cs.washington.edu/checker-framework/">检查者框架</a>。</p>
+<h2 id="-">重复注解</h2>
+<p>有时需要对声明或类型使用同一个注解。随着Java SE 8的发布，<em>重复注解</em>可以出列这个需求。</p>
+<p>例如，代码使用了计时器服务使得在指定之间或确定间隔执行特定方法，类似UNIX系统的cron服务。现在你想增加一个计时器来执行一个方法，doPeriodicCleanup，在每月睡会一天和每个周五的下午11点。为了启动计时器，创建一个@Schedule注解并两次使用到doPeriodicCleanup方法。第一次指定每月最后一天，第二次指定周五的下午11点，如下代码所示：</p>
+<pre><code>@Schedule(dayOfMonth=&quot;last&quot;)
+@Schedule(dayOfWeek=&quot;Fri&quot;, hour=&quot;23&quot;)
+public void doPeriodicCleanup() { ... }
+</code></pre><p>前面的例子展示了想方法增加注解。你可以在任何标准注解使用的地方重复使用注解。例如，有一个类处理未鉴权访问异常。注解这个类，一个@Alert用于经理，其他用于管理员：</p>
+<pre><code>@Alert(role=&quot;Manager&quot;)
+@Alert(role=&quot;Administrator&quot;)
+public class UnauthorizedAccessException extends SecurityException { ... }
+</code></pre><p>出于兼容性原因，重复注解存储在<em>包含注解</em>中，包含注解由Java<br>编译器生成。为了让编译器做到这一点，代码中需要两个声明。</p>
+<p><strong> 步骤1 ： 声明一个重复注解类型 </strong></p>
+<p>注解类型必须标明@Repeatable元注解。下面的例子自定义了@Schedule重复注解类型：</p>
+<pre><code>import java.lang.annotation.Repeatable;
+
+@Repeatable(Schedules.class)
+public @interface Schedule {
+  String dayOfMonth() default &quot;first&quot;;
+  String dayOfWeek() default &quot;Mon&quot;;
+  int hour() default 12;
+}
+</code></pre><p>@Repeatable元注解的值，括号内的，是包含注解的类型，Java编译器生成用于存储重复注解。例子中，包含注解类型是Schedules，所以重复@Schedule注解将存储在@Schedules注解中。</p>
+<p>使用未声明为可重复的注解到声明时将产生一个编译时错误。</p>
+<p><strong>步骤 2 ： 声明包含注解类型</strong></p>
+<p>包含注解类型必须指定一个类型为数组的value元素。数组类型的组件必须是可重复注解类型。Schedules包含注解类型的声明如下：</p>
+<pre><code>public @interface Schedules {
+  Schedule[] value();
+}
+</code></pre><h4 id="-">检索注解</h4>
+<p>在反射API中有一些方法可以用于检索注解。这些方法的行为是返回一个单一注解，例如<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html#getAnnotationByType-java.lang.Class-">AnnotatedElement.getAnnotationByType(Class<T>)</a>，如果搜索到请求的类型，它只返回单一注解。如果请求类型的多个注解存在，可以先得到它们的包含注解。只有，旧代码可以继续使用。Java SE 8增加的其他方法扫面包含注解，一次返回多个注解，例如<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html#getAnnotations-java.lang.Class-">AnnotatedElement.getAnnotations(Class<T>)</a>。参见<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html">AnnotatedElement</a>类规范中所有可用方法信息。</p>
+<h4 id="-">设计注意事项</h4>
+<p>当设计注解类型时，你必须考虑注解类型的基数。现在可以使用注解零次，一次或者多次，如果注解类型标记为@Repeatable。也可以使用@Target元注解显示注解类型的使用。例如，创建一个只用在方法和域的可重复注解。重要的是小心设计注解类型来确保程序员使用注解时发现它的灵活和强大。</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Using Dagger 2</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+<body>
+<h1 id="android-dagger2-">Android项目使用Dagger2进行依赖注入</h1>
+<p>依赖注入是一种软件设计模式，致力于应用松耦合，可扩展性和可维护性。本教程中，将学到如何使用Dagger2进行依赖注入。</p>
+<h2 id="-">介绍</h2>
+<p>当一个对象需要或依靠其他对象处理工作时，这就是一个依赖关系。依赖关系可以通过让依赖对象创建被依赖者或者使用工厂方法创建一个被依赖者来解决。在依赖注入的情况下，然而，向类提供的依赖需要避免类来创建它们。这样你创建的软件就是松耦合和高可维护的。</p>
+<p>本教程使用Dagger的最新版，<a href="http://google.github.io/dagger/">Dagger 2</a>。在写作期间，Dagger 2还未正式发布，处于pre-alpha阶段。然而，它是可用和稳定的。你可以访问<a href="https://github.com/google/dagger">Dagger on GitHub</a>得到项目的新闻和正式版的发布日期。</p>
+<h2 id="-">前置条件</h2>
+<p>你需要在开发机上安装最新版的Android Studio，可以从<a href="http://developer.android.com/sdk/index.html">Android开发者网站</a>下载。</p>
+<ol>
+<li><h4 id="dagger-2-api">Dagger 2 API</h4>
+<p>Dagger 2提供了一些特殊的注解：</p>
+<ul>
+<li><code>@Module</code>用于类，该类的方法提供依赖。</li><li><code>@Provides</code>用于<code>@Module</code>注解的类中的方法</li><li><code>@inject</code>请求依赖(用在构造函数，域或方法)</li><li><code>@Component</code>是模块和注入之间的接口</li></ul>
+<p>这些就是即将使用Dagger 2进行依赖注入所需要了解的重要注解。我将在一个简单Android应用中向你展示如何使用它们。</p>
+</li><li><h4 id="dagger-2-">Dagger 2工作流程</h4>
+<p>为了正确使用Dagger 2，你需要遵守以下步骤：</p>
+<ol>
+<li>识别依赖对象和它的依赖。</li><li>创建带<code>@Module</code>注解的类，对每个返回依赖的方法使用<code>@Provides</code>注解。</li><li>在依赖对象上使用<code>@Inject</code>注解来请求依赖。</li><li>使用<code>@Componet</code>注解创建一个接口并增加第二步中创建的带<code>@Module</code>注解的类。</li><li>创建一个<code>@Component</code>接口的对象来实例化自带依赖的依赖对象。</li></ol>
+<p>依赖分析从运行时转换到编译时。这意味着在开发阶段就可以知道可能的问题，而不像其他的库，例如<a href="https://github.com/google/guice">Guice</a>。在开始使用Dagger 2库之前，你需要安装Android Stuido来访问生成的类。</p>
+</li><li><h4 id="android-studio-">Android Studio环境建立</h4>
+<h5 id="step-1">Step 1</h5>
+<p>使用Android Studio创建一个新的应用并命名。我命名我的工程为<strong>TutsplusDagger</strong>。<br><img src="https://cms-assets.tutsplus.com/uploads/users/425/posts/23345/image/dagger-2-type-a-name-for-the-project.png" alt=""></p>
+<h5 id="step-2">Step 2</h5>
+<p>设置项目的<strong>最小SDK版本</strong>为<strong>API 10</strong>来适配更多机型。<br><img src="https://cms-assets.tutsplus.com/uploads/users/425/posts/23345/image/dagger-2-select-minimun-sdk.png" alt=""></p>
+<h5 id="step-3">Step 3</h5>
+<p>创建的activity选择<strong>空</strong>布局。对于本教程，不需要特殊布局。<br><img src="https://cms-assets.tutsplus.com/uploads/users/425/posts/23345/image/dagger-2-choose-template.png" alt=""></p>
+<h5 id="step-4">Step 4</h5>
+<p>命名activity为Main<br>Activity并点击<strong>Finish</strong>按钮。<br><img src="https://cms-assets.tutsplus.com/uploads/users/425/posts/23345/image/dagger-2-name-for-activity.png" alt=""></p>
+<p>工程创建后，你需要对gradle文件进行一些修改。让我们在下一步中做这些改动。</p>
+</li><li><p>配置Gradle设置。</p>
+<h5 id="step-1">Step 1</h5>
+<p>我们需要修改工程的<strong>build.gradle</strong>文件如下：</p>
+<pre><code> buildscript {
+     repositories {
+         jcenter()
+     }
+     dependencies {
+         classpath &#39;com.android.tools.build:gradle:1.0.0&#39;
+         classpath &#39;com.neenbedankt.gradle.plugins:android-apt:1.4&#39;
+     }
+ }
+
+ allprojects {
+     repositories {
+         mavenCentral()
+         maven{
+             url &#39;https://oss.sonatype.org/content/repositories/snapshots/&#39;
+         }
+     }
+ }
+</code></pre><p>让我们看一下做了哪些修改：</p>
+<ul>
+<li><strong>dependencies</strong>：这部分，我增加了一个插件，该插件将用于访问Dagger生成的文件。如果不加入，访问这些新类时将看到错误。</li><li><strong>allprojects</strong>:这个修改是因为我们使用的库当前处于pre-alpha阶段，而且这是使用Maven来访问该库的唯一可用地址。也可以从Sonatype下载<a href="https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger/2.0-SNAPSHOT/">Dagger</a>和<a href="https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger-compiler/2.0-SNAPSHOT/">Dagger编译器</a>库，但本教程是基于Maven仓库创建的。</li></ul>
+<h5 id="step-2">Step 2</h5>
+<p>打开工程app文件夹中的<strong>build.gradle</strong>文件，修改如下：</p>
+<pre><code> apply plugin: &#39;com.android.application&#39;
+ apply plugin: &#39;com.neenbedankt.android-apt&#39;
+
+ android {
+     compileSdkVersion 21
+     buildToolsVersion &quot;21.1.2&quot;
+
+     defaultConfig {
+         applicationId &quot;com.androidheroes.tutsplusdagger&quot;
+         minSdkVersion 10
+         targetSdkVersion 21
+         versionCode 1
+         versionName &quot;1.0&quot;
+     }
+     buildTypes {
+         release {
+             minifyEnabled false
+             proguardFiles getDefaultProguardFile(&#39;proguard-android.txt&#39;), &#39;proguard-rules.pro&#39;
+         }
+     }
+ }
+
+ dependencies {
+     compile fileTree(dir: &#39;libs&#39;, include: [&#39;*.jar&#39;])
+     compile &#39;com.android.support:appcompat-v7:21.0.3&#39;
+
+     compile &#39;com.google.dagger:dagger:2.0-SNAPSHOT&#39;
+     apt &#39;com.google.dagger:dagger-compiler:2.0-SNAPSHOT&#39;
+     provided &#39;org.glassfish:javax.annotation:10.0-b28&#39;
+ }
+</code></pre><p>在文件开头，我应用了新的插件。务必将新插件(<strong>com.neenbedankt.android-apt</strong>)放到Android插件之后。如果不这样做，在同步工程的gradle文件时将显示错误。</p>
+<p>在<strong>dependencies</strong>中添加了如下依赖：</p>
+<ul>
+<li><strong>dagger</strong>库</li><li><strong>dagger-compiler</strong>用于代码生成</li><li><strong>javax.annotation</strong>用于Dagger之外需求的额外注解</li></ul>
+<p>在更新Dagger的配置后，你需要点击上面的按钮来同步工程的gradle文件。</p>
+<p><img src="https://cms-assets.tutsplus.com/uploads/users/425/posts/23345/image/dagger-2-gradle-sync.jpg" alt=""></p>
+<p>到这里，你的应用已经有了一个可以准备使用的空项目。如果有错误，请确保你正确的遵守以上步骤。现在我们来实现我们的栗子项目。</p>
+</li><li><p>实现Dagger 2</p>
+<h5 id="step-1-">Step 1：识别依赖对象</h5>
+<p>对于本教程，我打算实现两个类，<code>Vehicle</code>和<code>Motor</code>。<code>Motor</code>是独立类，<code>Vehicle</code>是依赖类。我打算开始在包名为<code>model</code>中创建这个模型。</p>
+<p><code>Motor</code>类结构如下：</p>
+</li></ol>
+<pre><code>package com.androidheroes.tutsplusdagger.model;
+
+/**
+ * Created by kerry on 14/02/15.
+ */
+public class Motor {
+
+    private int rpm;
+
+    public Motor(){
+        this.rpm = 0;
+    }
+
+    public int getRpm(){
+        return rpm;
+    }
+
+    public void accelerate(int value){
+        rpm = rpm + value;
+    }
+
+    public void brake(){
+        rpm = 0;
+    }
+}
+</code></pre><p>  该类只有一个名为<code>rmp</code>的属性，我准备通过<code>accelerate</code>和<code>brake</code>方法来修改它。并且使用<code>getRpm</code>方法来访问当前值。</p>
+<p>  <code>Vehicle</code>类结构如下：</p>
+<pre><code>package com.androidheroes.tutsplusdagger.model;
+
+/**
+* Created by kerry on 14/02/15.
+*/
+public class Vehicle {
+
+    private Motor motor;
+
+    public Vehicle(Motor motor){
+        this.motor = motor;
+    }
+
+    public void increaseSpeed(int value){
+        motor.accelerate(value);
+    }
+
+    public void stop(){
+        motor.brake();
+    }
+
+    public int getSpeed(){
+        return motor.getRpm();
+    }
+}
+</code></pre><p>  在类中，你看到我没有创建<code>Motor</code>类的新对象，即使使用了它的方法。在真实世界的应用中，这个类应当有更多的方法和属性，但现在尽量保持简单。</p>
+<h5 id="step-2-module-">Step 2：创建<code>@Module</code>类</h5>
+<p>  现在要创建带<code>@Module</code>注解的类。该类将提供自带依赖的对象。因为这点，需要创建新的包名(只是为了保持顺序)，命名为<code>module</code>并在其中增加新类，代码如下：</p>
+<pre><code>package com.androidheroes.tutsplusdagger.module;
+
+import com.androidheroes.tutsplusdagger.model.Motor;
+import com.androidheroes.tutsplusdagger.model.Vehicle;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+
+/**
+ * Created by kerry on 14/02/15.
+ */
+
+@Module
+public class VehicleModule {
+
+    @Provides @Singleton
+    Motor provideMotor(){
+        return new Motor();
+    }
+
+    @Provides @Singleton
+    Vehicle provideVehicle(){
+        return new Vehicle(new Motor());
+    }
+}
+</code></pre><p>  在<strong>Step 1</strong>中我指出，<code>Vehicle</code>需要<code>Motor</code>来正常工作。这就是为什么你需要创建两个提供者，一个给<code>Motor</code>(独立模型)，另一个给<code>Vehicle</code>(指明它的依赖)。</p>
+<p>  别忘了每个提供者(或方法)必须添加<code>@Provides</code>注解并且类必须有<code>@Module</code>注解。<code>@Singleton</code>注解指明对象只能有一个实例。</p>
+<h5 id="step-3-">Step 3: 依赖对象中请求依赖</h5>
+<p>  现在不同的模型都有了提供者，你需要请求它们。就像<code>Vehicle</code>需要<code>Motor</code>那样，你需要在<code>Vehicle</code>的构造函数前增加<code>@Inject</code>注解，代码如下：</p>
+<pre><code>@Inject
+public Vehicle(Motor motor){
+    this.motor = motor;
+}
+</code></pre><p>  你可以使用<code>@Inject</code>注解在构造函数，域，方法中来请求依赖。这个例子里，我在构造函数中使用注入。</p>
+<h5 id="step-4-inject-module-">Step 4：使用<code>@Inject</code>链接<code>@Module</code></h5>
+<p>  使用带<code>@Component</code>注解的接口连接依赖的提供者，<code>@Module</code>，和请求他们的类，这些类标记了<code>@Inject</code>注解：</p>
+<pre><code>package com.androidheroes.tutsplusdagger.component;
+
+import com.androidheroes.tutsplusdagger.model.Vehicle;
+import com.androidheroes.tutsplusdagger.module.VehicleModule;
+
+import javax.inject.Singleton;
+
+import dagger.Component;
+
+/**
+ * Created by kerry on 14/02/15.
+ */
+
+@Singleton
+@Component(modules = {VehicleModule.class})
+public interface VehicleComponent {
+
+    Vehicle provideVehicle();
+
+}
+</code></pre><p>  在<code>@Component</code>注解中，你需要指明打算使用哪个类 —— 本例是<code>VehicleModule</code>，前面已经创建了。如果你打算使用更多的模块，只需要使用逗号作为分隔符来增加它们。</p>
+<p>  接口中，给每个需要的对象增加方法，它们会自动添加依赖。本例中，因为只需要一个<code>Vehicle</code>对象，所以只有一个方法。</p>
+<h5 id="step-5-component-">Step 5： 使用<code>@Component</code>接口获取对象</h5>
+<p>  现在万事俱备了，你需要拥有一个接口的实例并调用它的方法来获取需要的对象。我将在<code>MainActivity</code>中的<code>OnCreate</code>方法中实现，代码如下：</p>
+<pre><code>package com.androidheroes.tutsplusdagger;
+
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.androidheroes.tutsplusdagger.component.Dagger_VehicleComponent;
+import com.androidheroes.tutsplusdagger.component.VehicleComponent;
+import com.androidheroes.tutsplusdagger.model.Vehicle;
+import com.androidheroes.tutsplusdagger.module.VehicleModule;
+
+public class MainActivity extends ActionBarActivity {
+
+Vehicle vehicle;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    VehicleComponent component = Dagger_VehicleComponent.builder().vehicleModule(new VehicleModule()).build();
+
+    vehicle = component.provideVehicle();
+
+    Toast.makeText(this, String.valueOf(vehicle.getSpeed()), Toast.LENGTH_SHORT).show();
+}
+</code></pre><p>  当你打算创建一个带<code>@Component</code>注解的接口对象时，你需要使用<code>Dagger_&lt;NameOfTheComponentInterface&gt;</code>前缀来实现，本例是<code>Dagger_VehicleComponent</code>，然后使用<code>builder</code>方法来调用各个模块。</p>
+<p>  秘诀就在代码的第23行。你只要求<code>Vehicle</code>类的一个对象，Dagger2库会负责准备该对象的所有依赖。同样，你看不到其他任何对象的新实例——Dagger2库帮你处理了所有。</p>
+<p>  现在可以在设备或者模拟器上运行应用。如果按照教程一步一步实现，你将看到一个显示<code>rpm</code>变量初始值的<code>Toast</code>消息。</p>
+<p>  在相关的工程里，你能看到一个对<code>MainActivity</code>类定制的用户接口，该接口中，通过点击屏幕上的按钮，你可以修改<code>rpm</code>变量的值。</p>
+<h2 id="-">结论</h2>
+<p>  依赖注入是一个模式，在你的应用中迟早会用到该模式。使用Dagger 2，你拥有了实现依赖注入的利器。我希望该教程对你有用，如果你喜欢它请分享它。</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
