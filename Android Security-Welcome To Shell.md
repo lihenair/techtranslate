@@ -79,7 +79,7 @@ Mems_allowed_list:  0
 voluntary_ctxt_switches:    163
 nonvoluntary_ctxt_switches: 69
 ```
-你可以与已安装应用中调用的shell命令进行比较。由于`Runtime.exec()`的怪癖，我发现可以从已安装应用中通过发送一条缓慢的shell命令(`sleep 100`)并检查我已打开的`adb shell`。下面如预期的，我看看到了完全不同的PPID树：
+你可以与已安装应用中调用的shell命令进行比较。由于`Runtime.exec()`的怪癖，我发现可以从已安装应用中通过发送一条缓慢的shell命令(`sleep 100`)并检查我已打开的`adb shell`。下面如预期的，我们看到了完全不同的PPID树：
 
 ```
 #ps
@@ -139,9 +139,9 @@ nonvoluntary_ctxt_switches: 6
 一个显著的例子是`adb shell`有3003的GID，定义是`#define AID_INET 3003 /* can create AF_INET and AF_INET6 sockets */`，所以默认它自带`INTERNET`权限。
 
 ### 深入研究
-可能知道`shell`用户访问的系统资源是有趣的。我想这个可以在root/模拟器设备上执行一条简单命令就可以知道。
+可能知道`shell`用户访问的系统资源是有趣的。我想在root/模拟器设备上执行一条简单命令就可以知道。
 
-*编辑：[还应该从CopperheadOS中看看](https://twitter.com/CopperheadOS/status/766363947066941441)*
+*编辑：[还应该从CopperheadOS看看](https://twitter.com/CopperheadOS/status/766363947066941441)*
 
 ### 结论
 一句话，是的。一个打开的shell的权限取决于它的进程所有者和组。启动shell的依赖可以是不同的。
