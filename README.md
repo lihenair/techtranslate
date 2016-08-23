@@ -34,3 +34,5 @@
 [Router——一切都在正确的位置 映射功能到应用的组件](https://github.com/lihenair/techtranslate/blob/master/%E8%B7%AF%E7%94%B1%E5%99%A8.md)
 
 [鼓捣RxAndroid--介绍](https://github.com/lihenair/techtranslate/blob/master/%E9%BC%93%E6%8D%A3RxAnroid-%E4%BB%8B%E7%BB%8D.md)
+
+[Android安全性: 欢迎来到Shell(权限)](https://github.com/lihenair/techtranslate/blob/master/Android%20Security-Welcome%20To%20Shell.md)
