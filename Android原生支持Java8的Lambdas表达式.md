@@ -1,5 +1,3 @@
-
-
 # Android原生支持Java8的Lambdas表达式
 
 原文链接：[https://medium.com/@cesarmcferreira/native-support-for-java-8-lambdas-on-android-f439b2d6bbaa#.a9yi4egsc](https://medium.com/@cesarmcferreira/native-support-for-java-8-lambdas-on-android-f439b2d6bbaa#.a9yi4egsc)
