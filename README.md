@@ -36,3 +36,5 @@
 [鼓捣RxAndroid--介绍](https://github.com/lihenair/techtranslate/blob/master/%E9%BC%93%E6%8D%A3RxAnroid-%E4%BB%8B%E7%BB%8D.md)
 
 [Android安全性: 欢迎来到Shell(权限)](https://github.com/lihenair/techtranslate/blob/master/Android%20Security-Welcome%20To%20Shell.md)
+
+[Android原生支持Java8的Lambdas表达式](https://github.com/lihenair/techtranslate/blob/master/Android%E5%8E%9F%E7%94%9F%E6%94%AF%E6%8C%81Java8%E7%9A%84Lambdas%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
