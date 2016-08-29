@@ -38,3 +38,5 @@
 [Android安全性: 欢迎来到Shell(权限)](https://github.com/lihenair/techtranslate/blob/master/Android%20Security-Welcome%20To%20Shell.md)
 
 [Android原生支持Java8的Lambdas表达式](https://github.com/lihenair/techtranslate/blob/master/Android%E5%8E%9F%E7%94%9F%E6%94%AF%E6%8C%81Java8%E7%9A%84Lambdas%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
+
+[使用Gradle额外属性管理Android依赖版本](https://github.com/lihenair/techtranslate/blob/master/%E4%BD%BF%E7%94%A8Gradle%E9%A2%9D%E5%A4%96%E5%B1%9E%E6%80%A7%E7%AE%A1%E7%90%86Android%E4%BE%9D%E8%B5%96%E7%89%88%E6%9C%AC.md)
