@@ -44,3 +44,5 @@
 [异步布局加载](https://github.com/lihenair/techtranslate/blob/master/%E5%BC%82%E6%AD%A5%E5%B8%83%E5%B1%80%E5%8A%A0%E8%BD%BD.md)
 
 [Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!)](https://github.com/lihenair/techtranslate/blob/master/Keeping%20Android%20runtime%20permissions%20from%20cluttering%20your%20app%20(Headless%20Dialog%20Fragments!).md)
+
+[Android support Annotation](https://github.com/lihenair/techtranslate/blob/master/Android%20support%20Annotation.md)
