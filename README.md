@@ -46,3 +46,5 @@
 [Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!)](https://github.com/lihenair/techtranslate/blob/master/Keeping%20Android%20runtime%20permissions%20from%20cluttering%20your%20app%20(Headless%20Dialog%20Fragments!).md)
 
 [Android support Annotation](https://github.com/lihenair/techtranslate/blob/master/Android%20support%20Annotation.md)
+
+[Annotation Processing in Android Studio](https://github.com/lihenair/techtranslate/blob/master/Annotation%20Processing%20in%20Android%20Studio.md)
