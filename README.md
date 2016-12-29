@@ -50,3 +50,5 @@
 [Annotation Processing in Android Studio](https://github.com/lihenair/techtranslate/blob/master/Annotation%20Processing%20in%20Android%20Studio.md)
 
 [Android 7.1 Static Shortcut](https://github.com/lihenair/techtranslate/blob/master/Android%207.1%E9%9D%99%E6%80%81%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F.md)
+
+[DI101-第一部分](https://github.com/lihenair/techtranslate/blob/master/DI101-Part1.md)
