@@ -54,3 +54,5 @@
 [DI101-第一部分](https://github.com/lihenair/techtranslate/blob/master/DI101-Part1.md)
 
 [Kotlin Contracts](https://github.com/lihenair/techtranslate/blob/master/Kotlin%20Contract.md)
+
+[CompositionLocal-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/CompositionLocal-Made-Easy.md)
