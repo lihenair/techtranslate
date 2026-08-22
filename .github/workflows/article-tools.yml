@@ -2,15 +2,12 @@ name: Article tools
 
 on:
   push:
+    branches: [master]
     paths:
       - scripts/article_tools.py
       - tests/test_article_tools.py
       - .github/workflows/article-tools.yml
   pull_request:
-    paths:
-      - scripts/article_tools.py
-      - tests/test_article_tools.py
-      - .github/workflows/article-tools.yml
 
 permissions:
   contents: read
