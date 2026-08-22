@@ -89,6 +89,33 @@ class InboxFormatTest(unittest.TestCase):
         self.assertIn("# Hello Compose", text)
         self.assertIn("Body text here.", text)
 
+    def test_source_markdown_writes_optional_meta(self) -> None:
+        article = article_tools.FetchedArticle(
+            url="https://example.com/a",
+            title="Hello Compose",
+            markdown="Body text here.",
+            method="html",
+            author="Ada",
+            published_at="2026-01-02",
+            cover_image="https://example.com/cover.png",
+        )
+        text = article_tools.format_source_markdown(article, issue="12")
+        self.assertIn("author: Ada", text)
+        self.assertIn("published_at: 2026-01-02", text)
+        self.assertIn("cover_image: https://example.com/cover.png", text)
+
+    def test_source_markdown_omits_empty_optional_meta(self) -> None:
+        article = article_tools.FetchedArticle(
+            url="https://example.com/a",
+            title="Hello Compose",
+            markdown="Body text here.",
+            method="jina",
+        )
+        text = article_tools.format_source_markdown(article)
+        self.assertNotIn("\nauthor:", text)
+        self.assertNotIn("published_at:", text)
+        self.assertNotIn("cover_image:", text)
+
     def test_already_translated_detects_readme_url(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -97,6 +124,73 @@ class InboxFormatTest(unittest.TestCase):
             )
             self.assertTrue(article_tools.already_translated(root, "https://example.com/already"))
             self.assertFalse(article_tools.already_translated(root, "https://example.com/new"))
+
+
+class MediaExtractTest(unittest.TestCase):
+    def test_html_parser_emits_youtube_and_video_comments(self) -> None:
+        html = """<html><head>
+        <title>Demo</title>
+        <meta property="og:image" content="https://example.com/og.png">
+        <meta name="author" content="Ada">
+        <meta property="article:published_time" content="2026-03-04T10:00:00Z">
+        </head><body>
+        <h1>Demo</h1>
+        <p class="youtube-wrapper"><iframe src="https://www.youtube.com/embed/fG8xWTHnlLY?rel=0"></iframe></p>
+        <section><video autoplay loop muted playsinline src="https://example.com/loop.webm"></video></section>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        title, markdown = parser.result("https://example.com/a")
+        self.assertEqual(title, "Demo")
+        self.assertEqual(parser.author, "Ada")
+        self.assertEqual(parser.published_at, "2026-03-04")
+        self.assertEqual(parser.cover_image, "https://example.com/og.png")
+        self.assertIn(
+            '<!-- media:youtube id="fG8xWTHnlLY" url="https://www.youtube.com/watch?v=fG8xWTHnlLY" -->',
+            markdown,
+        )
+        self.assertIn(
+            '<!-- media:video-gif src="https://example.com/loop.webm" -->',
+            markdown,
+        )
+
+    def test_inject_youtube_comments_from_jina_text(self) -> None:
+        text = "Watch https://www.youtube.com/watch?v=fG8xWTHnlLY now"
+        out = article_tools.inject_youtube_comments(text)
+        self.assertIn(
+            '<!-- media:youtube id="fG8xWTHnlLY" url="https://www.youtube.com/watch?v=fG8xWTHnlLY" -->',
+            out,
+        )
+
+    def test_section_with_three_images_emits_frames_comment(self) -> None:
+        html = """<html><head><title>Frames</title></head><body>
+        <h1>Frames</h1>
+        <section class="gif-demo">
+          <img src="/a.png"><img src="/b.png"><img src="/c.png">
+        </section>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/a")
+        self.assertIn("media:frames", markdown)
+        self.assertIn("https://example.com/a.png", markdown)
+        self.assertIn("https://example.com/b.png", markdown)
+
+    def test_css_section_emits_section_anim_comment(self) -> None:
+        html = """<html><head><title>Anim</title>
+        <style>.box{animation:x 1s infinite}@keyframes x{to{opacity:0}}</style>
+        </head><body>
+        <h1>Anim</h1>
+        <section class="demo"><div class="box">Hi</div></section>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/anim")
+        self.assertIn("media:section-anim", markdown)
+        self.assertTrue(parser.section_snippets)
 
 
 if __name__ == "__main__":

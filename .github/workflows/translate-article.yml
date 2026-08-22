@@ -71,6 +71,17 @@ jobs:
             echo "has_files=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Install media tools
+        if: steps.guard.outputs.skip != 'true' && steps.prepare.outputs.has_files == 'true'
+        continue-on-error: true
+        run: |
+          python3 -m pip install --quiet yt-dlp playwright
+          python3 -m playwright install --with-deps chromium
+
+      - name: Convert short inbox media
+        if: steps.guard.outputs.skip != 'true' && steps.prepare.outputs.has_files == 'true'
+        run: python3 scripts/capture_media.py --inbox _inbox --repo-root .
+
       - name: Push inbox branch and open PR
         if: steps.guard.outputs.skip != 'true' && steps.prepare.outputs.has_files == 'true'
         id: publish
@@ -87,12 +98,12 @@ jobs:
           fi
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
           git checkout -B "$BRANCH"
-          git add _inbox
+          git add _inbox assets
           if git diff --cached --quiet; then
             echo "No inbox files to commit"
             exit 0
           fi
-          git commit -m "Add translation inbox source from article URL(s)"
+          git commit -m "Add translation inbox source and short media"
           git push -u origin "$BRANCH" --force
           TITLES=$(jq -r '.files[].title' /tmp/prepare.json | paste -sd '; ' -)
           URL_LIST=$(jq -r '.files[] | "- \(.url) (\(.path), via \(.method))"' /tmp/prepare.json)

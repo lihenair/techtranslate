@@ -2,6 +2,8 @@
 
 Submit an English article URL. GitHub Actions fetches the page, then Copilot or Cursor translates it into this repo's markdown style.
 
+New posts use the template in [the translation format spec](superpowers/specs/2026-08-22-translation-format-design.md): YAML meta, Chinese H1, and GIF assets for source clips and `section` demos that last 15 seconds or less.
+
 ## Submit a URL
 
 1. Open **[Translate article](../../issues/new?template=translate-article.yml)** and paste the link (more than one URL is OK).
@@ -29,3 +31,4 @@ Copilot assignment needs a **user-to-server** token, not `GITHUB_TOKEN`. See [Us
 | `.github/skills/translating-articles/SKILL.md` | Shared translation skill |
 | `.github/workflows/translate-article.yml` | Fetch URLs and open the inbox PR |
 | `scripts/article_tools.py` | URL extract + article fetch |
+| `scripts/capture_media.py` | Convert inbox media ≤15s (video / YouTube / section) into `assets/<slug>/` GIFs |

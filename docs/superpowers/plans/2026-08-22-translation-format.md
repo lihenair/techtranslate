@@ -6,7 +6,7 @@
 
 **Architecture:** Pure format helpers live in `scripts/translation_format.py`. Fetch still goes through `scripts/article_tools.py`, which now writes optional inbox meta and HTML comment media markers. `scripts/capture_media.py` reads those markers, applies the 15-second gate, and runs ffmpeg. Agents follow an updated skill; no old posts are rewritten.
 
-**Tech Stack:** Python 3 stdlib (`unittest`, `html.parser`), `ffmpeg` / `ffprobe` on PATH, optional `yt-dlp` for YouTube duration only.
+**Tech Stack:** Python 3 stdlib (`unittest`, `html.parser`), `ffmpeg` / `ffprobe` on PATH, `yt-dlp` to probe/download short YouTube (and other remote) clips, Playwright Chromium to record CSS `section` demos (JS disabled). Missing tools skip that media item and must not fail the inbox fetch.
 
 ## Global Constraints
 
@@ -964,7 +964,7 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-YouTube is not downloaded in this task. Duration is unknown, so it is skipped. That matches the spec. Translators still write the text link.
+Task 5 only converts local `file://` / on-disk `video-gif` sources. YouTube and remote HTTP clips stay `skipped-unknown` until Task 7 wires `yt-dlp`. `section` markers stay skipped until Tasks 8–9.
 
 In `.github/workflows/translate-article.yml`, after the `Prepare inbox from URLs` step (after `cat /tmp/prepare.json`), add a new step **before** push:
 
@@ -1215,6 +1215,329 @@ git commit -m "docs: switch translators to Juejin-style template"
 
 ---
 
+---
+
+### Task 7: Remote video / YouTube via yt-dlp
+
+**Files:**
+- Modify: `scripts/capture_media.py`
+- Test: `tests/test_capture_media.py`
+
+**Interfaces:**
+- Consumes: `should_convert_source`, `convert_local_video`, `youtube_watch_url`
+- Produces:
+  - `probe_remote_duration(url: str) -> float | None`
+  - `download_remote_video(url: str, dest_dir: Path) -> Path | None`
+  - `convert_remote_video(url: str, dest_gif: Path) -> str`
+  - `process_inbox` converts `youtube` and `http(s)` `video-gif` when duration ≤ 15s
+
+- [ ] **Step 1: Write the failing tests**
+
+Add to `tests/test_capture_media.py`:
+
+```python
+class RemoteVideoTest(unittest.TestCase):
+    def test_probe_and_skip_use_injected_runner(self) -> None:
+        def fake_run(cmd, **kwargs):
+            if "--print" in cmd:
+                class R:
+                    stdout = "9.0\n"
+                    returncode = 0
+                return R()
+            raise AssertionError(cmd)
+
+        self.assertEqual(capture_media.probe_remote_duration("https://youtu.be/aaaaaaaaaaa", runner=fake_run), 9.0)
+
+        def long_run(cmd, **kwargs):
+            class R:
+                stdout = "40\n"
+                returncode = 0
+            return R()
+
+        status = capture_media.convert_remote_video(
+            "https://youtu.be/aaaaaaaaaaa",
+            Path("/tmp/no-such-yt.gif"),
+            probe=lambda url: 40.0,
+            download=lambda url, dest_dir: Path("/tmp/missing.mp4"),
+        )
+        self.assertEqual(status, "skipped-long")
+
+    def test_unknown_remote_duration_is_skipped(self) -> None:
+        status = capture_media.convert_remote_video(
+            "https://youtu.be/aaaaaaaaaaa",
+            Path("/tmp/no-such-yt.gif"),
+            probe=lambda url: None,
+            download=lambda url, dest_dir: None,
+        )
+        self.assertEqual(status, "skipped-unknown")
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `python3 -m unittest tests.test_capture_media.RemoteVideoTest -v`
+
+Expected: FAIL with `AttributeError: module 'capture_media' has no attribute 'probe_remote_duration'`
+
+- [ ] **Step 3: Write minimal implementation**
+
+Add to `scripts/capture_media.py`:
+
+```python
+def probe_remote_duration(url: str, runner=subprocess.run) -> float | None:
+    ytdlp = shutil.which("yt-dlp")
+    if not ytdlp:
+        return None
+    try:
+        proc = runner(
+            [ytdlp, "--print", "%(duration)s", "--skip-download", "--no-warnings", url],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        line = (proc.stdout or "").strip().splitlines()[-1]
+        return float(line)
+    except (subprocess.CalledProcessError, ValueError, IndexError, FileNotFoundError):
+        return None
+
+
+def download_remote_video(url: str, dest_dir: Path, runner=subprocess.run) -> Path | None:
+    ytdlp = shutil.which("yt-dlp")
+    if not ytdlp:
+        return None
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    out_tmpl = str(dest_dir / "dl.%(ext)s")
+    try:
+        runner(
+            [ytdlp, "-f", "mp4/best[ext=mp4]/best", "-o", out_tmpl, "--no-warnings", url],
+            check=True,
+            capture_output=True,
+            timeout=120,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+    matches = sorted(dest_dir.glob("dl.*"))
+    return matches[0] if matches else None
+
+
+def convert_remote_video(
+    url: str,
+    dest_gif: Path,
+    probe=probe_remote_duration,
+    download=download_remote_video,
+) -> str:
+    duration_s = probe(url)
+    if not translation_format.should_convert_source(duration_s):
+        return "skipped-unknown" if duration_s is None else "skipped-long"
+    with tempfile.TemporaryDirectory() as tmp:
+        downloaded = download(url, Path(tmp))
+        if downloaded is None:
+            return "skipped-unknown"
+        return convert_local_video(downloaded, dest_gif, duration_s=duration_s)
+```
+
+Need `import tempfile` at the top of `capture_media.py`.
+
+In `process_inbox`, replace the `kind == "youtube"` branch with a call to `convert_remote_video` using `marker["url"]` or `youtube_watch_url(marker["id"])`, destination `assets/<slug>/yt-<id>.gif`. For `video-gif` whose `src` is `http(s)`, call `convert_remote_video` instead of `_source_to_path`.
+
+In `.github/workflows/translate-article.yml`, before capture, install yt-dlp:
+
+```yaml
+      - name: Install media tools
+        if: steps.guard.outputs.skip != 'true' && steps.prepare.outputs.has_files == 'true'
+        run: python3 -m pip install --quiet yt-dlp
+```
+
+- [ ] **Step 4: Run tests and make sure they pass**
+
+Run: `python3 -m unittest tests.test_capture_media -v`
+
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/capture_media.py tests/test_capture_media.py .github/workflows/translate-article.yml
+git commit -m "feat: convert short remote videos with yt-dlp"
+```
+
+---
+
+### Task 8: Section frame sequences
+
+**Files:**
+- Modify: `scripts/article_tools.py` (emit `frames` markers)
+- Modify: `scripts/capture_media.py` (`stitch_image_sequence`, `process_inbox`)
+- Test: `tests/test_article_tools.py`, `tests/test_capture_media.py`
+
+**Interfaces:**
+- Consumes: `MAX_SEQUENCE_FRAMES`, `format_media_comment`
+- Produces:
+  - `extract_frame_sequences(html: str, page_url: str) -> list[list[str]]`
+  - inbox comment `<!-- media:frames src="url1|url2|url3" -->`
+  - `stitch_image_sequence(paths: list[Path], dest: Path) -> str`
+  - `process_inbox` converts `frames` when `len(urls) <= 120`
+
+- [ ] **Step 1: Write the failing tests**
+
+```python
+class FrameSequenceExtractTest(unittest.TestCase):
+    def test_section_with_three_images_emits_frames_comment(self) -> None:
+        html = """<html><head><title>Frames</title></head><body>
+        <h1>Frames</h1>
+        <section class="gif-demo">
+          <img src="/a.png"><img src="/b.png"><img src="/c.png">
+        </section>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/a")
+        self.assertIn("media:frames", markdown)
+        self.assertIn("https://example.com/a.png", markdown)
+        self.assertIn("https://example.com/b.png", markdown)
+
+
+class StitchFramesTest(unittest.TestCase):
+    def test_stitches_short_sequence_and_skips_long(self) -> None:
+        if not _have_ffmpeg():
+            self.skipTest("ffmpeg required")
+        with tempfile.TemporaryDirectory() as tmp:
+            frames = []
+            for i in range(3):
+                png = Path(tmp) / f"{i}.png"
+                subprocess.run(
+                    ["ffmpeg", "-y", "-f", "lavfi", "-i", f"color=c=blue:s=32x32:d=0.1", str(png)],
+                    check=True,
+                    capture_output=True,
+                )
+                frames.append(png)
+            dest = Path(tmp) / "seq.gif"
+            self.assertEqual(capture_media.stitch_image_sequence(frames, dest), "converted")
+            self.assertTrue(dest.is_file())
+            too_many = frames * 50
+            self.assertGreater(len(too_many), 120)
+            self.assertEqual(
+                capture_media.stitch_image_sequence(too_many, Path(tmp) / "long.gif"),
+                "skipped-long",
+            )
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `python3 -m unittest tests.test_article_tools.FrameSequenceExtractTest tests.test_capture_media.StitchFramesTest -v`
+
+Expected: FAIL (`media:frames` missing / `stitch_image_sequence` missing)
+
+- [ ] **Step 3: Write minimal implementation**
+
+Parser: while inside `<section>`, `<figure>`, or `<div class="...gif|anim|demo|frames...">`, collect `img src`. On close, if `2 <= len(imgs) <= 120`, append `format_media_comment("frames", src="|".join(absolute_urls))`. Rewrite relative URLs with `urljoin` in `parser.result` using `page_url`.
+
+`stitch_image_sequence`: if `len(paths) > MAX_SEQUENCE_FRAMES` or `< 2`, return `skipped-long` / `skipped-unknown`. Else `ffmpeg -y -framerate 8 -i concat` or copy frames to `frame-%03d.png` and encode GIF. Reuse size fallback from `encode_gif`.
+
+`process_inbox`: for `kind == "frames"`, download each URL (or accept `file://`) into a temp dir, then stitch to `assets/<slug>/section-<n>.gif`.
+
+- [ ] **Step 4: Run tests and make sure they pass**
+
+Run: `python3 -m unittest tests.test_article_tools tests.test_capture_media -v`
+
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/article_tools.py scripts/capture_media.py tests/test_article_tools.py tests/test_capture_media.py
+git commit -m "feat: stitch short section image sequences into gifs"
+```
+
+---
+
+### Task 9: Playwright CSS section recording
+
+**Files:**
+- Modify: `scripts/article_tools.py` (emit `section-anim` + write snippet HTML)
+- Modify: `scripts/capture_media.py` (`record_section_html`, `process_inbox`)
+- Modify: `.github/workflows/translate-article.yml` (install Playwright Chromium when capturing)
+- Test: `tests/test_capture_media.py`, `tests/test_article_tools.py`
+
+**Interfaces:**
+- Consumes: `MAX_SOURCE_SECONDS`, `stitch_image_sequence`
+- Produces:
+  - inbox comment `<!-- media:section-anim file="_inbox/media/<slug>-1.html" duration_s="4" -->`
+  - snippet HTML = captured `<style>` blocks + the section markup
+  - `record_section_html(html: str, dest: Path, seconds: float = 4.0) -> str`
+  - JS disabled in the browser (`java_script_enabled=False`)
+  - no Playwright ⇒ `skipped-no-browser` (translation still proceeds)
+
+- [ ] **Step 1: Write the failing tests**
+
+```python
+class SectionAnimExtractTest(unittest.TestCase):
+    def test_css_section_emits_section_anim_comment(self) -> None:
+        html = """<html><head><title>Anim</title>
+        <style>.box{animation:x 1s infinite}@keyframes x{to{opacity:0}}</style>
+        </head><body>
+        <h1>Anim</h1>
+        <section class="demo"><div class="box">Hi</div></section>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        article = article_tools.fetch_via_html  # do not call network
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/anim")
+        self.assertIn("media:section-anim", markdown)
+
+
+class RecordSectionTest(unittest.TestCase):
+    def test_missing_playwright_is_skipped(self) -> None:
+        status = capture_media.record_section_html(
+            "<html><body><div>x</div></body></html>",
+            Path("/tmp/no-section.gif"),
+            playwright_factory=None,
+        )
+        self.assertEqual(status, "skipped-no-browser")
+```
+
+If Playwright is installed in this environment, add one test that records a 1-second CSS blink and asserts a GIF exists. Skip that test when Chromium is missing.
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `python3 -m unittest tests.test_article_tools.SectionAnimExtractTest tests.test_capture_media.RecordSectionTest -v`
+
+Expected: FAIL
+
+- [ ] **Step 3: Write minimal implementation**
+
+Parser collects every `<style>` inner text. For a `section`/`figure`/`div.demo|anim|gif` that has no `video` and fewer than 2 images, but contains `@keyframes` in page styles or `animation` in its markup, write `_inbox/media/<slug>-N.html` (caller: `write_inbox` after fetch) and emit `section-anim` with `file` + `duration_s="4"`.
+
+`record_section_html`: import Playwright; on `ImportError` or `playwright_factory is None` and import fails, return `skipped-no-browser`. Launch Chromium with `java_script_enabled=False`, `page.set_content(html)`, screenshot at 8fps for `min(seconds, 15)` (default 4), then `stitch_image_sequence`.
+
+Workflow:
+
+```yaml
+      - name: Install media tools
+        if: steps.guard.outputs.skip != 'true' && steps.prepare.outputs.has_files == 'true'
+        run: |
+          python3 -m pip install --quiet yt-dlp playwright
+          python3 -m playwright install --with-deps chromium
+        continue-on-error: true
+```
+
+- [ ] **Step 4: Run tests and make sure they pass**
+
+Run: `python3 -m unittest tests.test_article_tools tests.test_translation_format tests.test_capture_media -v`
+
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/article_tools.py scripts/capture_media.py tests/test_article_tools.py tests/test_capture_media.py .github/workflows/translate-article.yml
+git commit -m "feat: record short CSS sections to gif with playwright"
+```
+
+---
+
 ## Self-review
 
 **Spec coverage**
@@ -1226,15 +1549,16 @@ git commit -m "docs: switch translators to Juejin-style template"
 | Heading `## [中文](#slug)` | Task 1 `heading_md` + Task 6 |
 | YouTube text link | Task 1 `embed_link` + Task 6 |
 | HTML media comments | Task 3 |
-| ≤15s convert / >15s or unknown skip | Task 1 gate + Task 4 encoder + Task 5 inbox |
-| `assets/<slug>/` + workflow commit | Task 5 |
+| ≤15s convert / >15s or unknown skip | Task 1 gate + Task 4 encoder + Task 5–7 |
+| Remote / YouTube GIF when ≤15s | Task 7 (`yt-dlp` probe then download) |
+| Section image-sequence GIF | Task 8 |
+| CSS `section` GIF | Task 9 (Playwright, JS off; fallback `skipped-no-browser`) |
+| `assets/<slug>/` + workflow commit | Task 5 + 7 + 9 |
 | No iframe / no Juejin hosts | Task 1 validator + Task 6 |
-| Do not migrate old posts | Task 6 skill (new posts only); no rewrite task |
-| CSS Playwright recording | Not automated in CI. Skill says write「原文为网页动画」when no GIF. Matches spec fallback. |
-| Image-sequence ≤120 frames | Constant `MAX_SEQUENCE_FRAMES` in Task 1; stitch loop can be added later without changing the gate. Inbox HTML with only `<img>` sequences is not auto-stitched in this plan (YAGNI until a real article needs it). Translator can still run ffmpeg locally. |
+| Do not migrate old posts | Task 6 skill (new posts only) |
 
-**Intentionally not in this plan (spec allows fallback):** Playwright CSS recording; YouTube download via yt-dlp; Bilibili/Vimeo download; image-sequence stitch; Juejin auto-publish.
+**Out of scope:** Juejin auto-publish; committing mp4; rewriting old translations.
 
 **Placeholder scan:** none.
 
-**Type consistency:** `should_convert_source(duration_s: float | None) -> bool`, `convert_local_video(...) -> str` status strings, `parse_media_comments -> list[dict]`, `format_media_comment(kind, **attrs)`, `FetchedArticle.author/published_at/cover_image`.
+**Type consistency:** `should_convert_source(duration_s: float | None) -> bool`, `convert_local_video(...) -> str`, `convert_remote_video(...) -> str`, `stitch_image_sequence(...) -> str`, `record_section_html(...) -> str`, `parse_media_comments -> list[dict]`, `format_media_comment(kind, **attrs)`, `FetchedArticle.author/published_at/cover_image`.
