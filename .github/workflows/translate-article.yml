@@ -155,6 +155,7 @@ jobs:
 
       - name: Assign Copilot article-translator
         if: steps.guard.outputs.skip != 'true' && github.event_name == 'issues' && steps.prepare.outputs.has_files == 'true'
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_TOKEN }}
           BRANCH: ${{ steps.publish.outputs.branch }}
