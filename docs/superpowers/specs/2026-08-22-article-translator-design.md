@@ -21,6 +21,4 @@ Daily English article URLs become Chinese markdown translations in this repo, ma
 
 ## Translation rules
 
-- Simplified Chinese; keep code, commands, and image URLs.
-- First line: `[原文链接](SOURCE_URL)`.
-- Filename from the English title/slug; add a `README.md` link.
+New translations follow [2026-08-22-translation-format-design.md](./2026-08-22-translation-format-design.md): YAML meta, Chinese H1 (no `【翻译】` on GitHub), body header, heading anchors, and the 15-second GIF rule. Do not migrate existing posts.
