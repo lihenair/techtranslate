@@ -61,3 +61,5 @@
 [CompositionLocal-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/CompositionLocal-Made-Easy.md)
 
 [Recomposition-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/Recomposition-Made-Easy.md)
+
+[NoBuzz](https://github.com/lihenair/techtranslate/blob/master/NoBuzz.md)
