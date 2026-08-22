@@ -114,7 +114,7 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 
 ### 时长规则（唯一标准）
 
-有**可下载片源**（YouTube / Vimeo / Bilibili / `video src`）时：
+有**可下载片源**（YouTube / Twitter / X / Vimeo / Bilibili / `video src`）时：
 
 | 时长 | 动作 |
 | --- | --- |
@@ -126,12 +126,13 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 
 「不处理」只指媒体文件。文字链仍要写。
 
-### YouTube / Vimeo / Bilibili
+### YouTube / Twitter / Vimeo / Bilibili
 
-正文固定句式（平台名按实际替换）：
+正文固定句式（平台名按实际替换）。Twitter / X 只处理 **嵌入**（`blockquote.twitter-tweet`、Twitter iframe），不把正文里的普通引用链接当视频。
 
 ```markdown
 [嵌入内容（原站 YouTube）](https://www.youtube.com/watch?v=fG8xWTHnlLY)
+[嵌入内容（原站 Twitter）](https://x.com/i/status/1950590543370834335)
 ```
 
 用平台正规观看地址，不用 `embed/`，不用掘金跳转。≤15 秒时在链接下再加：

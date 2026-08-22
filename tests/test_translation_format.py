@@ -49,6 +49,28 @@ class YoutubeAndLinksTest(unittest.TestCase):
         )
         self.assertIsNone(tf.youtube_id_from_url("https://example.com/video"))
 
+    def test_parses_twitter_and_x_status_urls(self) -> None:
+        self.assertEqual(
+            tf.twitter_status_from_url("https://twitter.com/garethheyes/status/1680555380416577536"),
+            "1680555380416577536",
+        )
+        self.assertEqual(
+            tf.twitter_status_from_url("https://x.com/i/status/1680555380416577536"),
+            "1680555380416577536",
+        )
+        self.assertEqual(
+            tf.twitter_status_from_url(
+                "https://platform.twitter.com/embed/Tweet.html?id=1680555380416577536"
+            ),
+            "1680555380416577536",
+        )
+        self.assertIsNone(tf.twitter_status_from_url("https://twitter.com/garethheyes"))
+        self.assertEqual(
+            tf.twitter_status_url("1680555380416577536"),
+            "https://x.com/i/status/1680555380416577536",
+        )
+        self.assertTrue(tf.looks_like_twitter_class("twitter-tweet"))
+
     def test_embed_link_and_heading(self) -> None:
         self.assertEqual(
             tf.embed_link("YouTube", "https://www.youtube.com/watch?v=fG8xWTHnlLY"),

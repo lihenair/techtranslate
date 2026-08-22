@@ -163,6 +163,40 @@ class MediaExtractTest(unittest.TestCase):
             out,
         )
 
+    def test_html_parser_emits_twitter_status_comment(self) -> None:
+        html = """<html><head><title>Tweet embed</title></head><body>
+        <h1>Tweet embed</h1>
+        <blockquote class="twitter-tweet">
+          <p>demo</p>
+          <a href="https://twitter.com/garethheyes/status/1680555380416577536">June 2023</a>
+        </blockquote>
+        <iframe src="https://platform.twitter.com/embed/Tweet.html?id=1680555380416577536"></iframe>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/tweet-post")
+        self.assertIn(
+            '<!-- media:twitter id="1680555380416577536" url="https://x.com/i/status/1680555380416577536" -->',
+            markdown,
+        )
+        self.assertEqual(markdown.count("media:twitter"), 1)
+
+    def test_plain_twitter_citation_is_not_a_media_marker(self) -> None:
+        html = """<html><head><title>Cite</title></head><body>
+        <h1>Cite</h1>
+        <p>See <a href="https://x.com/slonser_/status/1912060415296835961">Slonser</a> for details.</p>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/cite")
+        self.assertNotIn("media:twitter", markdown)
+        text = article_tools.inject_media_comments(
+            "See https://x.com/slonser_/status/1912060415296835961 for details"
+        )
+        self.assertNotIn("media:twitter", text)
+
     def test_section_with_three_images_emits_frames_comment(self) -> None:
         html = """<html><head><title>Frames</title></head><body>
         <h1>Frames</h1>

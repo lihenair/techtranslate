@@ -88,16 +88,21 @@ def format_media_comment(kind: str, **attrs: str) -> str:
 
 
 def inject_youtube_comments(markdown: str) -> str:
+    return inject_media_comments(markdown)
+
+
+def inject_media_comments(markdown: str) -> str:
     found: list[str] = []
     for raw in URL_RE.findall(markdown):
         video_id = translation_format.youtube_id_from_url(raw)
-        if not video_id:
+        if video_id:
+            comment = format_media_comment(
+                "youtube",
+                id=video_id,
+                url=translation_format.youtube_watch_url(video_id),
+            )
+        else:
             continue
-        comment = format_media_comment(
-            "youtube",
-            id=video_id,
-            url=translation_format.youtube_watch_url(video_id),
-        )
         if comment not in markdown and comment not in found:
             found.append(comment)
     if not found:
@@ -210,6 +215,8 @@ class _HTMLArticleParser(HTMLParser):
         self._style_parts: list[str] = []
         self._pending_video = False
         self._records: list[dict] = []
+        self._seen_twitter: set[str] = set()
+        self._in_twitter_embed = 0
 
     def _start_record(self, tag: str, attrs: list[tuple[str, str | None]], class_name: str) -> None:
         self._records.append(
@@ -256,11 +263,28 @@ class _HTMLArticleParser(HTMLParser):
                 + "\n"
             )
 
+    def _emit_twitter(self, url: str) -> None:
+        status_id = translation_format.twitter_status_from_url(url)
+        if not status_id or status_id in self._seen_twitter:
+            return
+        self._seen_twitter.add(status_id)
+        self._chunks.append(
+            "\n\n"
+            + format_media_comment(
+                "twitter",
+                id=status_id,
+                url=translation_format.twitter_status_url(status_id),
+            )
+            + "\n"
+        )
+
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag == "style":
             self._in_style = True
             self._style_parts = []
             return
+        if translation_format.looks_like_twitter_class(dict(attrs).get("class") or ""):
+            self._in_twitter_embed += 1
         if self._skip_depth or tag in self.SKIP_TAGS:
             if tag in self.SKIP_TAGS:
                 self._skip_depth += 1
@@ -285,7 +309,8 @@ class _HTMLArticleParser(HTMLParser):
                     self.published_at = content[:10]
             return
         if tag == "iframe":
-            video_id = translation_format.youtube_id_from_url(attr.get("src") or "")
+            src = attr.get("src") or ""
+            video_id = translation_format.youtube_id_from_url(src)
             if video_id:
                 self._chunks.append(
                     "\n\n"
@@ -296,6 +321,8 @@ class _HTMLArticleParser(HTMLParser):
                     )
                     + "\n"
                 )
+            else:
+                self._emit_twitter(src)
             return
         if tag == "video":
             src = attr.get("src") or ""
@@ -339,7 +366,10 @@ class _HTMLArticleParser(HTMLParser):
         elif tag == "code" and not self._in_pre:
             self._chunks.append("`")
         elif tag == "a":
-            self._link_hrefs.append(attr.get("href") or "")
+            href = attr.get("href") or ""
+            self._link_hrefs.append(href)
+            if self._in_twitter_embed:
+                self._emit_twitter(href)
             self._chunks.append("[")
 
     def handle_endtag(self, tag: str) -> None:
@@ -350,6 +380,8 @@ class _HTMLArticleParser(HTMLParser):
                 self.styles.append(text)
             self._style_parts = []
             return
+        if self._in_twitter_embed and tag in {"blockquote", "div", "figure", "section"}:
+            self._in_twitter_embed = max(0, self._in_twitter_embed - 1)
         if tag in self.SKIP_TAGS and self._skip_depth:
             self._skip_depth -= 1
             return

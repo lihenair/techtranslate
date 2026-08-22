@@ -22,8 +22,10 @@ REQUIRED_FRONTMATTER = (
     "tags",
 )
 YOUTUBE_ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")
+TWITTER_STATUS_RE = re.compile(r"/status(?:es)?/(\d+)")
 FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)
 ANIM_CLASS_RE = re.compile(r"\b(gif|animat|demo|frames|loop)\b", re.I)
+TWITTER_CLASS_RE = re.compile(r"\b(twitter-tweet|twitter-embed|tweet)\b", re.I)
 
 
 def youtube_id_from_url(url: str) -> str | None:
@@ -45,6 +47,35 @@ def youtube_id_from_url(url: str) -> str | None:
 
 def youtube_watch_url(video_id: str) -> str:
     return f"https://www.youtube.com/watch?v={video_id}"
+
+
+def twitter_status_from_url(url: str) -> str | None:
+    parsed = urlparse(url.strip())
+    host = parsed.netloc.lower()
+    twitter_hosts = {
+        "twitter.com",
+        "www.twitter.com",
+        "mobile.twitter.com",
+        "x.com",
+        "www.x.com",
+        "platform.twitter.com",
+        "syndication.twitter.com",
+    }
+    if host not in twitter_hosts:
+        return None
+    match = TWITTER_STATUS_RE.search(parsed.path)
+    if match:
+        return match.group(1)
+    tweet_id = parse_qs(parsed.query).get("id", [""])[0]
+    return tweet_id if tweet_id.isdigit() else None
+
+
+def twitter_status_url(status_id: str) -> str:
+    return f"https://x.com/i/status/{status_id}"
+
+
+def looks_like_twitter_class(class_name: str) -> bool:
+    return bool(TWITTER_CLASS_RE.search(class_name or ""))
 
 
 def embed_link(platform: str, url: str) -> str:

@@ -100,15 +100,26 @@ def convert_local_video(
     return "converted"
 
 
+def _ytdlp_cmd() -> list[str] | None:
+    binary = shutil.which("yt-dlp")
+    if binary:
+        return [binary]
+    try:
+        import yt_dlp  # noqa: F401
+    except ImportError:
+        return None
+    return [sys.executable, "-m", "yt_dlp"]
+
+
 def probe_remote_duration(url: str, runner=None) -> float | None:
     run = runner or subprocess.run
-    ytdlp = shutil.which("yt-dlp")
-    if runner is None and not ytdlp:
+    cmd = _ytdlp_cmd()
+    if runner is None and not cmd:
         return None
-    ytdlp = ytdlp or "yt-dlp"
+    prefix = cmd or ["yt-dlp"]
     try:
         proc = run(
-            [ytdlp, "--print", "%(duration)s", "--skip-download", "--no-warnings", url],
+            [*prefix, "--print", "%(duration)s", "--skip-download", "--no-warnings", "--no-playlist", url],
             check=True,
             capture_output=True,
             text=True,
@@ -122,15 +133,15 @@ def probe_remote_duration(url: str, runner=None) -> float | None:
 
 def download_remote_video(url: str, dest_dir: Path, runner=None) -> Path | None:
     run = runner or subprocess.run
-    ytdlp = shutil.which("yt-dlp")
-    if runner is None and not ytdlp:
+    cmd = _ytdlp_cmd()
+    if runner is None and not cmd:
         return None
-    ytdlp = ytdlp or "yt-dlp"
+    prefix = cmd or ["yt-dlp"]
     dest_dir.mkdir(parents=True, exist_ok=True)
     out_tmpl = str(dest_dir / "dl.%(ext)s")
     try:
         run(
-            [ytdlp, "-f", "mp4/best[ext=mp4]/best", "-o", out_tmpl, "--no-warnings", url],
+            [*prefix, "-f", "mp4/best[ext=mp4]/best", "-o", out_tmpl, "--no-warnings", "--no-playlist", url],
             check=True,
             capture_output=True,
             timeout=120,
@@ -280,6 +291,11 @@ def process_inbox(inbox_dir: Path, repo_root: Path) -> dict:
                 video_id = marker.get("id") or translation_format.youtube_id_from_url(marker.get("url") or "") or "video"
                 dest = repo_root / "assets" / slug / f"yt-{video_id}.gif"
                 url = marker.get("url") or translation_format.youtube_watch_url(video_id)
+                status = convert_remote_video(url, dest)
+            elif kind == "twitter":
+                status_id = marker.get("id") or translation_format.twitter_status_from_url(marker.get("url") or "") or "tweet"
+                dest = repo_root / "assets" / slug / f"tw-{status_id}.gif"
+                url = marker.get("url") or translation_format.twitter_status_url(status_id)
                 status = convert_remote_video(url, dest)
             elif kind == "video-gif":
                 video_index += 1

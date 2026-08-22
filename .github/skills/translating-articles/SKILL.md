@@ -76,6 +76,7 @@ Omit any header line you cannot fill. Do not use `[原文链接](URL)`.
 
 ```markdown
 [嵌入内容（原站 YouTube）](https://www.youtube.com/watch?v=ID)
+[嵌入内容（原站 Twitter）](https://x.com/i/status/ID)
 ```
 
 If `assets/<slug>/` has a GIF for that item (source duration ≤ 15s, or a short `section` animation), add the image on the next line:
