@@ -63,3 +63,5 @@
 [Recomposition-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/Recomposition-Made-Easy.md)
 
 [NoBuzz](https://github.com/lihenair/techtranslate/blob/master/NoBuzz.md)
+
+[我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
