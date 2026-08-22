@@ -1,0 +1,183 @@
+name: Translate article
+
+on:
+  issues:
+    types: [opened, labeled]
+  workflow_dispatch:
+    inputs:
+      url:
+        description: English article URL to fetch and queue for translation
+        required: true
+        type: string
+
+concurrency:
+  group: translate-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  queue:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.action == 'opened' && contains(join(github.event.issue.labels.*.name, ','), 'translate')) ||
+      (github.event.action == 'labeled' && github.event.label.name == 'translate')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip if already queued
+        if: github.event_name == 'issues'
+        id: guard
+        env:
+          LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
+        run: |
+          if [[ "$LABELS" == *"translation-queued"* ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.guard.outputs.skip != 'true'
+
+      - name: Prepare inbox from URLs
+        if: steps.guard.outputs.skip != 'true'
+        id: prepare
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body || '' }}
+          DISPATCH_URL: ${{ github.event.inputs.url || '' }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || '' }}
+        run: |
+          printf '%s\n' "$ISSUE_BODY" > /tmp/issue-body.md
+          ARGS=(--body-file /tmp/issue-body.md --outdir _inbox --repo-root .)
+          if [[ -n "$ISSUE_NUMBER" ]]; then
+            ARGS+=(--issue "$ISSUE_NUMBER")
+          fi
+          if [[ -n "$DISPATCH_URL" ]]; then
+            ARGS+=(--url "$DISPATCH_URL")
+          fi
+          set +e
+          python3 scripts/article_tools.py "${ARGS[@]}" > /tmp/prepare.json
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          set -e
+          if [[ ! -s /tmp/prepare.json ]] || ! jq -e . /tmp/prepare.json >/dev/null 2>&1; then
+            echo '{"urls":[],"files":[],"skipped":[],"errors":["prepare script produced no JSON"]}' > /tmp/prepare.json
+          fi
+          cat /tmp/prepare.json
+          echo "has_files=false" >> "$GITHUB_OUTPUT"
+          if jq -e '.files | length > 0' /tmp/prepare.json >/dev/null; then
+            echo "has_files=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Push inbox branch and open PR
+        if: steps.guard.outputs.skip != 'true' && steps.prepare.outputs.has_files == 'true'
+        id: publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || '' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$ISSUE_NUMBER" ]]; then
+            BRANCH="translate/issue-${ISSUE_NUMBER}"
+          else
+            BRANCH="translate/run-${GITHUB_RUN_ID}"
+          fi
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          git checkout -B "$BRANCH"
+          git add _inbox
+          if git diff --cached --quiet; then
+            echo "No inbox files to commit"
+            exit 0
+          fi
+          git commit -m "Add translation inbox source from article URL(s)"
+          git push -u origin "$BRANCH" --force
+          TITLES=$(jq -r '.files[].title' /tmp/prepare.json | paste -sd '; ' -)
+          URL_LIST=$(jq -r '.files[] | "- \(.url) (\(.path), via \(.method))"' /tmp/prepare.json)
+          PR_BODY=$(cat <<EOF
+          Fetched English source for translation.
+
+          $URL_LIST
+
+          Next: assign **Copilot** with custom agent \`article-translator\`, or run a Cursor agent with the translating-articles skill. Translate \`_inbox/*.source.md\`, update \`README.md\`, and delete the inbox files.
+
+          Skill: \`.github/skills/translating-articles/SKILL.md\`
+          EOF
+          )
+          if [[ -n "$ISSUE_NUMBER" ]]; then
+            PR_BODY+=$'\n\n'"Closes #${ISSUE_NUMBER}"
+          fi
+          PR_URL=$(gh pr list --head "$BRANCH" --json url --jq '.[0].url' || true)
+          if [[ -z "$PR_URL" ]]; then
+            PR_URL=$(gh pr create --base master --head "$BRANCH" --title "Translate: ${TITLES}" --body "$PR_BODY")
+          else
+            gh pr edit "$PR_URL" --title "Translate: ${TITLES}" --body "$PR_BODY"
+          fi
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on issue
+        if: steps.guard.outputs.skip != 'true' && github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          PR_URL: ${{ steps.publish.outputs.pr_url }}
+          BRANCH: ${{ steps.publish.outputs.branch }}
+        run: |
+          if [[ ! -s /tmp/prepare.json ]]; then
+            echo '{"urls":[],"files":[],"skipped":[],"errors":["prepare script produced no JSON"]}' > /tmp/prepare.json
+          fi
+          SUMMARY=$(jq -r '
+            "URLs found: \(.urls | length)",
+            (.files | if length == 0 then empty else "Fetched:\n" + (map("- \(.url) → \(.path) (\(.method))") | join("\n")) end),
+            (.skipped | if length == 0 then empty else "Skipped:\n" + (map("- \(.url) (\(.reason))") | join("\n")) end),
+            (.errors | if length == 0 then empty else "Errors:\n" + (map("- \(.)") | join("\n")) end)
+          ' /tmp/prepare.json)
+          {
+            echo "Translation queue ran."
+            echo
+            echo "$SUMMARY"
+            echo
+            if [[ -n "$PR_URL" ]]; then
+              echo "Pull request: $PR_URL"
+              echo "Inbox branch: \`$BRANCH\`"
+              echo
+              echo "To finish: assign Copilot (custom agent **article-translator**) or start a Cursor agent. Prefer the fetched \`_inbox/*.source.md\` files over re-downloading the page."
+            else
+              echo "No new inbox files were created. Add a public article URL and the \`translate\` label, or check the errors above."
+            fi
+          } > /tmp/comment.md
+          gh issue comment "$ISSUE_NUMBER" --body-file /tmp/comment.md
+          gh label create translate --color 0E8A16 --description "Queue an article URL for translation" 2>/dev/null || true
+          gh label create translation-queued --color 5319E7 --description "Inbox fetch already ran for this issue" 2>/dev/null || true
+          gh issue edit "$ISSUE_NUMBER" --add-label translation-queued
+
+      - name: Assign Copilot article-translator
+        if: steps.guard.outputs.skip != 'true' && github.event_name == 'issues' && steps.prepare.outputs.has_files == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_TOKEN }}
+          BRANCH: ${{ steps.publish.outputs.branch }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo "No COPILOT_ASSIGN_TOKEN secret; skip Copilot assignment."
+            echo "Manual: open the issue → Assignees → Copilot, and select custom agent article-translator."
+            exit 0
+          fi
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "/repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/assignees" \
+            --input - <<EOF
+          {
+            "assignees": ["copilot-swe-agent[bot]"],
+            "agent_assignment": {
+              "target_repo": "${GITHUB_REPOSITORY}",
+              "base_branch": "${BRANCH}",
+              "custom_agent": "article-translator",
+              "custom_instructions": "Translate every _inbox/*.source.md file using .github/skills/translating-articles/SKILL.md. Update README.md and delete the inbox sources when done."
+            }
+          }
+          EOF

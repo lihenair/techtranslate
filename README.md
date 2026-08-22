@@ -1,6 +1,9 @@
 # techtranslate
 技术文章翻译
 
+每天丢一个英文文章链接即可排队翻译：用 [Translate article](https://github.com/lihenair/techtranslate/issues/new?template=translate-article.yml) Issue，或在 Actions 里运行 **Translate article**。说明见 [docs/translating-articles.md](docs/translating-articles.md)。
+
+
 [Android Grid Layout](https://github.com/lihenair/techtranslate/blob/master/Android%20Grid%20Layout.md)
 
 [产品使用Dagger 2——减少方法数](https://github.com/lihenair/techtranslate/blob/master/Dagger%202%20on%20producton%E2%80%94reducing%20methods%20count.md)

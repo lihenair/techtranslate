@@ -1,0 +1,30 @@
+name: Translate article
+description: Submit one or more English article URLs for Chinese translation
+title: "[Translate] "
+labels: [translate]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Paste the public article link(s). A GitHub Action will fetch the page into `_inbox/`, then Copilot or Cursor can translate it using the `article-translator` agent / translating-articles skill.
+  - type: input
+    id: url
+    attributes:
+      label: Article URL
+      description: The English article to translate
+      placeholder: https://medium.com/...
+    validations:
+      required: true
+  - type: textarea
+    id: extra_urls
+    attributes:
+      label: Additional URLs
+      description: Optional. One URL per line if you have more than one article today.
+      placeholder: |
+        https://example.com/article-two
+        https://example.com/article-three
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Optional translator hints (tone, terms to keep in English, sections to skip).
