@@ -276,6 +276,20 @@ class MediaExtractTest(unittest.TestCase):
         self.assertIn("<style>", out)
         self.assertIn("https://example.com/img/x.png", out)
 
+    def test_inline_linked_stylesheets_keeps_css_backslashes(self) -> None:
+        html = (
+            '<html><head><link rel="stylesheet" href="/css/a.css">'
+            "</head><body>Hi</body></html>"
+        )
+
+        def fake_get(url: str, timeout: int = 45) -> tuple[str, str]:
+            return url, r'.icon::before{content:"\21"}'
+
+        out = article_tools.inline_linked_stylesheets(
+            "https://example.com/page", html, getter=fake_get
+        )
+        self.assertIn(r'content:"\21"', out)
+
 
 class MergeHtmlEnrichmentTest(unittest.TestCase):
     def test_jina_keeps_text_and_gains_html_media_and_meta(self) -> None:

@@ -503,7 +503,7 @@ def inline_linked_stylesheets(
         return html
     extra = "".join(injected)
     if re.search(r"</head>", html, re.I):
-        return re.sub(r"</head>", extra + "</head>", html, count=1, flags=re.I)
+        return re.sub(r"</head>", lambda _: extra + "</head>", html, count=1, flags=re.I)
     return extra + html
 
 
