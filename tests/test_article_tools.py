@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -81,6 +83,42 @@ _No response_
             body, issue_title="[Translate] AI Chip Architectures"
         )
         self.assertEqual(reqs[0]["title_zh"], "AI Chip Architectures")
+
+    def test_format_round_trips_through_the_issue_parser(self) -> None:
+        requests = [
+            {"url": "https://example.com/one", "title_zh": "第一篇"},
+            {"url": "https://example.com/two", "title_zh": "第二篇"},
+            {"url": "https://example.com/three", "title_zh": None},
+        ]
+        title, body = article_tools.format_translate_issue(requests, notes="keep API names")
+        self.assertEqual(title, "[Translate] 第一篇")
+        parsed = article_tools.parse_issue_requests(body, issue_title=title)
+        self.assertEqual(parsed, requests)
+        self.assertIn("keep API names", body)
+
+    def test_queue_script_prints_issue_without_creating(self) -> None:
+        out = subprocess.check_output(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "queue_translation.py"),
+                "--url",
+                "https://example.com/a",
+                "--title-zh",
+                "甲",
+                "--pair",
+                "https://example.com/b | 乙",
+            ],
+            text=True,
+        )
+        data = json.loads(out)
+        self.assertEqual(data["title"], "[Translate] 甲")
+        self.assertEqual(
+            [item["url"] for item in data["requests"]],
+            ["https://example.com/a", "https://example.com/b"],
+        )
+        parsed = article_tools.parse_issue_requests(data["body"], issue_title=data["title"])
+        self.assertEqual(parsed[0]["title_zh"], "甲")
+        self.assertEqual(parsed[1]["title_zh"], "乙")
 
     def test_old_additional_urls_still_work(self) -> None:
         reqs = article_tools.parse_issue_requests(ISSUE_BODY)

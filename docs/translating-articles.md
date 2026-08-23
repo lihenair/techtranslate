@@ -6,9 +6,12 @@ New posts use the template in [the translation format spec](superpowers/specs/20
 
 ## Submit a URL
 
-1. Open **[翻译文章](../../issues/new?template=translate-article.yml)**.
-2. One article: paste the URL and optionally a Chinese title. Several articles: one `URL` or `URL | 中文标题` per line in **更多文章**.
-3. Submit. The Action fetches the page into `_inbox/` and opens a PR. If `COPILOT_ASSIGN_TOKEN` is set, it assigns Copilot to write the Chinese post. Otherwise assign **article-translator** on the issue, or start a Cursor agent.
+Two entry points, one Issue format:
+
+1. **GitHub:** open **[翻译文章](../../issues/new?template=translate-article.yml)**. One article: URL + optional Chinese title. Several articles: `URL` or `URL | 中文标题` per line in **更多文章**.
+2. **Cursor:** paste URL(s) in chat. The agent runs `python3 scripts/queue_translation.py --create --url …` to open the same Issue, then writes the translation if Copilot does not.
+
+The Action fetches `_inbox/` after the Issue is opened. If `COPILOT_ASSIGN_TOKEN` is set, it also assigns Copilot.
 
 To retry, reopen the issue or add the `translate` label. The issue title should start with `[Translate]`.
 

@@ -139,6 +139,47 @@ def parse_issue_requests(body: str, issue_title: str | None = None) -> list[dict
     return requests
 
 
+def format_translate_issue(
+    requests: list[dict[str, str | None]],
+    notes: str | None = None,
+) -> tuple[str, str]:
+    """Build the same GitHub form body Cursor or a human would submit."""
+    if not requests:
+        raise ValueError("Need at least one article URL")
+    first = requests[0]
+    first_url = first.get("url") or ""
+    first_title = first.get("title_zh") or None
+    issue_title = f"[Translate] {first_title or slug_from_url(first_url)}"
+    extras: list[str] = []
+    for item in requests[1:]:
+        url = item.get("url") or ""
+        if not url:
+            continue
+        title = item.get("title_zh")
+        extras.append(f"{url} | {title}" if title else url)
+    body = "\n".join(
+        [
+            "### 原文链接",
+            "",
+            first_url,
+            "",
+            "### 中文标题",
+            "",
+            first_title or "_No response_",
+            "",
+            "### 更多文章",
+            "",
+            "\n".join(extras) if extras else "_No response_",
+            "",
+            "### 备注",
+            "",
+            notes.strip() if notes and not _is_empty_form_value(notes) else "_No response_",
+            "",
+        ]
+    )
+    return issue_title, body
+
+
 def extract_urls(text: str) -> list[str]:
     """Return unique http(s) article URLs, skipping GitHub attachment noise when possible."""
     seen: set[str] = set()

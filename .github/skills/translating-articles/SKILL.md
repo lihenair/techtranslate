@@ -1,11 +1,33 @@
 ---
 name: translating-articles
-description: Use when translating an English technical article into this repo from a URL, GitHub issue labeled translate, _inbox/*.source.md file, Copilot article-translator agent, or a request to 翻译 / translate an article.
+description: Use when translating an English technical article into this repo from a URL pasted in Cursor, a GitHub issue titled [Translate], _inbox/*.source.md, Copilot article-translator, or a request to 翻译 / translate. Cursor-chat URLs must create a GitHub issue first.
 ---
 
 # Translating articles
 
 Turn an English article URL into a Simplified Chinese markdown post that matches `docs/superpowers/specs/2026-08-22-translation-format-design.md`.
+
+There are **two entry points**. Both become a GitHub Issue titled `[Translate] …`, which starts `Translate article` (fetch `_inbox/`, optional Copilot assign). Do not invent a third private path.
+
+## Mode A — GitHub Issue
+
+The user opened [翻译文章](https://github.com/lihenair/techtranslate/issues/new?template=translate-article.yml). The Action should already be fetching. Prefer `_inbox/*.source.md` on `translate/issue-<n>`. Then write the Chinese post.
+
+## Mode B — URL pasted in Cursor
+
+The user pasted link(s) in chat (optional Chinese title). **Create the same Issue first**, then translate. Do not only write files locally and skip GitHub.
+
+```bash
+python3 scripts/queue_translation.py --create --url URL --title-zh '中文标题'
+# more articles:
+python3 scripts/queue_translation.py --create --url URL1 --title-zh '第一篇' --pair 'URL2 | 第二篇'
+```
+
+That script writes the form fields (`原文链接` / `中文标题` / `更多文章`) so the Action parser matches a human-submitted issue. Title is `[Translate] …`.
+
+If `gh issue create` fails, say so, then fetch locally and still translate.
+
+After the issue exists, finish the Chinese post here if Copilot did not pick it up: use inbox files when they appear, otherwise `python scripts/article_tools.py --url URL --outdir _inbox`. Mention the issue URL in the translation PR.
 
 ## Inputs
 
