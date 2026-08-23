@@ -118,8 +118,12 @@ def convert_local_video(
         return "skipped-no-ffmpeg"
     if require_existing_src and not src.is_file():
         return "skipped-unknown"
-    limit = translation_format.MAX_GIF_BYTES if max_bytes is None else max_bytes
-    if encode_gif_under_limit(src, dest, limit):
+    if max_bytes is None:
+        if encode_gif(src, dest):
+            return "converted"
+        dest.unlink(missing_ok=True)
+        return "skipped-unknown"
+    if encode_gif_under_limit(src, dest, max_bytes):
         return "converted"
     dest.unlink(missing_ok=True)
     return "skipped-too-large"
@@ -288,15 +292,15 @@ def stitch_image_sequence(paths: list[Path], dest: Path) -> str:
                     "8",
                     "-i",
                     str(pattern),
-                    "-pix_fmt",
-                    "yuv420p",
+                    "-vf",
+                    "scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p",
                     str(src_pattern),
                 ],
                 check=True,
                 capture_output=True,
             )
         except subprocess.CalledProcessError:
-            return "skipped-too-large"
+            return "skipped-unknown"
         return convert_local_video(src_pattern, dest, duration_s=len(existing) / 8.0)
 
 
@@ -315,6 +319,94 @@ def _download_http_file(url: str, dest: Path) -> Path | None:
         return dest if dest.is_file() and dest.stat().st_size > 0 else None
     except OSError:
         return None
+
+
+def _write_recorded_frames(frames: list[Path], dest: Path) -> str:
+    existing = [path for path in frames if path.is_file() and path.stat().st_size > 0]
+    if not existing:
+        return "skipped-unknown"
+    dest = dest.with_suffix(".gif")
+    return stitch_image_sequence(existing, dest)
+
+
+def record_page_visual(
+    url: str,
+    dest: Path,
+    seconds: float = 4.0,
+    width: int = 800,
+    height: int = 400,
+    playwright_factory=...,
+) -> str:
+    duration = min(max(seconds, 0.2), translation_format.MAX_SOURCE_SECONDS)
+    if playwright_factory is None:
+        return "skipped-no-browser"
+    factory = playwright_factory
+    if factory is ...:
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError:
+            return "skipped-no-browser"
+        factory = sync_playwright
+    if not url:
+        return "skipped-unknown"
+    try:
+        with factory() as playwright:
+            browser = playwright.chromium.launch()
+            page = browser.new_page(viewport={"width": int(width), "height": int(height)})
+            try:
+                page.goto(url, wait_until="networkidle", timeout=60_000)
+            except Exception:
+                page.goto(url, wait_until="load", timeout=60_000)
+            page.wait_for_timeout(400)
+            target = page.locator("#app, svg, canvas, body > *").first
+            with tempfile.TemporaryDirectory() as tmp:
+                frames: list[Path] = []
+                count = max(2, int(duration * 8))
+                for index in range(count):
+                    frame = Path(tmp) / f"{index:03d}.png"
+                    try:
+                        if target.count() > 0:
+                            target.screenshot(path=str(frame))
+                        else:
+                            page.screenshot(path=str(frame))
+                    except Exception:
+                        page.screenshot(path=str(frame))
+                    frames.append(frame)
+                    page.wait_for_timeout(125)
+                browser.close()
+                return _write_recorded_frames(frames, dest)
+    except Exception:  # noqa: BLE001 - recording is best-effort
+        dest.unlink(missing_ok=True)
+        dest.with_suffix(".png").unlink(missing_ok=True)
+        return "skipped-no-browser"
+
+
+def convert_svg(
+    src: str,
+    dest: Path,
+    playwright_factory=...,
+) -> str:
+    with tempfile.TemporaryDirectory() as tmp:
+        local = _source_to_path(src)
+        if local is None and src.startswith(("http://", "https://")):
+            local = _download_http_file(src, Path(tmp) / "in.svg")
+        if local is None or not local.is_file():
+            return "skipped-unknown"
+        text = local.read_text(encoding="utf-8", errors="replace")
+        animated = bool(re.search(r"<animate|animation(?:-)|@keyframes", text, re.I))
+        html_path = Path(tmp) / "svg.html"
+        html_path.write_text(
+            "<!doctype html><html><head><meta charset=\"utf-8\"></head>"
+            f"<body>{text}</body></html>",
+            encoding="utf-8",
+        )
+        seconds = 4.0 if animated else 0.3
+        return record_page_visual(
+            html_path.as_uri(),
+            dest,
+            seconds=seconds,
+            playwright_factory=playwright_factory,
+        )
 
 
 def record_section_html(
@@ -385,6 +477,7 @@ def process_inbox(inbox_dir: Path, repo_root: Path) -> dict:
         slug = _inbox_slug(text, source)
         video_index = 0
         section_index = 0
+        svg_index = 0
         for marker in parse_media_comments(text):
             if media_count >= translation_format.MAX_MEDIA_FILES:
                 report["items"].append({"file": source.name, "kind": marker.get("kind"), "status": "skipped-limit"})
@@ -442,17 +535,51 @@ def process_inbox(inbox_dir: Path, repo_root: Path) -> dict:
                     status = record_section_html(snippet.read_text(encoding="utf-8"), dest, seconds=seconds)
                 else:
                     status = "skipped-no-browser"
+            elif kind == "page-visual":
+                section_index += 1
+                visual_id = re.sub(
+                    r"[^A-Za-z0-9._-]+",
+                    "-",
+                    marker.get("id") or str(section_index),
+                ).strip("-._") or str(section_index)
+                dest = repo_root / "assets" / slug / f"visual-{visual_id}.gif"
+                seconds = 4.0
+                try:
+                    seconds = float(marker.get("duration_s") or "4")
+                except ValueError:
+                    seconds = 4.0
+                width = 800
+                height = 400
+                try:
+                    width = int(marker.get("width") or "800")
+                    height = int(marker.get("height") or "400")
+                except ValueError:
+                    width, height = 800, 400
+                status = record_page_visual(
+                    marker.get("url") or "",
+                    dest,
+                    seconds=seconds,
+                    width=width,
+                    height=height,
+                )
+            elif kind == "svg":
+                svg_index += 1
+                dest = repo_root / "assets" / slug / f"svg-{svg_index}.gif"
+                status = convert_svg(marker.get("src") or "", dest)
             else:
                 report["items"].append({"file": source.name, "kind": kind, "status": "skipped-unknown"})
                 continue
             if status == "converted":
                 media_count += 1
+            written = dest if dest.is_file() else dest.with_suffix(".png")
             report["items"].append(
                 {
                     "file": source.name,
                     "kind": kind,
                     "status": status,
-                    "dest": str(dest.relative_to(repo_root)) if status == "converted" and dest.is_file() else "",
+                    "dest": str(written.relative_to(repo_root))
+                    if status == "converted" and written.is_file()
+                    else "",
                 }
             )
     return report

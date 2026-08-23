@@ -93,7 +93,8 @@ Frontmatter 之后按这个顺序，中间空一行：
 - 简体中文。代码块、命令、类名、API、原文图片 URL 不译。
 - 章节标题译成中文，锚点保留原文 slug：`## [引言](#introduction)`。原文没有 slug 时，用标题英文 kebab-case。
 - 术语第一次：`消毒（sanitization）`；后文可只用中文或英文，跟邻近译文习惯。
-- 图片：尽量用原文 URL；alt 写成中文说明。不要把掘金 `p9-xtjj-sign` 签名链写进仓库。
+- 图片：栅格图（png / jpg / webp）尽量用原文 URL；alt 写成中文说明。不要把掘金 `p9-xtjj-sign` 签名链写进仓库。
+- 同站图示 iframe、内联 SVG、`.svg` 插图：Jina 经常丢掉，HTML 解析要标成 `media:page-visual` / `media:svg` / `section-anim`，转成 `assets/<slug>/` 下的 GIF（有动画）或 PNG（静帧）。译文里不要写 iframe。从 `archive/<date>/<domain>/` 引用时用 `../../../../assets/<slug>/visual-….gif`。
 - 不要把范文里的掘金跳转链 `link.juejin.cn` 学过来。
 
 ## 视频与 GIF
@@ -108,6 +109,8 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 <!-- media:youtube id="fG8xWTHnlLY" url="https://www.youtube.com/watch?v=fG8xWTHnlLY" -->
 <!-- media:video-gif src="https://example.com/demo.webm" duration_s="8" -->
 <!-- media:section-anim index="1" duration_s="4" -->
+<!-- media:page-visual url="https://example.com/post/iframe#servers" id="servers" duration_s="4" width="800" height="200" -->
+<!-- media:svg src="https://example.com/diagram.svg" -->
 ```
 
 `duration_s` 用 `ffprobe` / `yt-dlp --print duration` / 页面 metadata。
@@ -152,6 +155,8 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 | `<section>` / `<figure>` / `<div>` 包着 `<video autoplay loop muted playsinline src>` | 按时长规则：≤15 秒下载 src 转 GIF；更长或无时长不处理，能还原 src 就写「原文此处有短视频」+ 链接 |
 | section 内多张按序帧图 | 按 8fps 估算：帧数 ≤ 120 则拼 GIF，否则只留第一张静图 + 说明 |
 | 纯 CSS / HTML `@keyframes`，无媒体文件 | 无片源：最多录 15 秒转 GIF；无浏览器或失败则 1 张静帧 +「原文为网页动画」 |
+| 同站图示 iframe（SVG / JS 动画，非 YouTube / Twitter） | 当网页动画录：默认 4 秒，JS 打开；各帧相同则落 PNG |
+| `<img src="*.svg">` 或够大的正文内联 SVG（不是 48px 以下图标） | 静图转 PNG，带 `<animate>` / CSS 动画的转 GIF |
 
 不要把整页滚动、导航、广告当成动画。只处理文章正文里、看起来像插图的那一块：`demo` / `anim` / `gif` 一类 class，或节点上真有 `animation:` / `@keyframes`。正文里出现 “animation” 这个词、外层包着几张说明图的 `<section>`，都不算。同站 stylesheet 会内联进 `section` 片段，相对 `url()` 改成绝对地址后再录。
 
@@ -161,9 +166,9 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 
 - 工具：`ffmpeg`（有 `yt-dlp` 就用来探时长、下短源）。
 - 参数：最长 15 秒、8 fps、宽最大 640、`palettegen` + `paletteuse`、无限循环。
-- 单文件超过 1.5MB：按阶梯缩小，直到能放下：`8fps/640` → `6fps/480` → `6fps/320` → `4fps/320`（64 色）→ `4fps/240`（48 色、无 dither）。整段仍按原片时长，不截前 15 秒。阶梯用尽仍超则丢弃该 GIF，只留文字链。
+- 不按体积丢弃 GIF。默认就按 `8fps`、宽最大 640、`palettegen` + `paletteuse`、无限循环编码；不再为了塞进 1.5MB 降画质或改静帧。只有调用方显式传入 `max_bytes` 时才走缩小阶梯。
 - YouTube：公开流程不收集账号、cookies、API key。读不到时长或下不下来就跳过，只留文字链。不要把密钥或 cookies 写进仓库、issue、PR。
-- 每篇最多 8 个媒体文件（GIF + 静帧合计）。超出的按文中出现顺序丢掉后面的。
+- 每篇最多 16 个媒体文件（GIF + 静帧合计）。超出的按文中出现顺序丢掉后面的。图示多的文章（例如一整页架构 iframe）应尽量录全，不要只留头图。
 - 文件名：`yt-<id>.gif`、`video-<n>.gif`、`section-<n>.gif`、失败静帧用 `.jpg`。
 
 脚本入口：`scripts/capture_media.py`。在 inbox 准备之后跑；译者 agent 也可对单个 inbox 再跑。缺 `ffmpeg` 时跳过转换，不挡翻译。

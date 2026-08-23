@@ -33,7 +33,19 @@ LINK_STYLESHEET_RE = re.compile(
 HREF_RE = re.compile(r"""\bhref=["']([^"']+)["']""", re.I)
 CSS_URL_RE = re.compile(r"""url\(\s*(["']?)([^)'"]+)\1\s*\)""", re.I)
 CSS_ANIM_PROP_RE = re.compile(r"""(?:^|[;\s"'])animation(?:-[a-z]+)?\s*:""", re.I)
+MEDIA_COMMENT_RE = re.compile(r"<!--\s*media:[^>]+-->")
 MEDIA_CONTAINER_TAGS = {"section", "figure", "div"}
+ASPECT_RE = re.compile(r"aspect-\[(\d+)/(\d+)\]")
+IFRAME_SKIP_HOSTS = (
+    "youtube.com",
+    "youtu.be",
+    "twitter.com",
+    "x.com",
+    "platform.twitter.com",
+    "facebook.com",
+    "doubleclick.net",
+    "googletagmanager.com",
+)
 
 
 class FetchError(RuntimeError):
@@ -224,6 +236,91 @@ def format_media_comment(kind: str, **attrs: str) -> str:
     return "<!-- " + " ".join(parts) + " -->"
 
 
+def aspect_viewport(class_name: str, width: int = 800) -> tuple[int, int]:
+    match = ASPECT_RE.search(class_name or "")
+    if not match:
+        return width, int(width * 9 / 16)
+    num, den = int(match.group(1)), int(match.group(2))
+    if num <= 0 or den <= 0:
+        return width, int(width * 9 / 16)
+    return width, max(80, int(width * den / num))
+
+
+def is_article_visual_iframe(src: str, page_url: str | None = None) -> bool:
+    if not src or src.startswith(("javascript:", "data:")):
+        return False
+    if translation_format.youtube_id_from_url(src):
+        return False
+    if translation_format.twitter_status_from_url(src):
+        return False
+    host = urlparse(src).netloc.lower()
+    if any(skip in host for skip in IFRAME_SKIP_HOSTS):
+        return False
+    if page_url and host:
+        page_host = urlparse(page_url).netloc.lower()
+        if page_host and host != page_host:
+            return False
+    return True
+
+
+def is_svg_url(src: str) -> bool:
+    path = urlparse(src or "").path.lower()
+    return path.endswith(".svg")
+
+
+def _svg_dimension(raw: str | None) -> float | None:
+    if not raw:
+        return None
+    cleaned = re.sub(r"px$", "", raw.strip(), flags=re.I)
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+
+
+def is_tiny_svg(attrs: dict[str, str | None]) -> bool:
+    width = _svg_dimension(attrs.get("width"))
+    height = _svg_dimension(attrs.get("height"))
+    return width is not None and height is not None and width <= 48 and height <= 48
+
+
+def extract_media_comments(markdown: str) -> list[str]:
+    return [match.group(0) for match in MEDIA_COMMENT_RE.finditer(markdown or "")]
+
+
+def last_paragraph_needle(text: str) -> str:
+    cleaned = MEDIA_COMMENT_RE.sub("", text or "")
+    cleaned = re.sub(r"!\[[^\]]*\]\([^)]+\)", "", cleaned)
+    paragraphs = [re.sub(r"\s+", " ", part).strip() for part in re.split(r"\n\s*\n", cleaned)]
+    paragraphs = [part for part in paragraphs if part]
+    if not paragraphs:
+        return ""
+    needle = paragraphs[-1]
+    return needle[-80:] if len(needle) > 80 else needle
+
+
+def place_media_comments(target: str, html_markdown: str) -> str:
+    """Put HTML media markers after the matching Jina paragraph when possible."""
+    if not html_markdown:
+        return target
+    comments = extract_media_comments(html_markdown)
+    if not comments:
+        return target
+    pieces = MEDIA_COMMENT_RE.split(html_markdown)
+    out = target or ""
+    for index, comment in enumerate(comments):
+        if comment in out:
+            continue
+        before = pieces[index] if index < len(pieces) else ""
+        needle = last_paragraph_needle(before)
+        if needle and needle in out:
+            at = out.index(needle) + len(needle)
+            out = out[:at].rstrip() + "\n\n" + comment + "\n\n" + out[at:].lstrip()
+        else:
+            out = out.rstrip() + "\n\n" + comment + "\n"
+    return out
+
+
 def inject_youtube_comments(markdown: str) -> str:
     return inject_media_comments(markdown)
 
@@ -364,6 +461,9 @@ class _HTMLArticleParser(HTMLParser):
         self._records: list[dict] = []
         self._seen_twitter: set[str] = set()
         self._in_twitter_embed = 0
+        self._svg_depth = 0
+        self._svg_parts: list[str] = []
+        self._svg_attr: dict[str, str | None] = {}
 
     def _start_record(self, tag: str, attrs: list[tuple[str, str | None]], class_name: str) -> None:
         self._records.append(
@@ -410,6 +510,38 @@ class _HTMLArticleParser(HTMLParser):
                 + "\n"
             )
 
+    def _finish_svg(self) -> None:
+        if is_tiny_svg(self._svg_attr):
+            return
+        markup = "".join(self._svg_parts)
+        if "<svg" not in markup.lower():
+            return
+        style_html = "".join(f"<style>{block}</style>" for block in self.styles)
+        snippet = (
+            "<!doctype html><html><head><meta charset=\"utf-8\">"
+            f"{style_html}</head><body>{markup}</body></html>"
+        )
+        self.section_snippets.append(snippet)
+        self._chunks.append(
+            "\n\n"
+            + format_media_comment(
+                "section-anim",
+                index=str(len(self.section_snippets)),
+                duration_s="4",
+            )
+            + "\n"
+        )
+
+    def _emit_page_visual(self, src: str, class_name: str) -> None:
+        if not is_article_visual_iframe(src):
+            return
+        width, height = aspect_viewport(class_name)
+        fragment = urlparse(src).fragment
+        attrs = {"url": src, "duration_s": "4", "width": str(width), "height": str(height)}
+        if fragment:
+            attrs["id"] = fragment
+        self._chunks.append("\n\n" + format_media_comment("page-visual", **attrs) + "\n")
+
     def _emit_twitter(self, url: str) -> None:
         status_id = translation_format.twitter_status_from_url(url)
         if not status_id or status_id in self._seen_twitter:
@@ -426,6 +558,16 @@ class _HTMLArticleParser(HTMLParser):
         )
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if self._svg_depth:
+            self._svg_parts.append(f"<{tag}{_attr_html(attrs)}>")
+            if tag == "svg":
+                self._svg_depth += 1
+            return
+        if tag == "svg":
+            self._svg_depth = 1
+            self._svg_attr = dict(attrs)
+            self._svg_parts = [f"<svg{_attr_html(attrs)}>"]
+            return
         if tag == "style":
             self._in_style = True
             self._style_parts = []
@@ -471,6 +613,8 @@ class _HTMLArticleParser(HTMLParser):
                     )
                     + "\n"
                 )
+            elif is_article_visual_iframe(src):
+                self._emit_page_visual(src, class_name)
             else:
                 self._emit_twitter(src)
             return
@@ -496,6 +640,8 @@ class _HTMLArticleParser(HTMLParser):
                 self._records[-1]["imgs"].append(src)
             alt = attr.get("alt") or ""
             self._chunks.append(f"![{alt}]({src})")
+            if is_svg_url(src):
+                self._chunks.append("\n\n" + format_media_comment("svg", src=src) + "\n")
         elif tag == "title":
             self._in_title = True
         elif tag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
@@ -519,6 +665,13 @@ class _HTMLArticleParser(HTMLParser):
             self._chunks.append("[")
 
     def handle_endtag(self, tag: str) -> None:
+        if self._svg_depth:
+            self._svg_parts.append(f"</{tag}>")
+            if tag == "svg":
+                self._svg_depth -= 1
+                if self._svg_depth == 0:
+                    self._finish_svg()
+            return
         if tag == "style":
             self._in_style = False
             text = "".join(self._style_parts).strip()
@@ -554,6 +707,9 @@ class _HTMLArticleParser(HTMLParser):
             self._chunks.append(f"]({href})")
 
     def handle_data(self, data: str) -> None:
+        if self._svg_depth:
+            self._svg_parts.append(data)
+            return
         if self._in_style:
             self._style_parts.append(data)
             return
@@ -591,7 +747,20 @@ class _HTMLArticleParser(HTMLParser):
                     urls.append(urljoin(page_url, raw))
             return f"{match.group(1)}{'|'.join(urls)}{match.group(3)}"
 
-        markdown = re.sub(r'(<!-- media:(?:frames|video-gif) src=")([^"]+)(" -->)', abs_src_list, markdown)
+        markdown = re.sub(r'(<!-- media:(?:frames|video-gif|svg) src=")([^"]+)(" -->)', abs_src_list, markdown)
+
+        def rewrite_page_visual(match: re.Match[str]) -> str:
+            comment = match.group(0)
+            url_match = re.search(r'url="([^"]+)"', comment)
+            if not url_match:
+                return ""
+            abs_url = urljoin(page_url, url_match.group(1))
+            if not is_article_visual_iframe(abs_url, page_url):
+                return ""
+            return comment.replace(url_match.group(1), abs_url, 1)
+
+        markdown = re.sub(r"<!-- media:page-visual[^>]+-->", rewrite_page_visual, markdown)
+        markdown = re.sub(r"\n{3,}", "\n\n", markdown).strip()
         self.cover_image = (
             urljoin(page_url, self.cover_image)
             if self.cover_image and not self.cover_image.startswith(("http://", "https://"))
@@ -646,13 +815,6 @@ def inline_linked_stylesheets(
     return extra + html
 
 
-MEDIA_COMMENT_RE = re.compile(r"<!--\s*media:[^>]+-->")
-
-
-def extract_media_comments(markdown: str) -> list[str]:
-    return [match.group(0) for match in MEDIA_COMMENT_RE.finditer(markdown or "")]
-
-
 def merge_html_enrichment(article: FetchedArticle, html_article: FetchedArticle) -> FetchedArticle:
     """Keep Jina readable text; copy HTML media markers, snippets, and missing meta."""
     comments = list(article.media_comments or [])
@@ -667,6 +829,7 @@ def merge_html_enrichment(article: FetchedArticle, html_article: FetchedArticle)
             comments.append(comment)
             existing.add(comment)
     article.media_comments = comments or None
+    article.markdown = place_media_comments(article.markdown or "", html_article.markdown or "")
     if html_article.section_snippets and not article.section_snippets:
         article.section_snippets = list(html_article.section_snippets)
     if not article.author:

@@ -26,6 +26,8 @@ cover_image: https://planetscale.com/assets/making-768-servers-look-like-1-socia
 
 这是 768 台服务器。
 
+![768 台服务器](../../../../assets/Making-768-servers-look-like-1/visual-servers.gif)
+
 对有些人来说，那看起来像很多台电脑。对那些给几百万用户、每秒几百万次查询的应用管基础设施的人来说，挺正常。这个规模的产品，常常需要几千台服务器一起干活。
 
 最难扩的基础设施组件，几乎总是数据库。单台数据库服务器扛不住这种需求，所以必须用数据库分片（sharding）把查询和数据摊到很多台上。
@@ -38,15 +40,21 @@ cover_image: https://planetscale.com/assets/making-768-servers-look-like-1-socia
 
 先看一种简单的应用架构。
 
+![简单应用架构](../../../../assets/Making-768-servers-look-like-1/visual-popular-arch.gif)
+
 你用过的大多数应用都这样工作，至少早期是这样。客户端设备上的软件经互联网连到应用服务器。应用服务器住在数据中心里，处理鉴权、页面加载，以及应用行为的全部服务端逻辑。用户账号、帖子、设置、消息这类持久化数据，都存在数据库服务器里、再从那里取回来（「数据库服务器」通常是 Postgres 或 MySQL，本文焦点是 Postgres）。
 
 就算数据库服务器很大（几十个 CPU 核、几百 GB 内存），瓶颈也会很快冒出来。通常要么是高查询量把 CPU 顶满，要么是大量读写把 I/O（IOPS）顶满。
 
 通用可扩展性定律（Universal Scalability Law）把这件事说得很干净：
 
+![通用可扩展性定律](../../../../assets/Making-768-servers-look-like-1/visual-universal-scalability-law.gif)
+
 简而言之，USL 说资源**争用（contention）**会让可扩展性随资源增加呈次线性增长；到某一点，**不连贯（incoherence）**会让性能掉下去。Postgres 如此，任何想在更大服务器上跨很多线程或进程往外扩的软件系统都如此。
 
 短期内解决这个问题的一种办法，是利用读副本（read replica）。
+
+![主库与读副本](../../../../assets/Making-768-servers-look-like-1/visual-primary-replicas.gif)
 
 这种配置里，你把原来那台留作**主库（primary）**，再按上面那样加**副本（replica）**。
 
@@ -76,6 +84,8 @@ cover_image: https://planetscale.com/assets/making-768-servers-look-like-1-socia
 
 分片靠把数据和查询摊到很多互不相同的主库上，解开这三只瓶颈。对数据有用，是因为单节点只能存这么多，写吞吐也有上限。对查询有用，是因为网络互连和 CPU 一次只能处理这么多查询。
 
+![分片](../../../../assets/Making-768-servers-look-like-1/visual-sharding.gif)
+
 过了几 TB 数据，分片在各种规模上都有用。比如 2 TB 数据，我们可以选四个分片，每个存 500 GB，扛总查询流量的 1/4。要存一个 PB（一百万 GB）时，就需要多得多的分片。这时可以用 256 个分片，每个是主库 + 2 个副本，各自负责存大约 4 TB。这需要 256 × 3 = 768 台服务器！
 
 没有一套好系统，这会给应用后端加上显著复杂度。事情这么多，系统怎么……
@@ -93,7 +103,11 @@ cover_image: https://planetscale.com/assets/making-768-servers-look-like-1-socia
 
 我们希望应用服务器从跟一套复杂系统交互：
 
+![很多分片](../../../../assets/Making-768-servers-look-like-1/visual-tons-of-shards.gif)
+
 变成只拿一根连接串交互，看起来像在对接一个又大又可扩展的数据库：
+
+![看起来像一台数据库](../../../../assets/Making-768-servers-look-like-1/visual-simple-sharded.gif)
 
 而实际上用的是几十或几百个分片。[Neki](https://neki.dev) 给 Postgres、[Vitess](https://vitess.io) 给 MySQL 解决这件事。我们来看怎么做。
 
@@ -104,6 +118,8 @@ cover_image: https://planetscale.com/assets/making-768-servers-look-like-1-socia
 代理是夹在两个服务中间的中间件服务器。我们这边，这两个服务是应用服务器和数据库服务器。
 
 Postgres 数据库经常用代理。就算没有分片，它们对连接池和请求排队也有用。对普通（未分片）Postgres，PgBouncer 是人们常用的代理，把几千条应用连接复用到更少的直连 Postgres 连接上。
+
+![PgBouncer](../../../../assets/Making-768-servers-look-like-1/visual-pgbouncer.gif)
 
 PgBouncer 目标很简单。它被做成接受来自很多客户端的大量连接，再经它持续维护的一小池 Postgres 连接转出去。查询排队对流量浪涌和数据库故障转移有用，新主库上线后请求可以接着跑。想了解更多，我们有一整篇 [PgBouncer 博文](https://planetscale.com/blog/scaling-postgres-connections-with-pgbouncer)。
 
@@ -128,6 +144,8 @@ PgBouncer 目标很简单。它被做成接受来自很多客户端的大量连�
 
 四个分片各自被分配一段负责存储的 ID 范围，路由器把插入送到正确的分片。插入先到路由器，它给每个 ID 算哈希，再转发到正确的分片。
 
+![按哈希插入到分片](../../../../assets/Making-768-servers-look-like-1/visual-shard-inserts.gif)
+
 读的时候，有些查询够简单，路由器直接递给单个分片。
 
 ```
@@ -146,6 +164,8 @@ SELECT email FROM user
 这个 ID 范围里的用户摊在好几个分片上。路由器必须理解数据拓扑，做一份计划，把查询分发到所有可能含匹配结果的分片，在路由器上聚合结果，再把完整结果集发给客户端。
 
 归根结底，这意味着路由器自己必须内建完整的查询解析器和路由规划器。
+
+![路由器里的查询规划](../../../../assets/Making-768-servers-look-like-1/visual-proxy-plan.gif)
 
 路由器必须在同一个系统里做查询解析、规划、连接池和缓冲。复杂软件很难做对。
 
@@ -183,6 +203,8 @@ SELECT email FROM user
 
 NLB 的工作很简单：经单个主机/IP 接受连接，再把每个连接分给许多目的地之一。流量就是这样摊到各台路由器上的。一旦分配，连接生命周期里都留在同一个代理上。
 
+![多个代理前面的 NLB](../../../../assets/Making-768-servers-look-like-1/visual-full-sharded.gif)
+
 有些情况下不需要 NLB。拿掉 NLB 会让应用服务器的连接逻辑稍复杂一点，因为它得知道每台路由器的主机，但少一跳网络，能把往返延迟压到最低。
 
 ## [全景](#the-full-picture)
@@ -194,6 +216,8 @@ NLB 的工作很简单：经单个主机/IP 接受连接，再把每个连接分
 3. 应用请求连到 `123.152.100.4` 上的数据库
 4. 连接先经 NLB，再到 N 个代理之一
 5. 应用开始发数据库查询，路径是 应用 → NLB（可选）→ 代理 → 分片。复杂的路由逻辑对应用隐藏。（为简单起见，下图没画 NLB）
+
+![查询怎么落到各分片](../../../../assets/Making-768-servers-look-like-1/visual-shard-formation.gif)
 
 这个例子扩到了 1 PB，但分片应该远在这个规模之前就开始。精确建议取决于每个数据库的大小、模式和 QPS，但我们建议 Postgres 和 MySQL 过了几 TB 就分片。那通常是前面说的瓶颈开始撞上的点：备份太久、写瓶颈，等等。如果你在为扩展关系型数据库发愁，Neki 和 Vitess 就是答案。
 
