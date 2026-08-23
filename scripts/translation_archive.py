@@ -14,7 +14,17 @@ EARLIER_BUCKET = "earlier"
 NEW_ARCHIVE_START = "2026-08-01"
 GITHUB_BLOB = "https://github.com/lihenair/techtranslate/blob/master"
 DATE_DIR_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-DOMAIN_ORDER = ("ai", "security", "android", "mobile", "frontend", "backend", "devops", "other")
+DOMAIN_ORDER = (
+    "ai",
+    "security",
+    "android",
+    "mobile",
+    "frontend",
+    "backend",
+    "devops",
+    "systems",
+    "other",
+)
 DOMAIN_HEADINGS = {
     "ai": "AI",
     "security": "安全",
@@ -23,6 +33,7 @@ DOMAIN_HEADINGS = {
     "frontend": "前端",
     "backend": "后端",
     "devops": "DevOps",
+    "systems": "系统",
     "other": "其他",
 }
 README_TITLES = {

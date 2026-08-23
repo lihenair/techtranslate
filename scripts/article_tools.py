@@ -265,6 +265,9 @@ def format_source_markdown(article: FetchedArticle, issue: str | None = None) ->
         lines.append(f"cover_image: {article.cover_image}")
     if article.title_zh:
         lines.append(f"title_zh: {article.title_zh}")
+    lines.append(
+        f"tech_domain: {translation_format.classify_tech_domain(article.title, article.markdown)}"
+    )
     body = article.markdown.strip()
     extras = [c.strip() for c in (article.media_comments or []) if c.strip()]
     for comment in extras:
@@ -786,6 +789,9 @@ def prepare_inbox(
                     "title_zh": article.title_zh,
                     "path": str(path.relative_to(repo_root)),
                     "method": article.method,
+                    "tech_domain": translation_format.classify_tech_domain(
+                        article.title, article.markdown
+                    ),
                 }
             )
             # Be polite when fetching several articles in one issue.

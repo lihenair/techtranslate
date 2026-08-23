@@ -7,9 +7,19 @@ import re
 from urllib.parse import parse_qs, urlparse
 
 TECH_DOMAINS = frozenset(
-    {"android", "frontend", "backend", "security", "mobile", "devops", "ai", "other"}
+    {
+        "android",
+        "frontend",
+        "backend",
+        "security",
+        "mobile",
+        "devops",
+        "ai",
+        "systems",
+        "other",
+    }
 )
-# Heuristic only. Generic words such as agent/prompt/compose are not signals.
+# Title-weighted. Generic words such as agent/prompt/compose are not signals.
 _DOMAIN_SIGNALS = (
     (
         "ai",
@@ -22,6 +32,9 @@ _DOMAIN_SIGNALS = (
             r"langchain",
             r"\bai agents?\b",
             r"coding agents?",
+            r"\bai chip",
+            r"^ai\b",
+            r"\bai [a-z]",
         ),
     ),
     (
@@ -38,7 +51,7 @@ _DOMAIN_SIGNALS = (
     ),
     (
         "frontend",
-        (r"\bcss\b", r"\breact\b", r"\bvue\b", r"\bdom\b", r"\bhtml\b", r"\bbrowser\b"),
+        (r"\bcss\b", r"\breact\b", r"\bvue\b", r"\bdom\b", r"\bbrowser\b"),
     ),
     (
         "devops",
@@ -52,9 +65,46 @@ _DOMAIN_SIGNALS = (
         ),
     ),
     (
+        "systems",
+        (
+            r"computer architecture",
+            r"microarchitecture",
+            r"体系结构",
+            r"\bisa\b",
+            r"\bcpi\b",
+            r"\bilp\b",
+            r"roofline",
+            r"amdahls?",
+            r"tomasulo",
+            r"\bmesi\b",
+            r"pipelining",
+            r"out-of-order",
+            r"instruction set",
+            r"cache coherence",
+            r"memory hierarchy",
+            r"\bhbm\b",
+            r"\bsystolic\b",
+            r"\bgpu-accelerated\b",
+            r"\bmetal shader\b",
+            r"terminal emulator",
+        ),
+    ),
+    (
         "backend",
         (r"\bjvm\b", r"postgres", r"\bredis\b", r"\bgrpc\b", r"\bspring\b", r"\bapi\b server"),
     ),
+)
+_TITLE_WEIGHT = 3
+_TIE_BREAK = (
+    "security",
+    "ai",
+    "android",
+    "mobile",
+    "devops",
+    "systems",
+    "frontend",
+    "backend",
+    "other",
 )
 MAX_SOURCE_SECONDS = 15.0
 MAX_GIF_BYTES = 1_500_000
@@ -140,13 +190,32 @@ ISO8601_DURATION_RE = re.compile(
 )
 
 
+def _domain_score(patterns: tuple[str, ...], title: str, body: str) -> int:
+    title_l = title.lower()
+    body_l = body.lower()
+    score = 0
+    for pattern in patterns:
+        if re.search(pattern, title_l):
+            score += _TITLE_WEIGHT
+        elif re.search(pattern, body_l):
+            score += 1
+    return score
+
+
 def classify_tech_domain(title: str, body: str = "") -> str:
-    """Hint only. Humans still pick tech_domain by the article's primary topic."""
-    blob = f"{title}\n{title}\n{body}".lower()
-    for domain, patterns in _DOMAIN_SIGNALS:
-        if any(re.search(pattern, blob) for pattern in patterns):
-            return domain
-    return "other"
+    """Infer tech_domain from the primary topic. Prefer any match over other."""
+    scored = [
+        (_domain_score(patterns, title, body), domain)
+        for domain, patterns in _DOMAIN_SIGNALS
+    ]
+    scored = [(score, domain) for score, domain in scored if score > 0]
+    if not scored:
+        return "other"
+    best = max(score for score, _ in scored)
+    tied = [domain for score, domain in scored if score == best]
+    if len(tied) == 1:
+        return tied[0]
+    return min(tied, key=lambda domain: _TIE_BREAK.index(domain))
 
 
 def parse_iso8601_duration(text: str) -> float | None:

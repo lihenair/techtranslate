@@ -16,6 +16,10 @@ class ArchivePathTest(unittest.TestCase):
             ta.archive_relpath("2026-08-23", "ai", "Claude.md"),
             "archive/2026-08-23/ai/Claude.md",
         )
+        self.assertEqual(
+            ta.archive_relpath("2026-08-23", "systems", "Arch.md"),
+            "archive/2026-08-23/systems/Arch.md",
+        )
 
     def test_undated_posts_share_the_earlier_bucket(self) -> None:
         self.assertEqual(
@@ -35,13 +39,16 @@ class CatalogTest(unittest.TestCase):
             ta.CatalogEntry("新 AI", "archive/2026-08-23/ai/new.md", "2026-08-23", "ai"),
             ta.CatalogEntry("较早 AI", "archive/earlier/ai/old-ai.md", "较早", "ai"),
             ta.CatalogEntry("终端", "archive/2026-08-22/other/term.md", "2026-08-22", "other"),
+            ta.CatalogEntry("体系结构", "archive/2026-08-23/systems/arch.md", "2026-08-23", "systems"),
         ]
         text = ta.render_catalog(entries)
         ai = text.index("### AI")
         android = text.index("### Android")
+        systems = text.index("### 系统")
         other = text.index("### 其他")
         self.assertLess(ai, android)
-        self.assertLess(android, other)
+        self.assertLess(android, systems)
+        self.assertLess(systems, other)
         ai_block = text[ai:android]
         self.assertLess(ai_block.index("2026-08-23"), ai_block.index("较早"))
         self.assertIn(

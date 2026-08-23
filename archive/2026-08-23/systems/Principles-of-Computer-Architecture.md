@@ -4,7 +4,7 @@ title_en: "Principles of Computer Architecture"
 source_url: https://www.jacobpeake.com/principles-of-computer-architecture
 author: Jacob Peake
 translated_at: 2026-08-23
-tech_domain: other
+tech_domain: systems
 tags: [architecture, performance, hardware]
 cover_image: https://www.jepeake.com/og/principles-of-computer-architecture.png
 ---

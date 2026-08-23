@@ -2,7 +2,7 @@
 
 Submit an English article URL. GitHub Actions fetches the page, then Copilot or Cursor translates it into this repo's markdown style.
 
-New posts use the template in [the translation format spec](superpowers/specs/2026-08-22-translation-format-design.md): YAML meta, Chinese H1, and GIF assets for source clips and `section` demos that last 15 seconds or less. Finished posts live under `archive/<translated_at>/<tech_domain>/`.
+New posts use the template in [the translation format spec](superpowers/specs/2026-08-22-translation-format-design.md): YAML meta, Chinese H1, and GIF assets for source clips and `section` demos that last 15 seconds or less. Finished posts live under `archive/<translated_at>/<tech_domain>/`. Pick `tech_domain` with `classify_tech_domain(title, body)`; use `other` only when that function returns `other`.
 
 ## Submit a URL
 

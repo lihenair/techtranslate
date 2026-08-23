@@ -97,10 +97,13 @@
 - 2017-08-25 [从SQLite压缩性能：插入](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E4%BB%8ESQLite%E5%8E%8B%E7%BC%A9%E6%80%A7%E8%83%BD%EF%BC%9A%E6%8F%92%E5%85%A5.md)
 - 2016-08-17 [Java注解](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/Java%E6%B3%A8%E8%A7%A3.md)
 
+### 系统
+
+- 2026-08-23 [计算机体系结构原理](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/systems/Principles-of-Computer-Architecture.md)
+- 2026-08-22 [我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/systems/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
+
 ### 其他
 
-- 2026-08-23 [计算机体系结构原理](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/other/Principles-of-Computer-Architecture.md)
-- 2026-08-22 [我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/other/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
 - 2016-08-17 [WebP是如何工作的(有损模式)](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/other/How%20WebP%20Works.md)
 - 2016-08-17 [JPG如何工作的](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/other/How%20JPG%20Works.md)
 

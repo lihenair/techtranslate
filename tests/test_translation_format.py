@@ -96,6 +96,11 @@ class TechDomainTest(unittest.TestCase):
         accepted = SAMPLE.replace("tech_domain: security", "tech_domain: ai")
         self.assertEqual(tf.validate_translation(accepted), [])
 
+    def test_systems_is_an_allowed_domain(self) -> None:
+        self.assertIn("systems", tf.TECH_DOMAINS)
+        accepted = SAMPLE.replace("tech_domain: security", "tech_domain: systems")
+        self.assertEqual(tf.validate_translation(accepted), [])
+
     def test_classify_uses_primary_topic_not_side_mentions(self) -> None:
         self.assertEqual(
             tf.classify_tech_domain(
@@ -128,6 +133,27 @@ class TechDomainTest(unittest.TestCase):
         self.assertEqual(
             tf.classify_tech_domain("How JPG Works", "lossy compression blocks"),
             "other",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Principles of Computer Architecture",
+                "Amdahl Roofline ISA CPI pipelining Tomasulo MESI LLM kernel intensities",
+            ),
+            "systems",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "AI Chip Architectures",
+                "GPUs TPUs systolic arrays HBM NVLink CUDA XLA",
+            ),
+            "ai",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "I Built a 10 MB GPU-Accelerated Terminal in Rust + Metal",
+                "GPU rasterizer Metal shader terminal emulator",
+            ),
+            "systems",
         )
 
     def test_classify_ignores_generic_words_that_are_not_the_topic(self) -> None:

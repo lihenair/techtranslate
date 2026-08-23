@@ -201,13 +201,14 @@ class InboxFormatTest(unittest.TestCase):
     def test_source_markdown_writes_requested_chinese_title(self) -> None:
         article = article_tools.FetchedArticle(
             url="https://example.com/a",
-            title="Hello Compose",
-            markdown="Body text here.",
+            title="CompositionLocal Made Easy",
+            markdown="Jetpack Compose Android remember.",
             method="jina",
             title_zh="你好 Compose",
         )
         text = article_tools.format_source_markdown(article, issue="8")
         self.assertIn("title_zh: 你好 Compose", text)
+        self.assertIn("tech_domain: android", text)
 
     def test_source_markdown_writes_optional_meta(self) -> None:
         article = article_tools.FetchedArticle(
