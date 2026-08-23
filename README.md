@@ -40,6 +40,7 @@
 ### AI
 
 - 2026-08-23 [阻止 Agent 忽略指令的 10 种 Claude Code 引导机制](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md)
+- 2026-08-23 [用 Unsloth 本地微调 Gemma 4](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/Fine-tune-Gemma-4-locally-with-Unsloth.md)
 - 2026-08-23 [AI 芯片架构](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/AI-Chip-Architectures.md)
 - 2026-08-22 [NoBuzz](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/ai/NoBuzz.md)
 
@@ -98,6 +99,10 @@
 - 2017-08-25 [从SQLite压缩性能：插入](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E4%BB%8ESQLite%E5%8E%8B%E7%BC%A9%E6%80%A7%E8%83%BD%EF%BC%9A%E6%8F%92%E5%85%A5.md)
 - 2016-08-17 [Java注解](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/Java%E6%B3%A8%E8%A7%A3.md)
 
+### DevOps
+
+- 2026-08-23 [Kubernetes 每六分钟杀掉我的 Pod，应用日志里什么都没有](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/devops/Kubernetes-Killed-My-Pods-Every-Six-Minutes-and-the-Application-Logs-Showed-Nothing.md)
+
 ### 系统
 
 - 2026-08-23 [计算机体系结构原理](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/systems/Principles-of-Computer-Architecture.md)
@@ -105,5 +110,9 @@
 - 2026-08-22 [我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/systems/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
 - 2016-08-17 [WebP是如何工作的(有损模式)](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/systems/How%20WebP%20Works.md)
 - 2016-08-17 [JPG如何工作的](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/systems/How%20JPG%20Works.md)
+
+### 图形
+
+- 2026-08-23 [从 360° 影像入门 3D Gaussian Splatting（360° Gaussian Pro 版）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/graphics/Getting-Started-with-3D-Gaussian-Splatting-from-360-Images.md)
 
 <!-- catalog:end -->

@@ -50,7 +50,7 @@ cover_image: https://portswigger.net/cms/images/97/ed/a919-twittercard-article.p
 | `author` | 能确定才写 | 原文作者名；不确定就省略该行，不编造 |
 | `published_at` | 能确定才写 | `YYYY-MM-DD`，原文首次发布日 |
 | `translated_at` | 是 | 翻译当天 `YYYY-MM-DD`（UTC 日期） |
-| `tech_domain` | 是 | 按**主旨**选一个：`android` / `frontend` / `backend` / `security` / `mobile` / `devops` / `ai` / `systems` / `other`。先跑 `classify_tech_domain(title, body)`，能分清就不要用 `other`。AI Agent / Claude / 提示词 / AI 芯片产品文用 `ai`；体系结构、微架构、ISA、OS、编译器、图像编解码用 `systems`。不要因为文中出现 CI、hooks、deploy 就把 Agent 文改成 `devops`，也不要因为举例提到 LLM 就把体系结构文改成 `ai`。 |
+| `tech_domain` | 是 | 按**主旨**选一个：`android` / `frontend` / `backend` / `security` / `mobile` / `devops` / `ai` / `systems` / `graphics` / `other`。先跑 `classify_tech_domain(title, body)`，能分清就不要用 `other`。AI Agent / Claude / 提示词 / AI 芯片产品文用 `ai`；体系结构、微架构、ISA、OS、编译器、图像编解码用 `systems`；3DGS、高斯溅射、图形图像用 `graphics`。不要因为文中出现 CI、hooks、deploy 就把 Agent 文改成 `devops`，也不要因为举例提到 LLM 就把体系结构文改成 `ai`，也不要因为遮罩用了 SAM 就把 3DGS 文改成 `ai`。 |
 | `tags` | 是 | 3–6 个英文小写词，例如 `[security, web, frontend]` |
 | `cover_image` | 能确定才写 | 原文封面绝对 URL；没有就省略 |
 

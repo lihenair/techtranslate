@@ -16,6 +16,7 @@ TECH_DOMAINS = frozenset(
         "devops",
         "ai",
         "systems",
+        "graphics",
         "other",
     }
 )
@@ -142,6 +143,23 @@ _DOMAIN_SIGNALS = (
         ),
     ),
     (
+        "graphics",
+        (
+            r"gaussian splat",
+            r"\b3dgs\b",
+            r"\bcolmap\b",
+            r"photogrammetry",
+            r"computer graphics",
+            r"structure from motion",
+            r"equirectangular",
+            r"dual-fisheye",
+            r"\bnerf\b",
+            r"三维高斯",
+            r"高斯溅射",
+            r"图形图像",
+        ),
+    ),
+    (
         "backend",
         (
             r"\bjvm\b",
@@ -167,6 +185,7 @@ _TIE_BREAK = (
     "mobile",
     "devops",
     "systems",
+    "graphics",
     "frontend",
     "backend",
     "other",

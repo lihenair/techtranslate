@@ -23,6 +23,7 @@ DOMAIN_ORDER = (
     "backend",
     "devops",
     "systems",
+    "graphics",
     "other",
 )
 DOMAIN_HEADINGS = {
@@ -34,6 +35,7 @@ DOMAIN_HEADINGS = {
     "backend": "后端",
     "devops": "DevOps",
     "systems": "系统",
+    "graphics": "图形",
     "other": "其他",
 }
 README_TITLES = {

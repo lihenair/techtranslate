@@ -20,6 +20,10 @@ class ArchivePathTest(unittest.TestCase):
             ta.archive_relpath("2026-08-23", "systems", "Arch.md"),
             "archive/2026-08-23/systems/Arch.md",
         )
+        self.assertEqual(
+            ta.archive_relpath("2026-08-23", "graphics", "3DGS.md"),
+            "archive/2026-08-23/graphics/3DGS.md",
+        )
 
     def test_undated_posts_share_the_earlier_bucket(self) -> None:
         self.assertEqual(

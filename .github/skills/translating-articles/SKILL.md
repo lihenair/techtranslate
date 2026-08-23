@@ -77,9 +77,10 @@ cover_image: https://example.com/cover.png
 | `backend` | 服务端、数据库、API 实现 |
 | `devops` | CI/CD、K8s、发布流水线本身就是主题 |
 | `systems` | 计算机体系结构、微架构、ISA、操作系统、编译器、GPU/CPU 硬件、图像编解码本身 |
+| `graphics` | 三维重建、3DGS、高斯溅射、图形图像本身；文中出现 SAM / 训练也不改成 `ai` |
 | `other` | 上面都对不上才用。能分清就不要写 `other` |
 
-用 `translation_format.classify_tech_domain(title, body)` 选领域，inbox 里的 `tech_domain` 就是这个结果。标题主旨优先于正文顺带提到的词。只有分类器也返回 `other` 时才写 `other`。Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。体系结构正典即使举例用到 LLM / H100，仍是 `systems`。
+用 `translation_format.classify_tech_domain(title, body)` 选领域，inbox 里的 `tech_domain` 就是这个结果。标题主旨优先于正文顺带提到的词。只有分类器也返回 `other` 时才写 `other`。Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。体系结构正典即使举例用到 LLM / H100，仍是 `systems`。3DGS / 高斯溅射即使写到 SAM、训练，仍是 `graphics`。
 
 Omit `author`, `published_at`, and `cover_image` when unknown. Do not invent them.
 
