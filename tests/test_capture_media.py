@@ -276,6 +276,51 @@ class RecordSectionTest(unittest.TestCase):
         )
         self.assertEqual(status, "skipped-no-browser")
 
+    def test_missing_playwright_skips_page_visual(self) -> None:
+        status = capture_media.record_page_visual(
+            "https://example.com/iframe#servers",
+            Path("/tmp/no-visual.gif"),
+            playwright_factory=None,
+        )
+        self.assertEqual(status, "skipped-no-browser")
+
+
+class ProcessInboxVisualTest(unittest.TestCase):
+    def test_process_inbox_converts_page_visual_and_svg(self) -> None:
+        if not _have_ffmpeg():
+            self.skipTest("ffmpeg/ffprobe required")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            inbox = root / "_inbox"
+            inbox.mkdir()
+            html = inbox / "servers.html"
+            html.write_text(
+                "<!doctype html><html><body><div id='app'>"
+                "<svg width='80' height='40'><rect width='80' height='40' fill='navy'/></svg>"
+                "</div></body></html>",
+                encoding="utf-8",
+            )
+            svg = inbox / "cluster.svg"
+            svg.write_text(
+                '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40">'
+                '<rect width="80" height="40" fill="teal"/></svg>',
+                encoding="utf-8",
+            )
+            (inbox / "Making-768-servers-look-like-1.source.md").write_text(
+                "---\nsource_url: https://planetscale.com/blog/making-768-servers-look-like-1\n---\n\n"
+                "# Making 768 servers look like 1\n\n"
+                f'<!-- media:page-visual url="{html.as_uri()}" id="servers" duration_s="0.5" width="160" height="80" -->\n'
+                f'<!-- media:svg src="{svg.as_uri()}" -->\n',
+                encoding="utf-8",
+            )
+            report = capture_media.process_inbox(inbox, root)
+            statuses = {item["kind"]: item["status"] for item in report["items"]}
+            self.assertEqual(statuses.get("page-visual"), "converted")
+            self.assertEqual(statuses.get("svg"), "converted")
+            visual = root / "assets" / "Making-768-servers-look-like-1"
+            self.assertTrue(any(visual.glob("visual-servers.*")))
+            self.assertTrue(any(visual.glob("svg-1.*")))
+
 
 if __name__ == "__main__":
     unittest.main()

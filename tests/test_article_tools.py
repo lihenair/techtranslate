@@ -260,6 +260,62 @@ class InboxFormatTest(unittest.TestCase):
 
 
 class MediaExtractTest(unittest.TestCase):
+    def test_html_parser_emits_same_origin_iframe_as_page_visual(self) -> None:
+        html = """<html><head><title>Shards</title></head><body>
+        <h1>Shards</h1>
+        <p>This is 768 servers.</p>
+        <iframe class="w-full aspect-[4/1]" src="/blog/many-servers-appear-as-one/iframe#servers"></iframe>
+        <p>To some, that looks like a lot of computers padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://planetscale.com/blog/making-768-servers-look-like-1")
+        self.assertIn("media:page-visual", markdown)
+        self.assertIn(
+            "https://planetscale.com/blog/many-servers-appear-as-one/iframe#servers",
+            markdown,
+        )
+        self.assertIn('id="servers"', markdown)
+        self.assertIn("768 servers", markdown)
+        self.assertLess(markdown.index("768 servers"), markdown.index("media:page-visual"))
+        self.assertNotIn("<iframe", markdown)
+
+    def test_html_parser_keeps_svg_image_and_inline_diagram(self) -> None:
+        html = """<html><head><title>Diagrams</title></head><body>
+        <h1>Diagrams</h1>
+        <p>Architecture overview padding padding padding padding.</p>
+        <img src="/diagrams/cluster.svg" alt="cluster">
+        <svg width="400" height="220" viewBox="0 0 400 220">
+          <rect x="10" y="10" width="80" height="40"></rect>
+          <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+        </svg>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/post")
+        self.assertIn("![cluster](https://example.com/diagrams/cluster.svg)", markdown)
+        self.assertIn("media:svg", markdown)
+        self.assertIn("https://example.com/diagrams/cluster.svg", markdown)
+        self.assertIn("media:section-anim", markdown)
+        self.assertTrue(parser.section_snippets)
+        self.assertIn("<svg", parser.section_snippets[0])
+
+    def test_html_parser_skips_tiny_svg_icons(self) -> None:
+        html = """<html><head><title>Icons</title></head><body>
+        <h1>Icons</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 40 40">
+          <path d="M0 0h40v40H0z"/>
+        </svg>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/icons")
+        self.assertNotIn("media:page-visual", markdown)
+        self.assertNotIn("media:svg", markdown)
+        self.assertFalse(parser.section_snippets)
+
     def test_html_parser_emits_youtube_and_video_comments(self) -> None:
         html = """<html><head>
         <title>Demo</title>
@@ -449,7 +505,9 @@ class MergeHtmlEnrichmentTest(unittest.TestCase):
         merged = article_tools.merge_html_enrichment(jina, html)
         self.assertEqual(merged.method, "jina")
         self.assertEqual(merged.title, "Readable title")
-        self.assertEqual(merged.markdown, "Readable body from Jina with enough text.")
+        self.assertIn("Readable body from Jina with enough text.", merged.markdown)
+        self.assertIn("media:twitter", merged.markdown)
+        self.assertIn("media:section-anim", merged.markdown)
         self.assertEqual(merged.author, "Ada")
         self.assertEqual(merged.published_at, "2026-01-02")
         self.assertEqual(merged.cover_image, "https://example.com/cover.png")
@@ -464,6 +522,36 @@ class MergeHtmlEnrichmentTest(unittest.TestCase):
         self.assertIn("Readable body from Jina with enough text.", text)
         self.assertIn("media:twitter", text)
         self.assertIn("media:section-anim", text)
+
+    def test_merge_inserts_page_visual_after_matching_paragraph(self) -> None:
+        jina = article_tools.FetchedArticle(
+            url="https://planetscale.com/blog/making-768-servers-look-like-1",
+            title="Making 768 servers look like 1",
+            markdown="This is 768 servers.\n\nTo some, that looks like a lot of computers.",
+            method="jina",
+        )
+        html = article_tools.FetchedArticle(
+            url="https://planetscale.com/blog/making-768-servers-look-like-1",
+            title="Making 768 servers look like 1",
+            markdown=(
+                "This is 768 servers.\n\n"
+                '<!-- media:page-visual url="https://planetscale.com/blog/many-servers-appear-as-one/iframe#servers" id="servers" -->\n\n'
+                "To some, that looks like a lot of computers."
+            ),
+            method="html",
+        )
+        merged = article_tools.merge_html_enrichment(jina, html)
+        self.assertIn("media:page-visual", merged.markdown)
+        self.assertLess(
+            merged.markdown.index("This is 768 servers."),
+            merged.markdown.index("media:page-visual"),
+        )
+        self.assertLess(
+            merged.markdown.index("media:page-visual"),
+            merged.markdown.index("To some, that looks like a lot of computers."),
+        )
+        text = article_tools.format_source_markdown(merged)
+        self.assertEqual(text.count("media:page-visual"), 1)
 
     def test_merge_does_not_overwrite_existing_jina_meta(self) -> None:
         jina = article_tools.FetchedArticle(
