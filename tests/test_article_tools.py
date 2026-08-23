@@ -489,5 +489,58 @@ class MergeHtmlEnrichmentTest(unittest.TestCase):
         self.assertEqual(merged.cover_image, "https://example.com/jina.png")
 
 
+class InboxGitAddTest(unittest.TestCase):
+    def test_paths_omit_missing_assets(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "_inbox").mkdir()
+            (root / "_inbox" / "article.source.md").write_text("x", encoding="utf-8")
+            self.assertEqual(article_tools.inbox_git_add_paths(root), ["_inbox"])
+
+    def test_paths_include_assets_when_present(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "_inbox").mkdir()
+            (root / "assets" / "slug").mkdir(parents=True)
+            (root / "assets" / "slug" / "video-1.gif").write_bytes(b"GIF")
+            self.assertEqual(article_tools.inbox_git_add_paths(root), ["_inbox", "assets"])
+
+    def test_git_add_succeeds_without_assets_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "_inbox").mkdir()
+            (root / "_inbox" / "article.source.md").write_text("x", encoding="utf-8")
+            subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True)
+            subprocess.run(
+                ["git", "config", "user.email", "test@example.com"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+            )
+            subprocess.run(
+                ["git", "config", "user.name", "test"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+            )
+            broken = subprocess.run(
+                ["git", "add", "_inbox", "assets"],
+                cwd=root,
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(broken.returncode, 0)
+            self.assertIn("assets", broken.stderr)
+            article_tools.stage_inbox_paths(root)
+            staged = subprocess.run(
+                ["git", "diff", "--cached", "--name-only"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            self.assertIn("_inbox/article.source.md", staged.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

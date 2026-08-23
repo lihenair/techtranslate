@@ -112,7 +112,7 @@ jobs:
           fi
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
           git checkout -B "$BRANCH"
-          git add _inbox assets
+          python3 scripts/article_tools.py --stage-inbox --repo-root .
           if git diff --cached --quiet; then
             echo "No inbox files to commit"
             exit 0

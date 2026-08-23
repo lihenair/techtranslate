@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 import ssl
+import subprocess
 import sys
 import time
 from dataclasses import asdict, dataclass
@@ -734,6 +735,22 @@ def write_inbox(article: FetchedArticle, outdir: Path, issue: str | None = None)
     return path
 
 
+def inbox_git_add_paths(repo_root: Path) -> list[str]:
+    """Paths the queue Action may commit. Skip missing dirs so git add does not fail."""
+    paths: list[str] = []
+    for name in ("_inbox", "assets"):
+        if (repo_root / name).exists():
+            paths.append(name)
+    return paths
+
+
+def stage_inbox_paths(repo_root: Path) -> list[str]:
+    paths = inbox_git_add_paths(repo_root)
+    if paths:
+        subprocess.run(["git", "add", "--", *paths], cwd=repo_root, check=True)
+    return paths
+
+
 def prepare_inbox(
     body: str,
     outdir: Path,
@@ -788,9 +805,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--issue")
     parser.add_argument("--issue-title")
+    parser.add_argument(
+        "--stage-inbox",
+        action="store_true",
+        help="git add _inbox and assets only when those paths exist",
+    )
     args = parser.parse_args(argv)
 
     repo_root = Path(args.repo_root).resolve()
+    if args.stage_inbox:
+        stage_inbox_paths(repo_root)
+        return 0
     outdir = (repo_root / args.outdir).resolve()
     body = Path(args.body_file).read_text(encoding="utf-8") if args.body_file else ""
     result = prepare_inbox(
