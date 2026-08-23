@@ -227,5 +227,71 @@ class MediaExtractTest(unittest.TestCase):
         self.assertTrue(parser.section_snippets)
 
 
+class MergeHtmlEnrichmentTest(unittest.TestCase):
+    def test_jina_keeps_text_and_gains_html_media_and_meta(self) -> None:
+        jina = article_tools.FetchedArticle(
+            url="https://example.com/anim",
+            title="Readable title",
+            markdown="Readable body from Jina with enough text.",
+            method="jina",
+        )
+        html = article_tools.FetchedArticle(
+            url="https://example.com/anim",
+            title="HTML title",
+            markdown=(
+                "lossy html body\n\n"
+                '<!-- media:twitter id="1680555380416577536" url="https://x.com/i/status/1680555380416577536" -->\n'
+                '<!-- media:section-anim index="1" duration_s="4" -->\n'
+            ),
+            method="html",
+            author="Ada",
+            published_at="2026-01-02",
+            cover_image="https://example.com/cover.png",
+            section_snippets=["<!doctype html><html></html>"],
+        )
+        merged = article_tools.merge_html_enrichment(jina, html)
+        self.assertEqual(merged.method, "jina")
+        self.assertEqual(merged.title, "Readable title")
+        self.assertEqual(merged.markdown, "Readable body from Jina with enough text.")
+        self.assertEqual(merged.author, "Ada")
+        self.assertEqual(merged.published_at, "2026-01-02")
+        self.assertEqual(merged.cover_image, "https://example.com/cover.png")
+        self.assertEqual(merged.section_snippets, ["<!doctype html><html></html>"])
+        self.assertTrue(
+            any("media:twitter" in comment for comment in (merged.media_comments or []))
+        )
+        self.assertTrue(
+            any("media:section-anim" in comment for comment in (merged.media_comments or []))
+        )
+        text = article_tools.format_source_markdown(merged)
+        self.assertIn("Readable body from Jina with enough text.", text)
+        self.assertIn("media:twitter", text)
+        self.assertIn("media:section-anim", text)
+
+    def test_merge_does_not_overwrite_existing_jina_meta(self) -> None:
+        jina = article_tools.FetchedArticle(
+            url="https://example.com/a",
+            title="T",
+            markdown="body",
+            method="jina",
+            author="From Jina",
+            published_at="2025-12-01",
+            cover_image="https://example.com/jina.png",
+        )
+        html = article_tools.FetchedArticle(
+            url="https://example.com/a",
+            title="T",
+            markdown="html",
+            method="html",
+            author="From HTML",
+            published_at="2026-01-02",
+            cover_image="https://example.com/html.png",
+        )
+        merged = article_tools.merge_html_enrichment(jina, html)
+        self.assertEqual(merged.author, "From Jina")
+        self.assertEqual(merged.published_at, "2025-12-01")
+        self.assertEqual(merged.cover_image, "https://example.com/jina.png")
+
+
 if __name__ == "__main__":
     unittest.main()

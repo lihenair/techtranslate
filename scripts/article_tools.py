@@ -454,6 +454,38 @@ class _HTMLArticleParser(HTMLParser):
         return title, markdown
 
 
+MEDIA_COMMENT_RE = re.compile(r"<!--\s*media:[^>]+-->")
+
+
+def extract_media_comments(markdown: str) -> list[str]:
+    return [match.group(0) for match in MEDIA_COMMENT_RE.finditer(markdown or "")]
+
+
+def merge_html_enrichment(article: FetchedArticle, html_article: FetchedArticle) -> FetchedArticle:
+    """Keep Jina readable text; copy HTML media markers, snippets, and missing meta."""
+    comments = list(article.media_comments or [])
+    existing = set(comments)
+    existing.update(extract_media_comments(article.markdown or ""))
+    for comment in extract_media_comments(html_article.markdown or ""):
+        if comment not in existing:
+            comments.append(comment)
+            existing.add(comment)
+    for comment in html_article.media_comments or []:
+        if comment not in existing:
+            comments.append(comment)
+            existing.add(comment)
+    article.media_comments = comments or None
+    if html_article.section_snippets and not article.section_snippets:
+        article.section_snippets = list(html_article.section_snippets)
+    if not article.author:
+        article.author = html_article.author
+    if not article.published_at:
+        article.published_at = html_article.published_at
+    if not article.cover_image:
+        article.cover_image = html_article.cover_image
+    return article
+
+
 def fetch_via_html(url: str, timeout: int = 45) -> FetchedArticle:
     final_url, html = _http_get(url, timeout=timeout)
     parser = _HTMLArticleParser()
@@ -482,11 +514,22 @@ def fetch_via_html(url: str, timeout: int = 45) -> FetchedArticle:
 
 def fetch_article(url: str, timeout: int = 45) -> FetchedArticle:
     errors: list[str] = []
-    for fetcher in (fetch_via_jina, fetch_via_html):
-        try:
-            return fetcher(url, timeout=timeout)
-        except (FetchError, HTTPError, URLError, TimeoutError, ssl.SSLError, OSError) as exc:
-            errors.append(f"{fetcher.__name__}: {exc}")
+    jina_article: FetchedArticle | None = None
+    html_article: FetchedArticle | None = None
+    try:
+        jina_article = fetch_via_jina(url, timeout=timeout)
+    except (FetchError, HTTPError, URLError, TimeoutError, ssl.SSLError, OSError) as exc:
+        errors.append(f"fetch_via_jina: {exc}")
+    try:
+        html_article = fetch_via_html(url, timeout=timeout)
+    except (FetchError, HTTPError, URLError, TimeoutError, ssl.SSLError, OSError) as exc:
+        errors.append(f"fetch_via_html: {exc}")
+    if jina_article and html_article:
+        return merge_html_enrichment(jina_article, html_article)
+    if jina_article:
+        return jina_article
+    if html_article:
+        return html_article
     raise FetchError("All fetch methods failed: " + " | ".join(errors))
 
 

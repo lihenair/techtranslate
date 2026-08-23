@@ -30,5 +30,5 @@ Copilot assignment needs a **user-to-server** token, not `GITHUB_TOKEN`. See [Us
 | `.github/agents/article-translator.agent.md` | Copilot custom agent |
 | `.github/skills/translating-articles/SKILL.md` | Shared translation skill |
 | `.github/workflows/translate-article.yml` | Fetch URLs and open the inbox PR |
-| `scripts/article_tools.py` | URL extract + article fetch |
+| `scripts/article_tools.py` | URL extract + Jina text + HTML media/meta merge |
 | `scripts/capture_media.py` | Convert inbox media ≤15s (video / YouTube / section) into `assets/<slug>/` GIFs |

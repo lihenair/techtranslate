@@ -102,7 +102,7 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 
 ### 识别
 
-抓取 HTML 时（Jina 不够就走本地 HTML）把媒体收成 inbox 标记，译者按标记落盘、写正文：
+抓取时先用 Jina 拿可读正文，再补一次本地 HTML：媒体标记、`section` 片段、以及 Jina 没有的 `author` / `published_at` / `cover_image`。Jina 失败则只用 HTML。译者按标记落盘、写正文：
 
 ```html
 <!-- media:youtube id="fG8xWTHnlLY" url="https://www.youtube.com/watch?v=fG8xWTHnlLY" -->
