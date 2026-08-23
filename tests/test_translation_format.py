@@ -199,6 +199,14 @@ class TechDomainTest(unittest.TestCase):
             ),
             "frontend",
         )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Making 768 servers look like 1",
+                "Postgres MySQL sharding PgBouncer Vitess Neki "
+                "OpenAI replicas AI agents AI infrastructure",
+            ),
+            "backend",
+        )
 
 
 class DurationGateTest(unittest.TestCase):

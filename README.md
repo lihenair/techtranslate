@@ -92,6 +92,7 @@
 
 ### 后端
 
+- 2026-08-23 [让 768 台服务器看起来像 1 台](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/backend/Making-768-servers-look-like-1.md)
 - 2021-04-02 [理解协程，JVM线程和并发问题](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B%EF%BC%8CJVM%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98.md)
 - 2017-08-25 [深入字节码操作：使用ASM和Javassist创建审核日志](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E6%BD%9C%E5%85%A5%E5%AD%97%E8%8A%82%E7%A0%81%E6%93%8D%E4%BD%9C%EF%BC%9A%E4%BD%BF%E7%94%A8ASM%E5%92%8CJavassist%E5%88%9B%E5%BB%BA%E5%AE%A1%E6%A0%B8%E6%97%A5%E5%BF%97.md)
 - 2017-08-25 [从SQLite压缩性能：插入](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E4%BB%8ESQLite%E5%8E%8B%E7%BC%A9%E6%80%A7%E8%83%BD%EF%BC%9A%E6%8F%92%E5%85%A5.md)

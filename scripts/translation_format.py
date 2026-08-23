@@ -153,6 +153,9 @@ _DOMAIN_SIGNALS = (
             r"\bmicroservices?\b",
             r"\bmysql\b",
             r"\bmongodb\b",
+            r"\bsharding\b",
+            r"pgbouncer",
+            r"\bvitess\b",
         ),
     ),
 )
