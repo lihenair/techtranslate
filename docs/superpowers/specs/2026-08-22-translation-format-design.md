@@ -153,7 +153,7 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 | section 内多张按序帧图 | 按 8fps 估算：帧数 ≤ 120 则拼 GIF，否则只留第一张静图 + 说明 |
 | 纯 CSS / HTML `@keyframes`，无媒体文件 | 无片源：最多录 15 秒转 GIF；无浏览器或失败则 1 张静帧 +「原文为网页动画」 |
 
-不要把整页滚动、导航、广告当成动画。只处理文章正文里、看起来像插图的那一块。
+不要把整页滚动、导航、广告当成动画。只处理文章正文里、看起来像插图的那一块：`demo` / `anim` / `gif` 一类 class，或节点上真有 `animation:` / `@keyframes`。正文里出现 “animation” 这个词、外层包着几张说明图的 `<section>`，都不算。同站 stylesheet 会内联进 `section` 片段，相对 `url()` 改成绝对地址后再录。
 
 安全文里的 XSS payload / 恶意 demo：**只录画面，不在仓库执行 payload，不把可执行 HTML 当附件提交**。
 
