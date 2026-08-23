@@ -40,6 +40,8 @@
 ### AI
 
 - 2026-08-23 [阻止 Agent 忽略指令的 10 种 Claude Code 引导机制](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md)
+- 2026-08-23 [用 Unsloth 本地微调 Gemma 4](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/Fine-tune-Gemma-4-locally-with-Unsloth.md)
+- 2026-08-23 [从 360° 影像入门 3D Gaussian Splatting（360° Gaussian Pro 版）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/Getting-Started-with-3D-Gaussian-Splatting-from-360-Images.md)
 - 2026-08-23 [AI 芯片架构](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/AI-Chip-Architectures.md)
 - 2026-08-22 [NoBuzz](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/ai/NoBuzz.md)
 
@@ -97,6 +99,10 @@
 - 2017-08-25 [深入字节码操作：使用ASM和Javassist创建审核日志](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E6%BD%9C%E5%85%A5%E5%AD%97%E8%8A%82%E7%A0%81%E6%93%8D%E4%BD%9C%EF%BC%9A%E4%BD%BF%E7%94%A8ASM%E5%92%8CJavassist%E5%88%9B%E5%BB%BA%E5%AE%A1%E6%A0%B8%E6%97%A5%E5%BF%97.md)
 - 2017-08-25 [从SQLite压缩性能：插入](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E4%BB%8ESQLite%E5%8E%8B%E7%BC%A9%E6%80%A7%E8%83%BD%EF%BC%9A%E6%8F%92%E5%85%A5.md)
 - 2016-08-17 [Java注解](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/Java%E6%B3%A8%E8%A7%A3.md)
+
+### DevOps
+
+- 2026-08-23 [Kubernetes 每六分钟杀掉我的 Pod，应用日志里什么都没有](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/devops/Kubernetes-Killed-My-Pods-Every-Six-Minutes-and-the-Application-Logs-Showed-Nothing.md)
 
 ### 系统
 

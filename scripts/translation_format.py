@@ -40,6 +40,7 @@ _DOMAIN_SIGNALS = (
             r"machine learning",
             r"大模型",
             r"提示词工程",
+            r"gaussian splat",
         ),
     ),
     (

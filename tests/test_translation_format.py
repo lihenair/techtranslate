@@ -207,6 +207,13 @@ class TechDomainTest(unittest.TestCase):
             ),
             "backend",
         )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Getting Started with 3D Gaussian Splatting from 360 Images",
+                "LichtFeld COLMAP SfM dual-fisheye",
+            ),
+            "ai",
+        )
 
 
 class DurationGateTest(unittest.TestCase):
