@@ -12,7 +12,7 @@
 
 - GitHub filename and H1 must not contain `【翻译】`.
 - Frontmatter fields are only: `title`, `title_en`, `source_url`, `author`, `published_at`, `translated_at`, `tech_domain`, `tags`, `cover_image`.
-- `tech_domain` is one of: `android`, `frontend`, `backend`, `security`, `mobile`, `devops`, `other`.
+- `tech_domain` is one of: `android`, `frontend`, `backend`, `security`, `mobile`, `devops`, `ai`, `other`.
 - Source media with duration `> 15` seconds or unknown duration is not converted (no frames, no first-15-seconds clip).
 - Do not commit `mp4` files. Do not write `iframe` tags. Do not write Juejin signed image hosts (`p9-xtjj-sign`, `link.juejin.cn`).
 - Do not migrate existing root `*.md` translations.
@@ -1068,7 +1068,7 @@ cover_image: https://example.com/cover.png
 ---
 ```
 
-`tech_domain` must be one of: `android`, `frontend`, `backend`, `security`, `mobile`, `devops`, `other`.
+`tech_domain` must be one of: `android`, `frontend`, `backend`, `security`, `mobile`, `devops`, `ai`, `other`.
 Omit `author`, `published_at`, and `cover_image` when unknown. Do not invent them.
 
 Body header, in this order, blank line between blocks:

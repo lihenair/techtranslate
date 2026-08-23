@@ -90,6 +90,13 @@ class YoutubeAndLinksTest(unittest.TestCase):
         )
 
 
+class TechDomainTest(unittest.TestCase):
+    def test_ai_is_an_allowed_domain(self) -> None:
+        self.assertIn("ai", tf.TECH_DOMAINS)
+        accepted = SAMPLE.replace("tech_domain: security", "tech_domain: ai")
+        self.assertEqual(tf.validate_translation(accepted), [])
+
+
 class DurationGateTest(unittest.TestCase):
     def test_converts_only_known_short_clips(self) -> None:
         self.assertTrue(tf.should_convert_source(0.5))

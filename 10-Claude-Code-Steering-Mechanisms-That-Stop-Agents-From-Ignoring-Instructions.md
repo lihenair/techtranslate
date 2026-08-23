@@ -4,8 +4,8 @@ title_en: "10 Claude Code Steering Mechanisms That Stop Agents From Ignoring Ins
 source_url: https://generativeprogrammer.com/p/10-claude-code-steering-mechanisms
 author: Bilgin Ibryam
 translated_at: 2026-08-23
-tech_domain: devops
-tags: [claude-code, agents, devops, tooling]
+tech_domain: ai
+tags: [claude-code, agents, ai, tooling]
 cover_image: https://substackcdn.com/image/fetch/$s_!SGrq!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff40e2760-7c3e-4ee2-b3bf-1d48c393633c_1731x909.png
 ---
 

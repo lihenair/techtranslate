@@ -50,7 +50,7 @@ cover_image: https://portswigger.net/cms/images/97/ed/a919-twittercard-article.p
 | `author` | 能确定才写 | 原文作者名；不确定就省略该行，不编造 |
 | `published_at` | 能确定才写 | `YYYY-MM-DD`，原文首次发布日 |
 | `translated_at` | 是 | 翻译当天 `YYYY-MM-DD`（UTC 日期） |
-| `tech_domain` | 是 | 只能是：`android` / `frontend` / `backend` / `security` / `mobile` / `devops` / `other` |
+| `tech_domain` | 是 | 只能是：`android` / `frontend` / `backend` / `security` / `mobile` / `devops` / `ai` / `other` |
 | `tags` | 是 | 3–6 个英文小写词，例如 `[security, web, frontend]` |
 | `cover_image` | 能确定才写 | 原文封面绝对 URL；没有就省略 |
 
