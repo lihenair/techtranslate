@@ -99,6 +99,7 @@
 
 ### 其他
 
+- 2026-08-23 [计算机体系结构原理](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/other/Principles-of-Computer-Architecture.md)
 - 2026-08-22 [我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/other/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
 - 2016-08-17 [WebP是如何工作的(有损模式)](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/other/How%20WebP%20Works.md)
 - 2016-08-17 [JPG如何工作的](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/other/How%20JPG%20Works.md)
