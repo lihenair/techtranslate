@@ -87,6 +87,22 @@ def heading_md(level: int, title_zh: str, slug: str) -> str:
     return f"{hashes} [{title_zh}](#{slug})"
 
 
+ISO8601_DURATION_RE = re.compile(
+    r"^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?$",
+    re.I,
+)
+
+
+def parse_iso8601_duration(text: str) -> float | None:
+    match = ISO8601_DURATION_RE.fullmatch((text or "").strip())
+    if not match or not any(match.groups()):
+        return None
+    hours = float(match.group(1) or 0)
+    minutes = float(match.group(2) or 0)
+    seconds = float(match.group(3) or 0)
+    return hours * 3600 + minutes * 60 + seconds
+
+
 def should_convert_source(duration_s: float | None) -> bool:
     if duration_s is None:
         return False

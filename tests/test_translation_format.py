@@ -33,6 +33,14 @@ cover_image: https://portswigger.net/cms/images/97/ed/a919-twittercard-article.p
 """
 
 
+class IsoDurationTest(unittest.TestCase):
+    def test_parses_youtube_iso8601_durations(self) -> None:
+        self.assertEqual(tf.parse_iso8601_duration("PT15S"), 15.0)
+        self.assertEqual(tf.parse_iso8601_duration("PT1M2S"), 62.0)
+        self.assertEqual(tf.parse_iso8601_duration("PT1H"), 3600.0)
+        self.assertIsNone(tf.parse_iso8601_duration("bad"))
+
+
 class YoutubeAndLinksTest(unittest.TestCase):
     def test_parses_watch_and_embed_urls(self) -> None:
         self.assertEqual(

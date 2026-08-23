@@ -85,7 +85,7 @@ If `assets/<slug>/` has a GIF for that item (source duration ≤ 15s, or a short
 ![嵌入内容（原站 YouTube）](assets/slug/yt-ID.gif)
 ```
 
-If capture skipped the item (`skipped-long`, `skipped-unknown`, `skipped-no-browser`), write the link only, or `原文此处有短视频` / `原文为网页动画` for `section` demos with no recoverable URL.
+If capture skipped the item (`skipped-long`, `skipped-unknown`, `skipped-no-browser`, `skipped-too-large`), write the link only, or `原文此处有短视频` / `原文为网页动画` for `section` demos with no recoverable URL. YouTube often needs repo secrets `YOUTUBE_API_KEY` and `YTDLP_COOKIES`; without them, keep the text link.
 
 ## README
 

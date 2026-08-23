@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -22,6 +23,15 @@ DIRECT_MEDIA_RE = re.compile(r"\.(mp4|webm|mov|m4v|ogv)(?:[?#]|$)", re.I)
 USER_AGENT = (
     "Mozilla/5.0 (compatible; techtranslate-bot/1.0; +https://github.com/lihenair/techtranslate)"
 )
+GIF_ENCODE_STEPS = (
+    {"fps": 8, "width": 640},
+    {"fps": 6, "width": 480},
+    {"fps": 6, "width": 320},
+    {"fps": 4, "width": 320, "max_colors": 64},
+    {"fps": 4, "width": 240, "max_colors": 48, "dither": "none"},
+)
+COOKIES_ENV = "TECHTRANSLATE_YTDLP_COOKIES"
+YOUTUBE_API_KEY_ENV = "YOUTUBE_API_KEY"
 
 
 def parse_media_comments(markdown: str) -> list[dict[str, str]]:
@@ -59,12 +69,21 @@ def probe_duration_seconds(path: Path) -> float | None:
         return None
 
 
-def encode_gif(src: Path, dest: Path, fps: int = 8, width: int = 640) -> bool:
+def encode_gif(
+    src: Path,
+    dest: Path,
+    fps: int = 8,
+    width: int = 640,
+    max_colors: int | None = None,
+    dither: str | None = None,
+) -> bool:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg or not src.is_file():
         return False
     dest.parent.mkdir(parents=True, exist_ok=True)
-    filt = f"fps={fps},scale={width}:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
+    palette = "palettegen" if not max_colors else f"palettegen=max_colors={max_colors}"
+    use = "paletteuse" if not dither else f"paletteuse=dither={dither}"
+    filt = f"fps={fps},scale={width}:-1:flags=lanczos,split[s0][s1];[s0]{palette}[p];[s1][p]{use}"
     try:
         subprocess.run(
             ["ffmpeg", "-y", "-i", str(src), "-vf", filt, "-loop", "0", str(dest)],
@@ -76,11 +95,20 @@ def encode_gif(src: Path, dest: Path, fps: int = 8, width: int = 640) -> bool:
     return dest.is_file() and dest.stat().st_size > 0
 
 
+def encode_gif_under_limit(src: Path, dest: Path, max_bytes: int) -> bool:
+    for step in GIF_ENCODE_STEPS:
+        if encode_gif(src, dest, **step) and dest.is_file() and dest.stat().st_size <= max_bytes:
+            return True
+        dest.unlink(missing_ok=True)
+    return False
+
+
 def convert_local_video(
     src: Path,
     dest: Path,
     duration_s: float | None = None,
     require_existing_src: bool = True,
+    max_bytes: int | None = None,
 ) -> str:
     if duration_s is None and require_existing_src:
         duration_s = probe_duration_seconds(src)
@@ -90,15 +118,11 @@ def convert_local_video(
         return "skipped-no-ffmpeg"
     if require_existing_src and not src.is_file():
         return "skipped-unknown"
-    if not encode_gif(src, dest, fps=8, width=640):
-        return "skipped-too-large"
-    if dest.stat().st_size > translation_format.MAX_GIF_BYTES:
-        dest.unlink(missing_ok=True)
-        if encode_gif(src, dest, fps=6, width=480) and dest.stat().st_size <= translation_format.MAX_GIF_BYTES:
-            return "converted"
-        dest.unlink(missing_ok=True)
-        return "skipped-too-large"
-    return "converted"
+    limit = translation_format.MAX_GIF_BYTES if max_bytes is None else max_bytes
+    if encode_gif_under_limit(src, dest, limit):
+        return "converted"
+    dest.unlink(missing_ok=True)
+    return "skipped-too-large"
 
 
 def _ytdlp_cmd() -> list[str] | None:
@@ -112,24 +136,78 @@ def _ytdlp_cmd() -> list[str] | None:
     return [sys.executable, "-m", "yt_dlp"]
 
 
-def probe_remote_duration(url: str, runner=None) -> float | None:
+def ytdlp_extra_args() -> list[str]:
+    args: list[str] = []
+    cookies = os.environ.get(COOKIES_ENV, "").strip()
+    if cookies and Path(cookies).is_file():
+        args.extend(["--cookies", cookies])
+    return args
+
+
+def _http_get_text(url: str, timeout: int = 20) -> tuple[str, str]:
+    request = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json,text/plain,*/*"})
+    with urlopen(request, timeout=timeout) as response:
+        charset = response.headers.get_content_charset() or "utf-8"
+        raw = response.read()
+        final_url = response.geturl()
+    return final_url, raw.decode(charset, errors="replace")
+
+
+def probe_youtube_api_duration(video_id: str, api_key: str, getter=None) -> float | None:
+    if not video_id or not api_key:
+        return None
+    get = getter or _http_get_text
+    url = (
+        "https://www.googleapis.com/youtube/v3/videos"
+        f"?part=contentDetails&id={video_id}&key={api_key}"
+    )
+    try:
+        _final, body = get(url, timeout=20)
+        data = json.loads(body)
+        items = data.get("items") or []
+        duration = ((items[0] or {}).get("contentDetails") or {}).get("duration")
+        return translation_format.parse_iso8601_duration(duration or "")
+    except (OSError, ValueError, IndexError, TypeError, json.JSONDecodeError):
+        return None
+
+
+def probe_remote_duration(
+    url: str,
+    runner=None,
+    youtube_api_key: str | None = None,
+    http_get=None,
+) -> float | None:
     run = runner or subprocess.run
     cmd = _ytdlp_cmd()
-    if runner is None and not cmd:
-        return None
-    prefix = cmd or ["yt-dlp"]
-    try:
-        proc = run(
-            [*prefix, "--print", "%(duration)s", "--skip-download", "--no-warnings", "--no-playlist", url],
-            check=True,
-            capture_output=True,
-            text=True,
-            timeout=60,
-        )
-        line = (proc.stdout or "").strip().splitlines()[-1]
-        return float(line)
-    except (subprocess.CalledProcessError, ValueError, IndexError, FileNotFoundError, OSError):
-        return None
+    if runner is not None or cmd:
+        prefix = cmd or ["yt-dlp"]
+        try:
+            proc = run(
+                [
+                    *prefix,
+                    *ytdlp_extra_args(),
+                    "--print",
+                    "%(duration)s",
+                    "--skip-download",
+                    "--no-warnings",
+                    "--no-playlist",
+                    url,
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+            line = (proc.stdout or "").strip().splitlines()[-1]
+            if line.upper() not in {"", "NA", "NONE", "NULL", "N/A"}:
+                return float(line)
+        except (subprocess.CalledProcessError, ValueError, IndexError, FileNotFoundError, OSError):
+            pass
+    video_id = translation_format.youtube_id_from_url(url)
+    key = (youtube_api_key if youtube_api_key is not None else os.environ.get(YOUTUBE_API_KEY_ENV, "")).strip()
+    if video_id and key:
+        return probe_youtube_api_duration(video_id, key, getter=http_get)
+    return None
 
 
 def download_remote_video(url: str, dest_dir: Path, runner=None) -> Path | None:
@@ -142,7 +220,17 @@ def download_remote_video(url: str, dest_dir: Path, runner=None) -> Path | None:
     out_tmpl = str(dest_dir / "dl.%(ext)s")
     try:
         run(
-            [*prefix, "-f", "mp4/best[ext=mp4]/best", "-o", out_tmpl, "--no-warnings", "--no-playlist", url],
+            [
+                *prefix,
+                *ytdlp_extra_args(),
+                "-f",
+                "mp4/best[ext=mp4]/best",
+                "-o",
+                out_tmpl,
+                "--no-warnings",
+                "--no-playlist",
+                url,
+            ],
             check=True,
             capture_output=True,
             timeout=120,

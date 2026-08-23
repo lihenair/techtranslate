@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import json
+import os
 import shutil
 import subprocess
 import sys
@@ -65,6 +67,43 @@ class GifEncodeTest(unittest.TestCase):
 
 
 class GifEncodeFallbackTest(unittest.TestCase):
+    def test_encode_ladder_shrinks_until_under_limit(self) -> None:
+        if not _have_ffmpeg():
+            self.skipTest("ffmpeg/ffprobe required")
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "src.mp4"
+            dest = Path(tmp) / "out.gif"
+            subprocess.run(
+                [
+                    "ffmpeg",
+                    "-y",
+                    "-f",
+                    "lavfi",
+                    "-i",
+                    "testsrc=size=640x360:rate=25:duration=4",
+                    "-pix_fmt",
+                    "yuv420p",
+                    str(src),
+                ],
+                check=True,
+                capture_output=True,
+            )
+            status = capture_media.convert_local_video(src, dest, max_bytes=200_000)
+            self.assertEqual(status, "converted")
+            self.assertTrue(dest.is_file())
+            self.assertLessEqual(dest.stat().st_size, 200_000)
+
+    def test_encode_ladder_skips_when_every_step_is_too_large(self) -> None:
+        if not _have_ffmpeg():
+            self.skipTest("ffmpeg/ffprobe required")
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "src.mp4"
+            dest = Path(tmp) / "out.gif"
+            _make_color_mp4(src, 1)
+            status = capture_media.convert_local_video(src, dest, max_bytes=10)
+            self.assertEqual(status, "skipped-too-large")
+            self.assertFalse(dest.exists())
+
     def test_unknown_duration_is_skipped(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             dest = Path(tmp) / "x.gif"
@@ -100,6 +139,41 @@ class RemoteVideoTest(unittest.TestCase):
             download=lambda url, dest_dir: Path("/tmp/missing.mp4"),
         )
         self.assertEqual(status, "skipped-long")
+
+    def test_probe_falls_back_to_youtube_api(self) -> None:
+        def fail_run(*_args, **_kwargs):
+            raise FileNotFoundError("yt-dlp blocked")
+
+        def fake_get(url: str, timeout: int = 20):
+            self.assertIn("googleapis.com/youtube/v3/videos", url)
+            self.assertIn("key=test-key", url)
+            self.assertIn("fG8xWTHnlLY", url)
+            payload = {"items": [{"contentDetails": {"duration": "PT9S"}}]}
+            return url, json.dumps(payload)
+
+        duration = capture_media.probe_remote_duration(
+            "https://www.youtube.com/watch?v=fG8xWTHnlLY",
+            runner=fail_run,
+            youtube_api_key="test-key",
+            http_get=fake_get,
+        )
+        self.assertEqual(duration, 9.0)
+
+    def test_ytdlp_args_include_cookies_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cookies = Path(tmp) / "cookies.txt"
+            cookies.write_text("# Netscape HTTP Cookie File\n", encoding="utf-8")
+            old = os.environ.get("TECHTRANSLATE_YTDLP_COOKIES")
+            os.environ["TECHTRANSLATE_YTDLP_COOKIES"] = str(cookies)
+            try:
+                args = capture_media.ytdlp_extra_args()
+            finally:
+                if old is None:
+                    os.environ.pop("TECHTRANSLATE_YTDLP_COOKIES", None)
+                else:
+                    os.environ["TECHTRANSLATE_YTDLP_COOKIES"] = old
+        self.assertIn("--cookies", args)
+        self.assertIn(str(cookies), args)
 
     def test_unknown_remote_duration_is_skipped(self) -> None:
         status = capture_media.convert_remote_video(
