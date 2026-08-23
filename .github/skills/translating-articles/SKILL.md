@@ -43,7 +43,20 @@ cover_image: https://example.com/cover.png
 ---
 ```
 
-`tech_domain` must be one of: `android`, `frontend`, `backend`, `security`, `mobile`, `devops`, `ai`, `other`.
+`tech_domain` is the article's **primary topic**, not a side mention. Allowed values:
+
+| 值 | 什么时候用 |
+| --- | --- |
+| `ai` | LLM、Agent、Claude/GPT、提示词、模型工具 |
+| `security` | 漏洞、XSS、鉴权、利用、加固本身就是主题 |
+| `android` | Android / Jetpack / 安卓构建 |
+| `mobile` | iOS 或跨端，且不是一篇 Android 文 |
+| `frontend` | CSS、浏览器、页面、前端框架 |
+| `backend` | 服务端、数据库、API 实现 |
+| `devops` | CI/CD、K8s、发布流水线本身就是主题 |
+| `other` | 上面都对不上才用。能分清就不要写 `other` |
+
+Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。先看标题和导语在讲什么。可用 `translation_format.classify_tech_domain(title, body)` 对照，但最终按主旨判断。
 Omit `author`, `published_at`, and `cover_image` when unknown. Do not invent them.
 
 Body header, in this order, blank line between blocks:

@@ -96,6 +96,40 @@ class TechDomainTest(unittest.TestCase):
         accepted = SAMPLE.replace("tech_domain: security", "tech_domain: ai")
         self.assertEqual(tf.validate_translation(accepted), [])
 
+    def test_classify_uses_primary_topic_not_side_mentions(self) -> None:
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "10 Claude Code Steering Mechanisms",
+                "hooks permissions deploy staging MCP subagents",
+            ),
+            "ai",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "CSS: the bomb inside your inbox",
+                "XSS sanitization exploit whitelist HTML",
+            ),
+            "security",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "CompositionLocal Made Easy",
+                "Jetpack Compose Android remember",
+            ),
+            "android",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Building a Kubernetes deploy pipeline",
+                "CI/CD terraform helm rollout",
+            ),
+            "devops",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain("How JPG Works", "lossy compression blocks"),
+            "other",
+        )
+
 
 class DurationGateTest(unittest.TestCase):
     def test_converts_only_known_short_clips(self) -> None:

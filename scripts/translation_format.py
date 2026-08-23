@@ -9,6 +9,53 @@ from urllib.parse import parse_qs, urlparse
 TECH_DOMAINS = frozenset(
     {"android", "frontend", "backend", "security", "mobile", "devops", "ai", "other"}
 )
+# Primary-topic order: earlier buckets win so side mentions do not steal the domain.
+_DOMAIN_SIGNALS = (
+    (
+        "ai",
+        (
+            r"\bclaude\b",
+            r"\bgpt[- ]?\d",
+            r"\bllm\b",
+            r"\bagents?\b",
+            r"anthropic",
+            r"openai",
+            r"\bprompts?\b",
+            r"langchain",
+        ),
+    ),
+    (
+        "security",
+        (r"\bxss\b", r"exploit", r"cve-\d", r"sanitiz", r"\brce\b", r"\bcsrf\b", r"\bcsp\b"),
+    ),
+    (
+        "android",
+        (r"\bandroid\b", r"jetpack", r"\bcompose\b", r"\bdagger\b", r"recyclerview"),
+    ),
+    (
+        "mobile",
+        (r"\bios\b", r"swiftui", r"\bflutter\b", r"react native", r"kotlin multiplatform"),
+    ),
+    (
+        "frontend",
+        (r"\bcss\b", r"\breact\b", r"\bvue\b", r"\bdom\b", r"\bhtml\b", r"\bbrowser\b"),
+    ),
+    (
+        "devops",
+        (
+            r"kubernetes",
+            r"\bk8s\b",
+            r"ci/?cd",
+            r"terraform",
+            r"\bhelm\b",
+            r"github actions",
+        ),
+    ),
+    (
+        "backend",
+        (r"\bjvm\b", r"postgres", r"\bredis\b", r"\bgrpc\b", r"\bspring\b", r"\bapi\b server"),
+    ),
+)
 MAX_SOURCE_SECONDS = 15.0
 MAX_GIF_BYTES = 1_500_000
 MAX_MEDIA_FILES = 8
@@ -91,6 +138,15 @@ ISO8601_DURATION_RE = re.compile(
     r"^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?$",
     re.I,
 )
+
+
+def classify_tech_domain(title: str, body: str = "") -> str:
+    """Pick the article's primary field. Do not use other if a specific bucket fits."""
+    blob = f"{title}\n{title}\n{body}".lower()
+    for domain, patterns in _DOMAIN_SIGNALS:
+        if any(re.search(pattern, blob) for pattern in patterns):
+            return domain
+    return "other"
 
 
 def parse_iso8601_duration(text: str) -> float | None:
