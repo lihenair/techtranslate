@@ -1,30 +1,38 @@
-name: Translate article
-description: Submit one or more English article URLs for Chinese translation
+name: 翻译文章
+description: 提交一篇或多篇英文文章，自动抓取并排队翻译
 title: "[Translate] "
 labels: [translate]
 body:
   - type: markdown
     attributes:
       value: |
-        Paste the public article link(s). A GitHub Action will fetch the page into `_inbox/`, then Copilot or Cursor can translate it using the `article-translator` agent / translating-articles skill.
+        一篇文章：填原文链接，可选填中文标题。
+        多篇文章：不要共用一个标题，在「更多文章」里每行一篇，写成 `链接` 或 `链接 | 中文标题`。
+        提交后 GitHub Action 会抓原文并开 inbox PR；若仓库配置了 `COPILOT_ASSIGN_TOKEN`，会自动指派 Copilot 写译文。
   - type: input
     id: url
     attributes:
-      label: Article URL
-      description: The English article to translate
-      placeholder: https://medium.com/...
+      label: 原文链接
+      description: 要翻译的英文文章
+      placeholder: https://example.com/article
     validations:
       required: true
+  - type: input
+    id: title_zh
+    attributes:
+      label: 中文标题
+      description: 只作用于上面这一篇。不填则用 Issue 标题（去掉 [Translate]）或原文标题。
+      placeholder: AI 芯片架构
   - type: textarea
     id: extra_urls
     attributes:
-      label: Additional URLs
-      description: Optional. One URL per line if you have more than one article today.
+      label: 更多文章
+      description: 可选。每行一篇，不要把多篇的标题写进上面的「中文标题」。
       placeholder: |
-        https://example.com/article-two
+        https://example.com/article-two | 第二篇中文标题
         https://example.com/article-three
   - type: textarea
     id: notes
     attributes:
-      label: Notes
-      description: Optional translator hints (tone, terms to keep in English, sections to skip).
+      label: 备注
+      description: 可选。语气、保留英文的术语、跳过的章节等。

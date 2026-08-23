@@ -50,6 +50,93 @@ class FetchedArticle:
     cover_image: str | None = None
     media_comments: list[str] | None = None
     section_snippets: list[str] | None = None
+    title_zh: str | None = None
+
+
+EMPTY_FORM_VALUES = {
+    "",
+    "_no response_",
+    "no response",
+    "无",
+    "没有",
+    "n/a",
+    "none",
+}
+TITLE_FIELD_NAMES = {"中文标题", "translation title", "article title"}
+URL_FIELD_NAMES = {"原文链接", "article url"}
+EXTRA_FIELD_NAMES = {"更多文章", "additional urls"}
+TRANSLATE_TITLE_RE = re.compile(r"^\[translate\]\s*", re.I)
+
+
+def _is_empty_form_value(text: str | None) -> bool:
+    return (text or "").strip().lower() in EMPTY_FORM_VALUES
+
+
+def parse_issue_sections(text: str) -> dict[str, str]:
+    sections: dict[str, str] = {}
+    parts = re.split(r"^### ", text or "", flags=re.MULTILINE)
+    for part in parts[1:]:
+        heading, _, rest = part.partition("\n")
+        sections[heading.strip()] = rest.strip()
+    return sections
+
+
+def _title_from_issue_title(issue_title: str | None) -> str | None:
+    if not issue_title:
+        return None
+    cleaned = TRANSLATE_TITLE_RE.sub("", issue_title).strip()
+    return cleaned or None
+
+
+def parse_issue_requests(body: str, issue_title: str | None = None) -> list[dict[str, str | None]]:
+    """Read URLs and optional Chinese titles from a Translate-article issue."""
+    sections = parse_issue_sections(body)
+    named = ""
+    primary = ""
+    extra = ""
+    for heading, value in sections.items():
+        key = heading.strip().lower()
+        if key in TITLE_FIELD_NAMES:
+            named = value
+        elif key in URL_FIELD_NAMES:
+            primary = value
+        elif key in EXTRA_FIELD_NAMES:
+            extra = value
+
+    requests: list[dict[str, str | None]] = []
+    seen: set[str] = set()
+
+    def add_blob(blob: str, default_title: str | None = None) -> None:
+        if _is_empty_form_value(blob):
+            return
+        for raw_line in blob.splitlines():
+            line = raw_line.strip()
+            if not line or _is_empty_form_value(line):
+                continue
+            title = default_title
+            url_part = line
+            if "|" in line:
+                left, right = line.split("|", 1)
+                url_part = left.strip()
+                title = right.strip() or default_title
+            found = extract_urls(url_part) or extract_urls(line)
+            if not found:
+                continue
+            url = found[0]
+            if url in seen:
+                continue
+            seen.add(url)
+            requests.append({"url": url, "title_zh": title or None})
+
+    add_blob(primary, None if _is_empty_form_value(named) else named.strip())
+    add_blob(extra)
+    if not requests:
+        add_blob(body)
+
+    hint = _title_from_issue_title(issue_title)
+    if requests and not requests[0]["title_zh"] and hint:
+        requests[0]["title_zh"] = hint
+    return requests
 
 
 def extract_urls(text: str) -> list[str]:
@@ -134,6 +221,8 @@ def format_source_markdown(article: FetchedArticle, issue: str | None = None) ->
         lines.append(f"published_at: {article.published_at}")
     if article.cover_image:
         lines.append(f"cover_image: {article.cover_image}")
+    if article.title_zh:
+        lines.append(f"title_zh: {article.title_zh}")
     body = article.markdown.strip()
     extras = [c.strip() for c in (article.media_comments or []) if c.strip()]
     for comment in extras:
@@ -610,28 +699,33 @@ def prepare_inbox(
     repo_root: Path,
     issue: str | None = None,
     urls: Iterable[str] | None = None,
+    issue_title: str | None = None,
 ) -> dict:
-    found = extract_urls(body)
+    requests = parse_issue_requests(body, issue_title=issue_title)
     for extra in urls or []:
         extra = extra.strip()
-        if extra and extra not in found:
-            found.append(extra)
+        if extra and extra not in {item["url"] for item in requests}:
+            requests.append({"url": extra, "title_zh": None})
+    found = [item["url"] for item in requests if item.get("url")]
     results: dict = {"urls": found, "files": [], "skipped": [], "errors": []}
     if not found:
         results["errors"].append("No http(s) article URLs found.")
         return results
 
-    for url in found:
+    for item in requests:
+        url = item["url"]
         if already_translated(repo_root, url):
             results["skipped"].append({"url": url, "reason": "already present in repo markdown"})
             continue
         try:
             article = fetch_article(url)
+            article.title_zh = item.get("title_zh")
             path = write_inbox(article, outdir, issue=issue)
             results["files"].append(
                 {
                     "url": url,
                     "title": article.title,
+                    "title_zh": article.title_zh,
                     "path": str(path.relative_to(repo_root)),
                     "method": article.method,
                 }
@@ -652,12 +746,20 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--outdir", default="_inbox")
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--issue")
+    parser.add_argument("--issue-title")
     args = parser.parse_args(argv)
 
     repo_root = Path(args.repo_root).resolve()
     outdir = (repo_root / args.outdir).resolve()
     body = Path(args.body_file).read_text(encoding="utf-8") if args.body_file else ""
-    result = prepare_inbox(body, outdir, repo_root, issue=args.issue, urls=args.url)
+    result = prepare_inbox(
+        body,
+        outdir,
+        repo_root,
+        issue=args.issue,
+        urls=args.url,
+        issue_title=args.issue_title,
+    )
     json.dump(result, sys.stdout, ensure_ascii=False, indent=2)
     sys.stdout.write("\n")
     if result["errors"] and not result["files"]:

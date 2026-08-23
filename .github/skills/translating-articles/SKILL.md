@@ -27,7 +27,7 @@ Skip a URL if it already appears in `README.md` or `archive/**/*.md`.
 - Do **not** put `【翻译】` in the filename or H1.
 - Short GIFs: `assets/<slug>/yt-<id>.gif`, `video-N.gif`, or `section-N.gif`.
 
-Copy inbox `author` / `published_at` / `cover_image` when present. You still write `title`, `title_en`, `tech_domain`, `tags`, `translated_at`.
+Copy inbox `author` / `published_at` / `cover_image` when present. If inbox has `title_zh`, use it as `title`. You still write `title_en`, `tech_domain`, `tags`, `translated_at`.
 
 ```yaml
 ---

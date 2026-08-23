@@ -4,11 +4,11 @@
 
 ## 怎么用
 
-1. 打开 [Translate article](https://github.com/lihenair/techtranslate/issues/new?template=translate-article.yml) Issue，贴上原文链接（可以多个）。
-2. GitHub Action 把正文抓进 `_inbox/`，并开 inbox PR。
-3. 在 Issue 上指派 Copilot，选用自定义 agent **article-translator**；或在 Cursor 里按 [translating-articles](.github/skills/translating-articles/SKILL.md) 技能译完。
+1. 打开 [翻译文章](https://github.com/lihenair/techtranslate/issues/new?template=translate-article.yml) Issue。
+2. 一篇：填原文链接，可选填中文标题。多篇：在「更多文章」里每行 `链接` 或 `链接 | 中文标题`，不要共用一个标题。
+3. 提交即可。Action 会抓原文、开 inbox PR；仓库若配置了 `COPILOT_ASSIGN_TOKEN`，会自动指派 Copilot 写译文。否则在 Issue 上指派 Copilot（agent **article-translator**），或开 Cursor agent。
 
-也可以在 **Actions → Translate article** 里直接跑工作流。重试失败任务时，去掉 `translation-queued` 再贴回 `translate`。
+重试：关掉再打开 Issue，或补上 `translate` 标签。也可以在 **Actions → Translate article** 里直接跑。
 
 说明见 [docs/translating-articles.md](docs/translating-articles.md)。新译文格式见 [2026-08-22-translation-format-design.md](docs/superpowers/specs/2026-08-22-translation-format-design.md)。
 

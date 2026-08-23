@@ -22,6 +22,77 @@ https://github.com/lihenair/techtranslate/assets/123/image.png
 """
 
 
+class IssueRequestTest(unittest.TestCase):
+    def test_parses_form_url_and_chinese_title(self) -> None:
+        body = """### 原文链接
+
+https://www.jacobpeake.com/ai-chip-architectures
+
+### 中文标题
+
+AI 芯片架构
+
+### 更多文章
+
+_No response_
+"""
+        reqs = article_tools.parse_issue_requests(body, issue_title="[Translate] ignored")
+        self.assertEqual(
+            reqs,
+            [
+                {
+                    "url": "https://www.jacobpeake.com/ai-chip-architectures",
+                    "title_zh": "AI 芯片架构",
+                }
+            ],
+        )
+
+    def test_parses_extra_lines_with_optional_title(self) -> None:
+        body = """### 原文链接
+
+https://example.com/one
+
+### 中文标题
+
+第一篇
+
+### 更多文章
+
+https://example.com/two | 第二篇
+https://example.com/three
+"""
+        reqs = article_tools.parse_issue_requests(body)
+        self.assertEqual(
+            [item["url"] for item in reqs],
+            ["https://example.com/one", "https://example.com/two", "https://example.com/three"],
+        )
+        self.assertEqual([item["title_zh"] for item in reqs], ["第一篇", "第二篇", None])
+
+    def test_uses_issue_title_when_form_title_missing(self) -> None:
+        body = """### Article URL
+
+https://www.jacobpeake.com/ai-chip-architectures
+
+### Additional URLs
+
+_No response_
+"""
+        reqs = article_tools.parse_issue_requests(
+            body, issue_title="[Translate] AI Chip Architectures"
+        )
+        self.assertEqual(reqs[0]["title_zh"], "AI Chip Architectures")
+
+    def test_old_additional_urls_still_work(self) -> None:
+        reqs = article_tools.parse_issue_requests(ISSUE_BODY)
+        self.assertEqual(
+            [item["url"] for item in reqs],
+            [
+                "https://medium.com/mobile-app-development-publication/android-jetpack-compose-compositionlocal-made-easy-8632b201bfcd",
+                "https://www.baeldung.com/kotlin/contracts",
+            ],
+        )
+
+
 class ExtractUrlsTest(unittest.TestCase):
     def test_extracts_unique_http_urls_and_strips_punctuation(self) -> None:
         urls = article_tools.extract_urls(ISSUE_BODY)
@@ -88,6 +159,17 @@ class InboxFormatTest(unittest.TestCase):
         self.assertIn("issue: 12", text)
         self.assertIn("# Hello Compose", text)
         self.assertIn("Body text here.", text)
+
+    def test_source_markdown_writes_requested_chinese_title(self) -> None:
+        article = article_tools.FetchedArticle(
+            url="https://example.com/a",
+            title="Hello Compose",
+            markdown="Body text here.",
+            method="jina",
+            title_zh="你好 Compose",
+        )
+        text = article_tools.format_source_markdown(article, issue="8")
+        self.assertIn("title_zh: 你好 Compose", text)
 
     def test_source_markdown_writes_optional_meta(self) -> None:
         article = article_tools.FetchedArticle(

@@ -2,7 +2,7 @@ name: Translate article
 
 on:
   issues:
-    types: [opened, labeled]
+    types: [opened, labeled, reopened]
   workflow_dispatch:
     inputs:
       url:
@@ -23,8 +23,10 @@ jobs:
   queue:
     if: >
       github.event_name == 'workflow_dispatch' ||
-      (github.event.action == 'opened' && contains(join(github.event.issue.labels.*.name, ','), 'translate')) ||
-      (github.event.action == 'labeled' && github.event.label.name == 'translate')
+      (github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'translate') ||
+      (github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened') &&
+        (contains(join(github.event.issue.labels.*.name, ','), 'translate') ||
+         startsWith(github.event.issue.title, '[Translate]')))
     runs-on: ubuntu-latest
     steps:
       - name: Skip if already queued
@@ -39,6 +41,14 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Ensure translate labels exist
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create translate --color 0E8A16 --description "Queue an article URL for translation" 2>/dev/null || true
+          gh label create translation-queued --color 5319E7 --description "Inbox fetch already ran for this issue" 2>/dev/null || true
+
       - uses: actions/checkout@v4
         if: steps.guard.outputs.skip != 'true'
 
@@ -49,11 +59,15 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body || '' }}
           DISPATCH_URL: ${{ github.event.inputs.url || '' }}
           ISSUE_NUMBER: ${{ github.event.issue.number || '' }}
+          ISSUE_TITLE: ${{ github.event.issue.title || '' }}
         run: |
           printf '%s\n' "$ISSUE_BODY" > /tmp/issue-body.md
           ARGS=(--body-file /tmp/issue-body.md --outdir _inbox --repo-root .)
           if [[ -n "$ISSUE_NUMBER" ]]; then
             ARGS+=(--issue "$ISSUE_NUMBER")
+          fi
+          if [[ -n "$ISSUE_TITLE" ]]; then
+            ARGS+=(--issue-title "$ISSUE_TITLE")
           fi
           if [[ -n "$DISPATCH_URL" ]]; then
             ARGS+=(--url "$DISPATCH_URL")
@@ -112,7 +126,7 @@ jobs:
 
           $URL_LIST
 
-          Next: assign **Copilot** with custom agent \`article-translator\`, or run a Cursor agent with the translating-articles skill. Translate \`_inbox/*.source.md\`, update \`README.md\`, and delete the inbox files.
+          Next: assign **Copilot** with custom agent \`article-translator\`, or run a Cursor agent with the translating-articles skill. Translate \`_inbox/*.source.md\` into \`archive/<date>/<domain>/\`, refresh the README catalog, and delete the inbox files. Use inbox \`title_zh\` when present.
 
           Skill: \`.github/skills/translating-articles/SKILL.md\`
           EOF
@@ -154,9 +168,9 @@ jobs:
               echo "Pull request: $PR_URL"
               echo "Inbox branch: \`$BRANCH\`"
               echo
-              echo "To finish: assign Copilot (custom agent **article-translator**) or start a Cursor agent. Prefer the fetched \`_inbox/*.source.md\` files over re-downloading the page."
+              echo "下一步：若未自动指派 Copilot，请在本 Issue 指派 Copilot（自定义 agent **article-translator**），或开 Cursor agent。优先用已抓取的 \`_inbox/*.source.md\`，inbox 里的 \`title_zh\` 就是指定的中文标题。"
             else
-              echo "No new inbox files were created. Add a public article URL and the \`translate\` label, or check the errors above."
+              echo "没有生成新的 inbox 文件。请确认填了公开文章链接。标题以 \`[Translate]\` 开头，或重新打开 Issue / 补上 \`translate\` 标签即可再跑。"
             fi
           } > /tmp/comment.md
           gh issue comment "$ISSUE_NUMBER" --body-file /tmp/comment.md

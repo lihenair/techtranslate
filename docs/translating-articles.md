@@ -6,14 +6,11 @@ New posts use the template in [the translation format spec](superpowers/specs/20
 
 ## Submit a URL
 
-1. Open **[Translate article](../../issues/new?template=translate-article.yml)** and paste the link (more than one URL is OK).
-2. Wait for the Action to comment with an inbox pull request under `_inbox/`.
-3. Finish the translation:
+1. Open **[翻译文章](../../issues/new?template=translate-article.yml)**.
+2. One article: paste the URL and optionally a Chinese title. Several articles: one `URL` or `URL | 中文标题` per line in **更多文章**.
+3. Submit. The Action fetches the page into `_inbox/` and opens a PR. If `COPILOT_ASSIGN_TOKEN` is set, it assigns Copilot to write the Chinese post. Otherwise assign **article-translator** on the issue, or start a Cursor agent.
 
-   - **GitHub Copilot:** on the issue, assign **Copilot** and choose custom agent **article-translator**.
-   - **Cursor:** start an agent on the inbox branch and ask it to translate using the translating-articles skill.
-
-To retry a failed issue, remove the `translation-queued` label and add `translate` again.
+To retry, reopen the issue or add the `translate` label. The issue title should start with `[Translate]`.
 
 You can also run **Actions → Translate article → Run workflow** and paste a URL.
 
