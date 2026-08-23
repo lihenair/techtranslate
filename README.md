@@ -40,6 +40,7 @@
 ### AI
 
 - 2026-08-23 [阻止 Agent 忽略指令的 10 种 Claude Code 引导机制](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md)
+- 2026-08-23 [AI 芯片架构](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/AI-Chip-Architectures.md)
 - 2026-08-22 [NoBuzz](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/ai/NoBuzz.md)
 
 ### 安全
