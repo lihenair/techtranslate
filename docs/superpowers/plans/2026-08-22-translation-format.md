@@ -1069,6 +1069,7 @@ cover_image: https://example.com/cover.png
 ```
 
 `tech_domain` must be one of: `android`, `frontend`, `backend`, `security`, `mobile`, `devops`, `ai`, `other`.
+
 Omit `author`, `published_at`, and `cover_image` when unknown. Do not invent them.
 
 Body header, in this order, blank line between blocks:
