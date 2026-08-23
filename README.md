@@ -65,3 +65,5 @@
 [NoBuzz](https://github.com/lihenair/techtranslate/blob/master/NoBuzz.md)
 
 [我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
+
+[阻止 Agent 忽略指令的 10 种 Claude Code 引导机制](https://github.com/lihenair/techtranslate/blob/master/10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md)
