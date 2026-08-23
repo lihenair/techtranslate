@@ -226,6 +226,56 @@ class MediaExtractTest(unittest.TestCase):
         self.assertIn("media:section-anim", markdown)
         self.assertTrue(parser.section_snippets)
 
+    def test_wrapper_section_does_not_steal_inner_demo(self) -> None:
+        html = """<html><head><title>Anim</title>
+        <style>.box{animation:x 1s infinite}@keyframes x{to{opacity:0}}</style>
+        </head><body>
+        <h1>Anim</h1>
+        <section class="page-content">
+          <p>This article discusses animation techniques with diagrams.</p>
+          <img src="/a.png"><img src="/b.png"><img src="/c.png">
+          <section class="demo"><div class="box">Hi</div></section>
+        </section>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/anim")
+        self.assertIn("media:section-anim", markdown)
+        self.assertNotIn("media:frames", markdown)
+        self.assertEqual(len(parser.section_snippets), 1)
+
+    def test_prose_animation_word_is_not_section_anim(self) -> None:
+        html = """<html><head><title>Cite</title></head><body>
+        <h1>Cite</h1>
+        <section>
+          <p>This animation is cool and uses several frames.</p>
+          <img src="/a.png"><img src="/b.png">
+        </section>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://example.com/cite")
+        self.assertNotIn("media:section-anim", markdown)
+        self.assertNotIn("media:frames", markdown)
+
+    def test_inline_linked_stylesheets_rewrites_relative_urls(self) -> None:
+        html = (
+            '<html><head><link rel="stylesheet" href="/css/a.css">'
+            "</head><body>Hi</body></html>"
+        )
+
+        def fake_get(url: str, timeout: int = 45) -> tuple[str, str]:
+            self.assertEqual(url, "https://example.com/css/a.css")
+            return url, "body{background:url(/img/x.png)}"
+
+        out = article_tools.inline_linked_stylesheets(
+            "https://example.com/page", html, getter=fake_get
+        )
+        self.assertIn("<style>", out)
+        self.assertIn("https://example.com/img/x.png", out)
+
 
 class MergeHtmlEnrichmentTest(unittest.TestCase):
     def test_jina_keeps_text_and_gains_html_media_and_meta(self) -> None:

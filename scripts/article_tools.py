@@ -25,6 +25,14 @@ USER_AGENT = (
 URL_RE = re.compile(r"https?://[^\s<>\]\)\"'`]+", re.IGNORECASE)
 TRAILING_PUNCT_RE = re.compile(r"[),.;:!?。，、；：！？]+$")
 UNSAFE_FILENAME_RE = re.compile(r"[^A-Za-z0-9._\u4e00-\u9fff-]+")
+LINK_STYLESHEET_RE = re.compile(
+    r"<link\b[^>]*rel=[\"'][^\"']*stylesheet[^\"']*[\"'][^>]*>",
+    re.I,
+)
+HREF_RE = re.compile(r"""\bhref=["']([^"']+)["']""", re.I)
+CSS_URL_RE = re.compile(r"""url\(\s*(["']?)([^)'"]+)\1\s*\)""", re.I)
+CSS_ANIM_PROP_RE = re.compile(r"""(?:^|[;\s"'])animation(?:-[a-z]+)?\s*:""", re.I)
+MEDIA_CONTAINER_TAGS = {"section", "figure", "div"}
 
 
 class FetchError(RuntimeError):
@@ -240,11 +248,11 @@ class _HTMLArticleParser(HTMLParser):
         videos = record["videos"]
         markup = "".join(record["parts"])
         is_anim = translation_format.looks_like_anim_class(record["class_name"])
-        has_css_anim = "animation" in markup.lower()
-        if 2 <= len(imgs) <= translation_format.MAX_SEQUENCE_FRAMES:
-            self._chunks.append("\n\n" + format_media_comment("frames", src="|".join(imgs)) + "\n")
-            return
+        has_css_anim = bool(CSS_ANIM_PROP_RE.search(markup)) or "@keyframes" in markup.lower()
         if videos:
+            return
+        if is_anim and 2 <= len(imgs) <= translation_format.MAX_SEQUENCE_FRAMES:
+            self._chunks.append("\n\n" + format_media_comment("frames", src="|".join(imgs)) + "\n")
             return
         if is_anim or has_css_anim:
             style_html = "".join(f"<style>{block}</style>" for block in self.styles)
@@ -291,6 +299,9 @@ class _HTMLArticleParser(HTMLParser):
             return
         attr = dict(attrs)
         class_name = attr.get("class") or ""
+        if tag in MEDIA_CONTAINER_TAGS and translation_format.looks_like_anim_class(class_name):
+            self._start_record(tag, attrs, class_name)
+            return
         start_html = f"<{tag}{_attr_html(attrs)}>"
         if self._records:
             self._append_record(start_html)
@@ -346,10 +357,6 @@ class _HTMLArticleParser(HTMLParser):
                 self._records[-1]["imgs"].append(src)
             alt = attr.get("alt") or ""
             self._chunks.append(f"![{alt}]({src})")
-        elif not self._records and (
-            tag in self.SECTION_TAGS or (tag == "div" and translation_format.looks_like_anim_class(class_name))
-        ):
-            self._start_record(tag, attrs, class_name)
         elif tag == "title":
             self._in_title = True
         elif tag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
@@ -454,6 +461,52 @@ class _HTMLArticleParser(HTMLParser):
         return title, markdown
 
 
+def rewrite_css_urls(css: str, base_url: str) -> str:
+    def repl(match: re.Match[str]) -> str:
+        raw = (match.group(2) or "").strip()
+        if not raw or raw.startswith(("data:", "http://", "https://")):
+            return match.group(0)
+        if raw.startswith("//"):
+            return f'url("{urlparse(base_url).scheme}:{raw}")'
+        return f'url("{urljoin(base_url, raw)}")'
+
+    return CSS_URL_RE.sub(repl, css or "")
+
+
+def inline_linked_stylesheets(
+    page_url: str,
+    html: str,
+    getter=None,
+    max_sheets: int = 8,
+) -> str:
+    get = getter or (lambda url, timeout=45: _http_get(url, timeout=timeout))
+    injected: list[str] = []
+    for match in LINK_STYLESHEET_RE.finditer(html or ""):
+        href_match = HREF_RE.search(match.group(0))
+        if not href_match:
+            continue
+        href = href_match.group(1)
+        if href.startswith("data:"):
+            continue
+        abs_url = urljoin(page_url, href)
+        try:
+            final, css = get(abs_url)
+        except (FetchError, HTTPError, URLError, TimeoutError, ssl.SSLError, OSError, ValueError):
+            continue
+        if not css or len(css) > 800_000:
+            continue
+        css = rewrite_css_urls(css, final or abs_url)
+        injected.append(f"<style>{css}</style>")
+        if len(injected) >= max_sheets:
+            break
+    if not injected:
+        return html
+    extra = "".join(injected)
+    if re.search(r"</head>", html, re.I):
+        return re.sub(r"</head>", extra + "</head>", html, count=1, flags=re.I)
+    return extra + html
+
+
 MEDIA_COMMENT_RE = re.compile(r"<!--\s*media:[^>]+-->")
 
 
@@ -488,6 +541,7 @@ def merge_html_enrichment(article: FetchedArticle, html_article: FetchedArticle)
 
 def fetch_via_html(url: str, timeout: int = 45) -> FetchedArticle:
     final_url, html = _http_get(url, timeout=timeout)
+    html = inline_linked_stylesheets(final_url, html)
     parser = _HTMLArticleParser()
     parser.feed(html)
     title, markdown = parser.result(final_url)
