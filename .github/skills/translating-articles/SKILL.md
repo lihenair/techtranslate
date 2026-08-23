@@ -139,7 +139,9 @@ Delete the matching `_inbox/*.source.md`. Keep `assets/<slug>/` GIFs that the tr
 
 ## Done
 
-Open or update a pull request with the translation, README, and any `assets/<slug>/` files. Validate before you finish:
+Open or update a pull request with the translation, README, and any `assets/<slug>/` files. The PR body **must** include `Closes #<issue>` so GitHub closes the `[Translate]` issue when this PR merges. Do **not** put `Closes #<issue>` on the Action inbox PR (that one is only English `_inbox/`). After the translation PR exists, close the leftover inbox PR without merging it.
+
+Validate before you finish:
 
 ```bash
 python3 -c "import sys, pathlib; sys.path.insert(0,'scripts'); import translation_format; print(translation_format.validate_translation(pathlib.Path('FILE.md').read_text()))"
