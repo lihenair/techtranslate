@@ -5,7 +5,7 @@ source_url: https://qiita.com/Tks_Yoshinaga/items/cfc9d6575afd78f12f31
 author: Tks_Yoshinaga
 published_at: 2026-08-23
 translated_at: 2026-08-23
-tech_domain: ai
+tech_domain: graphics
 tags: [3dgs, gaussian-splatting, colmap, vr, 360]
 ---
 

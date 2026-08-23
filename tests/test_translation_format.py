@@ -101,6 +101,11 @@ class TechDomainTest(unittest.TestCase):
         accepted = SAMPLE.replace("tech_domain: security", "tech_domain: systems")
         self.assertEqual(tf.validate_translation(accepted), [])
 
+    def test_graphics_is_an_allowed_domain(self) -> None:
+        self.assertIn("graphics", tf.TECH_DOMAINS)
+        accepted = SAMPLE.replace("tech_domain: security", "tech_domain: graphics")
+        self.assertEqual(tf.validate_translation(accepted), [])
+
     def test_classify_uses_primary_topic_not_side_mentions(self) -> None:
         self.assertEqual(
             tf.classify_tech_domain(
@@ -210,9 +215,9 @@ class TechDomainTest(unittest.TestCase):
         self.assertEqual(
             tf.classify_tech_domain(
                 "Getting Started with 3D Gaussian Splatting from 360 Images",
-                "LichtFeld COLMAP SfM dual-fisheye",
+                "LichtFeld COLMAP SfM dual-fisheye SAM3 training",
             ),
-            "ai",
+            "graphics",
         )
 
 
