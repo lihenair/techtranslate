@@ -118,8 +118,12 @@ def convert_local_video(
         return "skipped-no-ffmpeg"
     if require_existing_src and not src.is_file():
         return "skipped-unknown"
-    limit = translation_format.MAX_GIF_BYTES if max_bytes is None else max_bytes
-    if encode_gif_under_limit(src, dest, limit):
+    if max_bytes is None:
+        if encode_gif(src, dest):
+            return "converted"
+        dest.unlink(missing_ok=True)
+        return "skipped-unknown"
+    if encode_gif_under_limit(src, dest, max_bytes):
         return "converted"
     dest.unlink(missing_ok=True)
     return "skipped-too-large"
@@ -288,15 +292,15 @@ def stitch_image_sequence(paths: list[Path], dest: Path) -> str:
                     "8",
                     "-i",
                     str(pattern),
-                    "-pix_fmt",
-                    "yuv420p",
+                    "-vf",
+                    "scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p",
                     str(src_pattern),
                 ],
                 check=True,
                 capture_output=True,
             )
         except subprocess.CalledProcessError:
-            return "skipped-too-large"
+            return "skipped-unknown"
         return convert_local_video(src_pattern, dest, duration_s=len(existing) / 8.0)
 
 
@@ -317,32 +321,12 @@ def _download_http_file(url: str, dest: Path) -> Path | None:
         return None
 
 
-def _frames_are_static(frames: list[Path]) -> bool:
-    existing = [path for path in frames if path.is_file()]
-    if len(existing) < 2:
-        return True
-    first = existing[0].read_bytes()
-    return all(path.read_bytes() == first for path in existing[1:])
-
-
 def _write_recorded_frames(frames: list[Path], dest: Path) -> str:
     existing = [path for path in frames if path.is_file() and path.stat().st_size > 0]
     if not existing:
         return "skipped-unknown"
-    if _frames_are_static(existing):
-        png = dest.with_suffix(".png")
-        png.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(existing[0], png)
-        dest.unlink(missing_ok=True)
-        return "converted" if png.is_file() and png.stat().st_size > 0 else "skipped-unknown"
-    status = stitch_image_sequence(existing, dest)
-    if status == "converted":
-        return status
-    png = dest.with_suffix(".png")
-    png.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(existing[0], png)
-    dest.unlink(missing_ok=True)
-    return "converted" if png.is_file() and png.stat().st_size > 0 else status
+    dest = dest.with_suffix(".gif")
+    return stitch_image_sequence(existing, dest)
 
 
 def record_page_visual(

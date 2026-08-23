@@ -165,7 +165,7 @@ SELECT email FROM user
 
 归根结底，这意味着路由器自己必须内建完整的查询解析器和路由规划器。
 
-![路由器里的查询规划](../../../../assets/Making-768-servers-look-like-1/visual-proxy-plan.png)
+![路由器里的查询规划](../../../../assets/Making-768-servers-look-like-1/visual-proxy-plan.gif)
 
 路由器必须在同一个系统里做查询解析、规划、连接池和缓冲。复杂软件很难做对。
 

@@ -18,6 +18,19 @@ def _have_ffmpeg() -> bool:
     return shutil.which("ffmpeg") is not None and shutil.which("ffprobe") is not None
 
 
+def _write_rgb_png(path: Path, width: int, height: int, rgb: tuple[int, int, int]) -> None:
+    import struct
+    import zlib
+
+    raw = b"".join(b"\x00" + (bytes(rgb) * width) for _ in range(height))
+    ihdr = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+
+    def chunk(tag: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
+
+    path.write_bytes(b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", ihdr) + chunk(b"IDAT", zlib.compress(raw)) + chunk(b"IEND", b""))
+
+
 def _make_color_mp4(path: Path, seconds: float) -> None:
     subprocess.run(
         [
@@ -67,6 +80,29 @@ class GifEncodeTest(unittest.TestCase):
 
 
 class GifEncodeFallbackTest(unittest.TestCase):
+    def test_default_convert_keeps_gif_over_old_byte_cap(self) -> None:
+        if not _have_ffmpeg():
+            self.skipTest("ffmpeg/ffprobe required")
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "src.mp4"
+            dest = Path(tmp) / "out.gif"
+            _make_color_mp4(src, 1)
+            original = capture_media.encode_gif
+
+            def fat_encode(src_path, dest_path, **_kwargs):
+                dest_path.parent.mkdir(parents=True, exist_ok=True)
+                dest_path.write_bytes(b"GIF89a" + b"x" * 2_000_000)
+                return True
+
+            capture_media.encode_gif = fat_encode
+            try:
+                status = capture_media.convert_local_video(src, dest, duration_s=1)
+            finally:
+                capture_media.encode_gif = original
+            self.assertEqual(status, "converted")
+            self.assertTrue(dest.is_file())
+            self.assertGreater(dest.stat().st_size, 1_500_000)
+
     def test_encode_ladder_shrinks_until_under_limit(self) -> None:
         if not _have_ffmpeg():
             self.skipTest("ffmpeg/ffprobe required")
@@ -266,6 +302,20 @@ class StitchFramesTest(unittest.TestCase):
                 "skipped-long",
             )
 
+    def test_stitches_frames_with_odd_height(self) -> None:
+        if not _have_ffmpeg():
+            self.skipTest("ffmpeg required")
+        with tempfile.TemporaryDirectory() as tmp:
+            frames = []
+            for i in range(3):
+                png = Path(tmp) / f"{i}.png"
+                _write_rgb_png(png, 80, 267, (0, 128, i * 40))
+                frames.append(png)
+            dest = Path(tmp) / "odd.gif"
+            self.assertEqual(capture_media.stitch_image_sequence(frames, dest), "converted")
+            self.assertTrue(dest.is_file())
+            self.assertGreater(dest.stat().st_size, 0)
+
 
 class RecordSectionTest(unittest.TestCase):
     def test_missing_playwright_is_skipped(self) -> None:
@@ -275,24 +325,6 @@ class RecordSectionTest(unittest.TestCase):
             playwright_factory=None,
         )
         self.assertEqual(status, "skipped-no-browser")
-
-    def test_oversized_visual_falls_back_to_still_png(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            frames = []
-            for color in ("red", "blue"):
-                png = Path(tmp) / f"{color}.png"
-                png.write_bytes(color.encode() + b"\x89PNG\r\n" + color.encode() * 20)
-                frames.append(png)
-            original = capture_media.stitch_image_sequence
-            capture_media.stitch_image_sequence = lambda *_args, **_kwargs: "skipped-too-large"
-            try:
-                dest = Path(tmp) / "out.gif"
-                status = capture_media._write_recorded_frames(frames, dest)
-            finally:
-                capture_media.stitch_image_sequence = original
-            self.assertEqual(status, "converted")
-            self.assertFalse(dest.exists())
-            self.assertTrue(dest.with_suffix(".png").is_file())
 
     def test_missing_playwright_skips_page_visual(self) -> None:
         status = capture_media.record_page_visual(
