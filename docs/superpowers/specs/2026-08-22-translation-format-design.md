@@ -162,7 +162,7 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 - 工具：`ffmpeg`（有 `yt-dlp` 就用来探时长、下短源）。
 - 参数：最长 15 秒、8 fps、宽最大 640、`palettegen` + `paletteuse`、无限循环。
 - 单文件超过 1.5MB：按阶梯缩小，直到能放下：`8fps/640` → `6fps/480` → `6fps/320` → `4fps/320`（64 色）→ `4fps/240`（48 色、无 dither）。整段仍按原片时长，不截前 15 秒。阶梯用尽仍超则丢弃该 GIF，只留文字链。
-- YouTube 在数据中心 IP 上常被拦。优先 `yt-dlp`；失败则用可选的 `YOUTUBE_API_KEY` 读 `contentDetails.duration`。下载需要 Netscape cookies 文件（环境变量 `TECHTRANSLATE_YTDLP_COOKIES`，Action secret `YTDLP_COOKIES`）。没有密钥/cookies 时仍按「读不到时长 / 下不下来」跳过，只留文字链。
+- YouTube：公开流程不收集账号、cookies、API key。读不到时长或下不下来就跳过，只留文字链。不要把密钥或 cookies 写进仓库、issue、PR。
 - 每篇最多 8 个媒体文件（GIF + 静帧合计）。超出的按文中出现顺序丢掉后面的。
 - 文件名：`yt-<id>.gif`、`video-<n>.gif`、`section-<n>.gif`、失败静帧用 `.jpg`。
 

@@ -78,20 +78,6 @@ jobs:
           python3 -m pip install --quiet yt-dlp playwright
           python3 -m playwright install --with-deps chromium
 
-      - name: Optional YouTube credentials
-        if: steps.guard.outputs.skip != 'true' && steps.prepare.outputs.has_files == 'true'
-        env:
-          YTDLP_COOKIES: ${{ secrets.YTDLP_COOKIES }}
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-        run: |
-          if [[ -n "$YOUTUBE_API_KEY" ]]; then
-            echo "YOUTUBE_API_KEY=$YOUTUBE_API_KEY" >> "$GITHUB_ENV"
-          fi
-          if [[ -n "$YTDLP_COOKIES" ]]; then
-            printf '%s\n' "$YTDLP_COOKIES" > "$RUNNER_TEMP/youtube.cookies"
-            echo "TECHTRANSLATE_YTDLP_COOKIES=$RUNNER_TEMP/youtube.cookies" >> "$GITHUB_ENV"
-          fi
-
       - name: Convert short inbox media
         if: steps.guard.outputs.skip != 'true' && steps.prepare.outputs.has_files == 'true'
         run: python3 scripts/capture_media.py --inbox _inbox --repo-root .

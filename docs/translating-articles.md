@@ -17,14 +17,9 @@ To retry a failed issue, remove the `translation-queued` label and add `translat
 
 You can also run **Actions → Translate article → Run workflow** and paste a URL.
 
-## Optional: YouTube GIFs
+## YouTube
 
-GitHub-hosted runners often get YouTube's "Sign in to confirm you're not a bot" page. To convert clips that are 15 seconds or shorter, add either or both repository secrets:
-
-- `YOUTUBE_API_KEY` — YouTube Data API v3 key, used only to read duration
-- `YTDLP_COOKIES` — Netscape `cookies.txt` from a logged-in YouTube session, used by `yt-dlp` to download the short file
-
-Without those secrets the Action still writes the inbox and the YouTube text link; it just skips the GIF.
+Do not put API keys, cookies, or account files in this repo, issues, or pull requests. The public Action does not collect YouTube login data. YouTube embeds stay as text links; only page-hosted short videos and CSS `section` demos become GIFs.
 
 ## Optional: auto-assign Copilot
 
