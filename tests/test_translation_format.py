@@ -132,7 +132,28 @@ class TechDomainTest(unittest.TestCase):
         )
         self.assertEqual(
             tf.classify_tech_domain("How JPG Works", "lossy compression blocks"),
-            "other",
+            "systems",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "How WebP Works",
+                "lossy mode quantization chroma blocks",
+            ),
+            "systems",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Writing a C Compiler from Scratch",
+                "lexing parsing codegen register allocation",
+            ),
+            "systems",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Virtual Memory in Operating Systems",
+                "page tables TLB swapping",
+            ),
+            "systems",
         )
         self.assertEqual(
             tf.classify_tech_domain(

@@ -76,7 +76,7 @@ cover_image: https://example.com/cover.png
 | `frontend` | CSS、浏览器、页面、前端框架 |
 | `backend` | 服务端、数据库、API 实现 |
 | `devops` | CI/CD、K8s、发布流水线本身就是主题 |
-| `systems` | 计算机体系结构、微架构、ISA、操作系统、编译器、GPU/CPU 硬件本身 |
+| `systems` | 计算机体系结构、微架构、ISA、操作系统、编译器、GPU/CPU 硬件、图像编解码本身 |
 | `other` | 上面都对不上才用。能分清就不要写 `other` |
 
 用 `translation_format.classify_tech_domain(title, body)` 选领域，inbox 里的 `tech_domain` 就是这个结果。标题主旨优先于正文顺带提到的词。只有分类器也返回 `other` 时才写 `other`。Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。体系结构正典即使举例用到 LLM / H100，仍是 `systems`。

@@ -35,15 +35,32 @@ _DOMAIN_SIGNALS = (
             r"\bai chip",
             r"^ai\b",
             r"\bai [a-z]",
+            r"transformer",
+            r"neural network",
+            r"machine learning",
+            r"大模型",
+            r"提示词工程",
         ),
     ),
     (
         "security",
-        (r"\bxss\b", r"exploit", r"cve-\d", r"sanitiz", r"\brce\b", r"\bcsrf\b", r"\bcsp\b"),
+        (
+            r"\bxss\b",
+            r"exploit",
+            r"cve-\d",
+            r"sanitiz",
+            r"\brce\b",
+            r"\bcsrf\b",
+            r"\bcsp\b",
+            r"vulnerabilit",
+            r"\boauth\b",
+            r"\bjwt\b",
+            r"漏洞",
+        ),
     ),
     (
         "android",
-        (r"\bandroid\b", r"jetpack", r"\bdagger\b", r"recyclerview"),
+        (r"\bandroid\b", r"jetpack", r"\bdagger\b", r"recyclerview", r"jetpack compose"),
     ),
     (
         "mobile",
@@ -51,7 +68,18 @@ _DOMAIN_SIGNALS = (
     ),
     (
         "frontend",
-        (r"\bcss\b", r"\breact\b", r"\bvue\b", r"\bdom\b", r"\bbrowser\b"),
+        (
+            r"\bcss\b",
+            r"\breact\b",
+            r"\bvue\b",
+            r"\bdom\b",
+            r"\bbrowser\b",
+            r"\bjavascript\b",
+            r"\btypescript\b",
+            r"\bhtml5\b",
+            r"\bflexbox\b",
+            r"\bwebpack\b",
+        ),
     ),
     (
         "devops",
@@ -62,6 +90,8 @@ _DOMAIN_SIGNALS = (
             r"terraform",
             r"\bhelm\b",
             r"github actions",
+            r"\bdocker\b",
+            r"prometheus",
         ),
     ),
     (
@@ -87,11 +117,43 @@ _DOMAIN_SIGNALS = (
             r"\bgpu-accelerated\b",
             r"\bmetal shader\b",
             r"terminal emulator",
+            r"operating systems?",
+            r"操作系统",
+            r"\bcompilers?\b",
+            r"编译器",
+            r"filesystems?",
+            r"virtual memory",
+            r"\btlb\b",
+            r"page tables?",
+            r"register allocation",
+            r"\blexing\b",
+            r"\bcodegen\b",
+            r"\brisc-v\b",
+            r"\bx86[-_]?64\b",
+            r"\bmicroprocessor\b",
+            r"\bjp[e]?g\b",
+            r"\bwebp\b",
+            r"\bavif\b",
+            r"image codec",
+            r"\bcodecs?\b",
+            r"lossy compression",
+            r"图像编码",
+            r"编解码",
         ),
     ),
     (
         "backend",
-        (r"\bjvm\b", r"postgres", r"\bredis\b", r"\bgrpc\b", r"\bspring\b", r"\bapi\b server"),
+        (
+            r"\bjvm\b",
+            r"postgres",
+            r"\bredis\b",
+            r"\bgrpc\b",
+            r"\bspring\b",
+            r"\bapi\b server",
+            r"\bmicroservices?\b",
+            r"\bmysql\b",
+            r"\bmongodb\b",
+        ),
     ),
 )
 _TITLE_WEIGHT = 3
@@ -203,7 +265,7 @@ def _domain_score(patterns: tuple[str, ...], title: str, body: str) -> int:
 
 
 def classify_tech_domain(title: str, body: str = "") -> str:
-    """Infer tech_domain from the primary topic. Prefer any match over other."""
+    """Infer tech_domain from the primary topic. Return other only when nothing matches."""
     scored = [
         (_domain_score(patterns, title, body), domain)
         for domain, patterns in _DOMAIN_SIGNALS

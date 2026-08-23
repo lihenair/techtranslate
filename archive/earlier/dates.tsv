@@ -43,6 +43,6 @@ backend/Java注解.md	2016-08-17	Java注解
 backend/从SQLite压缩性能：插入.md	2017-08-25	从SQLite压缩性能：插入
 backend/潜入字节码操作：使用ASM和Javassist创建审核日志.md	2017-08-25	深入字节码操作：使用ASM和Javassist创建审核日志
 backend/理解协程，JVM线程和并发问题.md	2021-04-02	理解协程，JVM线程和并发问题
-other/How JPG Works.md	2016-08-17	JPG如何工作的
-other/How WebP Works.md	2016-08-17	WebP是如何工作的(有损模式)
+systems/How JPG Works.md	2016-08-17	JPG如何工作的
+systems/How WebP Works.md	2016-08-17	WebP是如何工作的(有损模式)
 security/Android Security-Welcome To Shell.md	2016-08-24	Android安全性: 欢迎来到Shell(权限)

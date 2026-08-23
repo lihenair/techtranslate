@@ -71,9 +71,9 @@ README_TITLES = {
 }
 LEGACY_DOMAINS = {
     "Android Security-Welcome To Shell.md": "security",
-    "How JPG Works.md": "other",
-    "How WebP Works.md": "other",
-    "I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md": "other",
+    "How JPG Works.md": "systems",
+    "How WebP Works.md": "systems",
+    "I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md": "systems",
     "Java注解.md": "backend",
     "从SQLite压缩性能：插入.md": "backend",
     "潜入字节码操作：使用ASM和Javassist创建审核日志.md": "backend",
