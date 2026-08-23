@@ -125,6 +125,18 @@ class InboxFormatTest(unittest.TestCase):
             self.assertTrue(article_tools.already_translated(root, "https://example.com/already"))
             self.assertFalse(article_tools.already_translated(root, "https://example.com/new"))
 
+    def test_already_translated_detects_archive_url(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "README.md").write_text("# index\n", encoding="utf-8")
+            dest = root / "archive" / "2026-08-23" / "ai"
+            dest.mkdir(parents=True)
+            (dest / "post.md").write_text(
+                "原文链接：<https://example.com/archived>\n", encoding="utf-8"
+            )
+            self.assertTrue(article_tools.already_translated(root, "https://example.com/archived"))
+            self.assertFalse(article_tools.already_translated(root, "https://example.com/new"))
+
 
 class MediaExtractTest(unittest.TestCase):
     def test_html_parser_emits_youtube_and_video_comments(self) -> None:

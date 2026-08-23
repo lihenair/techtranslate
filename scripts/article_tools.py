@@ -147,7 +147,12 @@ def already_translated(repo_root: Path, url: str) -> bool:
     needle = url.strip()
     if not needle:
         return False
-    for path in [repo_root / "README.md", *repo_root.glob("*.md")]:
+    paths = [repo_root / "README.md", *repo_root.glob("*.md")]
+    archive = repo_root / "archive"
+    if archive.is_dir():
+        paths.extend(archive.rglob("*.md"))
+        paths.extend(archive.rglob("*.html"))
+    for path in paths:
         try:
             text = path.read_text(encoding="utf-8")
         except OSError:

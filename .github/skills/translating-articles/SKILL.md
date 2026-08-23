@@ -19,11 +19,11 @@ Then run `python scripts/capture_media.py --inbox _inbox --repo-root .` if `asse
 
 Do not invent article text. If fetch fails, comment on the issue and stop.
 
-Skip a URL if it already appears in `README.md` or an existing root `*.md` file.
+Skip a URL if it already appears in `README.md` or `archive/**/*.md`.
 
 ## Output file
 
-- Path: repo root, filename from the English title slug (`CSS-the-bomb-inside-your-inbox.md`).
+- Path: `archive/<translated_at>/<tech_domain>/`, filename from the English title slug (`archive/2026-08-22/security/CSS-the-bomb-inside-your-inbox.md`). Old posts without a reliable date live under `archive/earlier/<tech_domain>/`.
 - Do **not** put `【翻译】` in the filename or H1.
 - Short GIFs: `assets/<slug>/yt-<id>.gif`, `video-N.gif`, or `section-N.gif`.
 
@@ -103,8 +103,11 @@ If capture skipped the item (`skipped-long`, `skipped-unknown`, `skipped-no-brow
 
 ## README
 
+Put the new link at the **top** of that `tech_domain` section. Keep the date. Then run `python3 scripts/rebuild_readme.py` (or edit the catalog block by hand):
+
 ```markdown
-[中文标题](https://github.com/lihenair/techtranslate/blob/master/File-Name.md)
+### AI
+- 2026-08-23 [中文标题](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/File-Name.md)
 ```
 
 ## Cleanup

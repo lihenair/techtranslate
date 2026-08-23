@@ -189,8 +189,12 @@ class ValidateTranslationTest(unittest.TestCase):
 
 
 class ClaudeSteeringTranslationTest(unittest.TestCase):
-    PATH = ROOT / (
-        "10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md"
+    PATH = (
+        ROOT
+        / "archive"
+        / "2026-08-23"
+        / "ai"
+        / "10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md"
     )
 
     def test_real_translation_matches_format_and_source_structure(self) -> None:

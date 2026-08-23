@@ -17,12 +17,12 @@
 
 | 项 | 规则 |
 | --- | --- |
-| 路径 | 仓库根目录 `*.md` |
+| 路径 | `archive/<translated_at>/<tech_domain>/`；旧文在 `archive/earlier/<tech_domain>/` |
 | 文件名 | 英文标题 slug，与现有习惯一致，例如 `CSS-the-bomb-inside-your-inbox.md` |
-| README 链接文字 | 中文标题，不含 `【翻译】` |
+| README 链接文字 | 中文标题，不含 `【翻译】`；按领域分组，组内最近的在前，并写翻译日期 |
 | 配套媒体 | `assets/<slug>/`，仅该篇引用的截帧 / GIF |
 
-跳过条件不变：`README.md` 或根目录 `*.md` 里已出现该原文 URL，则不再译。
+跳过条件不变：`README.md` 或 `archive/` 里已出现该原文 URL，则不再译。
 
 ## Frontmatter（meta）
 

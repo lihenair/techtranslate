@@ -7,7 +7,7 @@ Daily English article URLs become Chinese markdown translations in this repo, ma
 1. Open a **Translate article** issue (or paste URLs into an issue and add the `translate` label), or run the **Translate article** workflow with a URL.
 2. GitHub Action extracts `http(s)` links, fetches each article, and writes `_inbox/<slug>.source.md` on branch `translate/issue-<n>` (or `translate/manual-<run>`).
 3. The Action opens a pull request and comments on the issue. If `COPILOT_ASSIGN_TOKEN` is set, it assigns Copilot cloud agent with custom agent `article-translator` and `base_branch` set to that inbox branch so the agent can read the fetched source (cloud agent cannot reliably browse the live web).
-4. The agent (GitHub Copilot **or** Cursor) translates `_inbox/*.source.md` into a root-level Chinese markdown file, updates `README.md`, and removes the inbox source.
+4. The agent (GitHub Copilot **or** Cursor) translates `_inbox/*.source.md` into `archive/<translated_at>/<tech_domain>/`, updates the README catalog, and removes the inbox source.
 
 ## Pieces
 

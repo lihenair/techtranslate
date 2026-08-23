@@ -15,7 +15,7 @@
 - `tech_domain` is one of: `android`, `frontend`, `backend`, `security`, `mobile`, `devops`, `ai`, `other`.
 - Source media with duration `> 15` seconds or unknown duration is not converted (no frames, no first-15-seconds clip).
 - Do not commit `mp4` files. Do not write `iframe` tags. Do not write Juejin signed image hosts (`p9-xtjj-sign`, `link.juejin.cn`).
-- Do not migrate existing root `*.md` translations.
+- Do not rewrite old translation bodies when changing format.
 - Missing `ffmpeg` skips conversion and must not fail the inbox fetch.
 
 ## File map
@@ -1044,11 +1044,11 @@ Then run `python scripts/capture_media.py --inbox _inbox --repo-root .` if `asse
 
 Do not invent article text. If fetch fails, comment on the issue and stop.
 
-Skip a URL if it already appears in `README.md` or an existing root `*.md` file.
+Skip a URL if it already appears in `README.md` or `archive/**/*.md`.
 
 ## Output file
 
-- Path: repo root, filename from the English title slug (`CSS-the-bomb-inside-your-inbox.md`).
+- Path: `archive/<translated_at>/<tech_domain>/`, filename from the English title slug (`archive/2026-08-22/security/CSS-the-bomb-inside-your-inbox.md`).
 - Do **not** put `【翻译】` in the filename or H1.
 - Short GIFs: `assets/<slug>/video-N.gif` or `yt-<id>.gif`.
 
@@ -1148,7 +1148,7 @@ When assigned an issue or pull request:
 2. Prefer inbox source files — GitHub Actions fetches them because you may not be able to browse the live page.
 3. If inbox files are missing, run `python scripts/article_tools.py --url <URL> --outdir _inbox`.
 4. Run `python scripts/capture_media.py --inbox _inbox --repo-root .` when media comments exist.
-5. Write one root-level Chinese markdown file per article (YAML meta + body header, no `【翻译】` on GitHub), update `README.md`, keep `assets/<slug>/` GIFs, and delete the inbox source.
+5. Write one Chinese markdown file per article under `archive/<translated_at>/<tech_domain>/` (YAML meta + body header, no `【翻译】` on GitHub), update the README catalog, keep `assets/<slug>/` GIFs, and delete the inbox source.
 6. Do not change unrelated translations.
 
 If a URL cannot be fetched and there is no inbox file, comment on the issue with the error and stop. Do not guess the article body.
@@ -1195,9 +1195,9 @@ Add a row to its Files table:
 `_inbox/README.md` — replace the numbered list with:
 
 ```markdown
-1. Translate each file into a root-level Chinese markdown post using `.github/skills/translating-articles/SKILL.md`
+1. Translate each file into `archive/<translated_at>/<tech_domain>/` using `.github/skills/translating-articles/SKILL.md`
 2. Keep any `assets/<slug>/` GIFs the capture step wrote
-3. Link the post from `README.md`
+3. Refresh the README catalog (`python3 scripts/rebuild_readme.py`)
 4. Delete the inbox source from the pull request
 ```
 

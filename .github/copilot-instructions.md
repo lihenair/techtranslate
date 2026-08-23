@@ -7,4 +7,4 @@ When asked to translate an article from a URL or a GitHub issue:
 - Use YAML frontmatter + the body header from the skill (no `【翻译】` on GitHub)
 - Keep code, API names, and original image URLs
 - Convert short videos and `section` animations to GIFs via `scripts/capture_media.py`
-- Add a `README.md` link for every new translation
+- Write new posts under `archive/<translated_at>/<tech_domain>/` and refresh the README catalog

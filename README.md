@@ -1,69 +1,101 @@
 # techtranslate
-技术文章翻译
 
-每天丢一个英文文章链接即可排队翻译：用 [Translate article](https://github.com/lihenair/techtranslate/issues/new?template=translate-article.yml) Issue，或在 Actions 里运行 **Translate article**。说明见 [docs/translating-articles.md](docs/translating-articles.md)。
+把英文技术文章译成简体中文。仓库里的工具负责抓取原文、排版检查，以及把不超过 15 秒的短视频 / 页面动画转成 GIF；Copilot 或 Cursor agent 按统一模板写译文。
 
+## 怎么用
 
-[Android Grid Layout](https://github.com/lihenair/techtranslate/blob/master/Android%20Grid%20Layout.md)
+1. 打开 [Translate article](https://github.com/lihenair/techtranslate/issues/new?template=translate-article.yml) Issue，贴上原文链接（可以多个）。
+2. GitHub Action 把正文抓进 `_inbox/`，并开 inbox PR。
+3. 在 Issue 上指派 Copilot，选用自定义 agent **article-translator**；或在 Cursor 里按 [translating-articles](.github/skills/translating-articles/SKILL.md) 技能译完。
 
-[产品使用Dagger 2——减少方法数](https://github.com/lihenair/techtranslate/blob/master/Dagger%202%20on%20producton%E2%80%94reducing%20methods%20count.md)
+也可以在 **Actions → Translate article** 里直接跑工作流。重试失败任务时，去掉 `translation-queued` 再贴回 `translate`。
 
-[JPG如何工作的](https://github.com/lihenair/techtranslate/blob/master/How%20JPG%20Works.md)
+说明见 [docs/translating-articles.md](docs/translating-articles.md)。新译文格式见 [2026-08-22-translation-format-design.md](docs/superpowers/specs/2026-08-22-translation-format-design.md)。
 
-[WebP是如何工作的(有损模式)](https://github.com/lihenair/techtranslate/blob/master/How%20WebP%20Works.md)
+新译文放在 `archive/<翻译日期>/<领域>/`。没有可靠日期的旧文收在 `archive/earlier/<领域>/`。不要在仓库、Issue 或 PR 里放 YouTube key、cookie 或账号文件。
 
-[Jack和Jill的阴暗面](https://github.com/lihenair/techtranslate/blob/master/Jack%E5%92%8CJill%E7%9A%84%E9%98%B4%E6%9A%97%E9%9D%A2.md)
+## 工具
 
-[Java注解](https://github.com/lihenair/techtranslate/blob/master/Java%E6%B3%A8%E8%A7%A3.md)
+| 路径 | 作用 |
+| --- | --- |
+| `.github/workflows/translate-article.yml` | 抓取链接，写入 `_inbox/`，开 inbox PR |
+| `.github/agents/article-translator.agent.md` | Copilot 自定义翻译 agent |
+| `.github/skills/translating-articles/SKILL.md` | Cursor / Copilot 共用的翻译技能 |
+| `scripts/article_tools.py` | 抽 URL、Jina 正文、HTML 媒体/meta 合并 |
+| `scripts/capture_media.py` | 把 ≤15 秒的视频 / section 动画转成 `assets/<slug>/` GIF |
+| `scripts/translation_format.py` | 译文校验、领域提示、时长门槛 |
+| `scripts/translation_archive.py` | 译文归档路径和 README 目录 |
+| `scripts/rebuild_readme.py` | 按 `archive/` 重生成 README 译文列表 |
 
-[No More findViewById](https://github.com/lihenair/techtranslate/blob/master/No%20More%20findViewById.md)
+## 译文
 
-[把玩Java注解处理](https://github.com/lihenair/techtranslate/blob/master/Playing%20with%20Java%20annotation%20processing.md)
+按技术领域分组，组内最近翻译的在前。
 
-[Android项目使用Dagger2进行依赖注入](https://github.com/lihenair/techtranslate/blob/master/Using%20Dagger%202.md)
+<!-- catalog:start -->
 
-[Annotation](https://github.com/lihenair/techtranslate/blob/master/annotation.html)
+### AI
 
-[使用Dagger 2进行依赖注入 - API介绍](https://github.com/lihenair/techtranslate/blob/master/%E4%BD%BF%E7%94%A8Dagger%202%E8%BF%9B%E8%A1%8C%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.md)
+- 2026-08-23 [阻止 Agent 忽略指令的 10 种 Claude Code 引导机制](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md)
+- 2026-08-22 [NoBuzz](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/ai/NoBuzz.md)
 
-[使用Picasso加载图片](https://github.com/lihenair/techtranslate/blob/master/%E4%BD%BF%E7%94%A8Picasso%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87.md)
+### 安全
 
-[展示模式架构比较MVP(SC)，MVP(PV)，PM，MVVM和MVC](https://github.com/lihenair/techtranslate/blob/master/%E5%B1%95%E7%8E%B0%E6%A8%A1%E5%BC%8F%E6%AF%94%E8%BE%83.md)
+- 2016-08-24 [Android安全性: 欢迎来到Shell(权限)](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/security/Android%20Security-Welcome%20To%20Shell.md)
 
-[探索Android ConstraintLayout](https://github.com/lihenair/techtranslate/blob/master/%E6%8E%A2%E7%B4%A2Android%20ConstraintLayout.md)
+### Android
 
-[有效地减少方法数](https://github.com/lihenair/techtranslate/blob/master/%E6%9C%89%E6%95%88%E5%9C%B0%E5%87%8F%E5%B0%91%E6%96%B9%E6%B3%95%E6%95%B0.md)
+- 2021-11-07 [Recomposition-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Recomposition-Made-Easy.md)
+- 2021-11-07 [CompositionLocal-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/CompositionLocal-Made-Easy.md)
+- 2021-03-29 [Kotlin Contracts](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Kotlin%20Contract.md)
+- 2017-08-25 [鼓捣RxAndroid-Part1](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E9%BC%93%E6%8D%A3RxAndroid-Part1.md)
+- 2017-08-25 [地图业务重构](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E5%9C%B0%E5%9B%BE%E4%B8%9A%E5%8A%A1%E9%87%8D%E6%9E%84.md)
+- 2017-08-25 [使用DiffUtil更新RecyclerView的智能方式](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E4%BD%BF%E7%94%A8DiffUtil%E6%9B%B4%E6%96%B0RecyclerView%E7%9A%84%E6%99%BA%E8%83%BD%E6%96%B9%E5%BC%8F.md)
+- 2017-08-25 [何时调整你的网络图片？](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E4%BD%95%E6%97%B6%E8%B0%83%E6%95%B4%E4%BD%A0%E7%9A%84%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%89%87%EF%BC%9F.md)
+- 2017-08-25 [[译]Android架构组件 – 查看ViewModel – 第二部分](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%5B%E8%AF%91%5DAndroid%E6%9E%B6%E6%9E%84%E7%BB%84%E4%BB%B6%20%E2%80%93%20%E6%9F%A5%E7%9C%8BViewModel%20%E2%80%93%20%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86.md)
+- 2017-08-25 [RenderScript](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/RenderScript.md)
+- 2017-08-25 [Kotlin Data Class](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Kotlin%20Data%20Class.md)
+- 2017-08-25 [Extension Function](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Extension%20Function.md)
+- 2017-08-25 [DiffUtil是必须的!](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/DiffUtil%E6%98%AF%E5%BF%85%E9%A1%BB%E7%9A%84%21.md)
+- 2017-08-25 [Animation: Jump-through](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Animation-%20Jump-through.md)
+- 2017-08-25 [Andro使用AnimatedVectorDrawables处理线路转换](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Andro%E4%BD%BF%E7%94%A8AnimatedVectorDrawables%E5%A4%84%E7%90%86%E7%BA%BF%E8%B7%AF%E8%BD%AC%E6%8D%A2.md)
+- 2017-08-25 [Android的构建时依赖性修补程序](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Android%E7%9A%84%E6%9E%84%E5%BB%BA%E6%97%B6%E4%BE%9D%E8%B5%96%E6%80%A7%E4%BF%AE%E8%A1%A5%E7%A8%8B%E5%BA%8F.md)
+- 2017-08-25 [Android架构组件 – 查看Room和LiveData – 第一部分](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Android%E6%9E%B6%E6%9E%84%E7%BB%84%E4%BB%B6%20%E2%80%93%20%E6%9F%A5%E7%9C%8BRoom%E5%92%8CLiveData%20%E2%80%93%20%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86.md)
+- 2017-08-25 [Android架构组件 - 查看Lifecycles - 第3部分](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Android%E6%9E%B6%E6%9E%84%E7%BB%84%E4%BB%B6%20-%20%E6%9F%A5%E7%9C%8BLifecycles%20-%20%E7%AC%AC3%E9%83%A8%E5%88%86.md)
+- 2017-08-25 [AndroidWeekly248期 源码库与代码](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/AndroidWeekly248%E6%9C%9F%20%E6%BA%90%E7%A0%81%E5%BA%93%E4%B8%8E%E4%BB%A3%E7%A0%81.md)
+- 2016-12-29 [DI101-第一部分](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/DI101-Part1.md)
+- 2016-12-29 [DI101 - 第一部分](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/DI101%20-%20%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86.md)
+- 2016-10-27 [Android 7.1 Static Shortcut](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Android%207.1%E9%9D%99%E6%80%81%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F.md)
+- 2016-10-08 [Annotation Processing in Android Studio](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Annotation%20Processing%20in%20Android%20Studio.md)
+- 2016-09-28 [Android support Annotation](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Android%20support%20Annotation.md)
+- 2016-09-07 [Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!)](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Keeping%20Android%20runtime%20permissions%20from%20cluttering%20your%20app%20%28Headless%20Dialog%20Fragments%21%29.md)
+- 2016-08-30 [异步布局加载](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E5%BC%82%E6%AD%A5%E5%B8%83%E5%B1%80%E5%8A%A0%E8%BD%BD.md)
+- 2016-08-29 [使用Gradle额外属性管理Android依赖版本](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E4%BD%BF%E7%94%A8Gradle%E9%A2%9D%E5%A4%96%E5%B1%9E%E6%80%A7%E7%AE%A1%E7%90%86Android%E4%BE%9D%E8%B5%96%E7%89%88%E6%9C%AC.md)
+- 2016-08-25 [Android原生支持Java8的Lambdas表达式](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Android%E5%8E%9F%E7%94%9F%E6%94%AF%E6%8C%81Java8%E7%9A%84Lambdas%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
+- 2016-08-17 [鼓捣RxAndroid--介绍](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E9%BC%93%E6%8D%A3RxAnroid-%E4%BB%8B%E7%BB%8D.md)
+- 2016-08-17 [有效地减少方法数](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E6%9C%89%E6%95%88%E5%9C%B0%E5%87%8F%E5%B0%91%E6%96%B9%E6%B3%95%E6%95%B0.md)
+- 2016-08-17 [探索Android ConstraintLayout](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E6%8E%A2%E7%B4%A2Android%20ConstraintLayout.md)
+- 2016-08-17 [把玩Java注解处理](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Playing%20with%20Java%20annotation%20processing.md)
+- 2016-08-17 [展示模式架构比较MVP(SC)，MVP(PV)，PM，MVVM和MVC](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E5%B1%95%E7%8E%B0%E6%A8%A1%E5%BC%8F%E6%AF%94%E8%BE%83.md)
+- 2016-08-17 [使用Picasso加载图片](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E4%BD%BF%E7%94%A8Picasso%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87.md)
+- 2016-08-17 [使用Dagger 2进行依赖注入 - API介绍](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E4%BD%BF%E7%94%A8Dagger%202%E8%BF%9B%E8%A1%8C%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.md)
+- 2016-08-17 [产品使用Dagger 2——减少方法数](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Dagger%202%20on%20producton%E2%80%94reducing%20methods%20count.md)
+- 2016-08-17 [Router——一切都在正确的位置 映射功能到应用的组件](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/%E8%B7%AF%E7%94%B1%E5%99%A8.md)
+- 2016-08-17 [No More findViewById](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/No%20More%20findViewById.md)
+- 2016-08-17 [Jack和Jill的阴暗面](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Jack%E5%92%8CJill%E7%9A%84%E9%98%B4%E6%9A%97%E9%9D%A2.md)
+- 2016-08-17 [Annotation](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/annotation.html)
+- 2016-08-17 [Android项目使用Dagger2进行依赖注入](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Using%20Dagger%202.md)
 
-[Router——一切都在正确的位置 映射功能到应用的组件](https://github.com/lihenair/techtranslate/blob/master/%E8%B7%AF%E7%94%B1%E5%99%A8.md)
+### 后端
 
-[鼓捣RxAndroid--介绍](https://github.com/lihenair/techtranslate/blob/master/%E9%BC%93%E6%8D%A3RxAnroid-%E4%BB%8B%E7%BB%8D.md)
+- 2021-04-02 [理解协程，JVM线程和并发问题](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B%EF%BC%8CJVM%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98.md)
+- 2017-08-25 [深入字节码操作：使用ASM和Javassist创建审核日志](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E6%BD%9C%E5%85%A5%E5%AD%97%E8%8A%82%E7%A0%81%E6%93%8D%E4%BD%9C%EF%BC%9A%E4%BD%BF%E7%94%A8ASM%E5%92%8CJavassist%E5%88%9B%E5%BB%BA%E5%AE%A1%E6%A0%B8%E6%97%A5%E5%BF%97.md)
+- 2017-08-25 [从SQLite压缩性能：插入](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/%E4%BB%8ESQLite%E5%8E%8B%E7%BC%A9%E6%80%A7%E8%83%BD%EF%BC%9A%E6%8F%92%E5%85%A5.md)
+- 2016-08-17 [Java注解](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/backend/Java%E6%B3%A8%E8%A7%A3.md)
 
-[Android安全性: 欢迎来到Shell(权限)](https://github.com/lihenair/techtranslate/blob/master/Android%20Security-Welcome%20To%20Shell.md)
+### 其他
 
-[Android原生支持Java8的Lambdas表达式](https://github.com/lihenair/techtranslate/blob/master/Android%E5%8E%9F%E7%94%9F%E6%94%AF%E6%8C%81Java8%E7%9A%84Lambdas%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
+- 2026-08-22 [我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/other/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
+- 2016-08-17 [WebP是如何工作的(有损模式)](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/other/How%20WebP%20Works.md)
+- 2016-08-17 [JPG如何工作的](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/other/How%20JPG%20Works.md)
 
-[使用Gradle额外属性管理Android依赖版本](https://github.com/lihenair/techtranslate/blob/master/%E4%BD%BF%E7%94%A8Gradle%E9%A2%9D%E5%A4%96%E5%B1%9E%E6%80%A7%E7%AE%A1%E7%90%86Android%E4%BE%9D%E8%B5%96%E7%89%88%E6%9C%AC.md)
-
-[异步布局加载](https://github.com/lihenair/techtranslate/blob/master/%E5%BC%82%E6%AD%A5%E5%B8%83%E5%B1%80%E5%8A%A0%E8%BD%BD.md)
-
-[Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!)](https://github.com/lihenair/techtranslate/blob/master/Keeping%20Android%20runtime%20permissions%20from%20cluttering%20your%20app%20(Headless%20Dialog%20Fragments!).md)
-
-[Android support Annotation](https://github.com/lihenair/techtranslate/blob/master/Android%20support%20Annotation.md)
-
-[Annotation Processing in Android Studio](https://github.com/lihenair/techtranslate/blob/master/Annotation%20Processing%20in%20Android%20Studio.md)
-
-[Android 7.1 Static Shortcut](https://github.com/lihenair/techtranslate/blob/master/Android%207.1%E9%9D%99%E6%80%81%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F.md)
-
-[DI101-第一部分](https://github.com/lihenair/techtranslate/blob/master/DI101-Part1.md)
-
-[Kotlin Contracts](https://github.com/lihenair/techtranslate/blob/master/Kotlin%20Contract.md)
-
-[CompositionLocal-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/CompositionLocal-Made-Easy.md)
-
-[Recomposition-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/Recomposition-Made-Easy.md)
-
-[NoBuzz](https://github.com/lihenair/techtranslate/blob/master/NoBuzz.md)
-
-[我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
-
-[阻止 Agent 忽略指令的 10 种 Claude Code 引导机制](https://github.com/lihenair/techtranslate/blob/master/10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md)
+<!-- catalog:end -->
