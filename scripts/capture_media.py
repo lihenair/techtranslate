@@ -18,6 +18,7 @@ import translation_format
 
 COMMENT_RE = re.compile(r"<!--\s*media:([a-z0-9-]+)([^>]*)-->")
 ATTR_RE = re.compile(r'([a-z0-9_]+)="([^"]*)"')
+DIRECT_MEDIA_RE = re.compile(r"\.(mp4|webm|mov|m4v|ogv)(?:[?#]|$)", re.I)
 USER_AGENT = (
     "Mozilla/5.0 (compatible; techtranslate-bot/1.0; +https://github.com/lihenair/techtranslate)"
 )
@@ -152,6 +153,10 @@ def download_remote_video(url: str, dest_dir: Path, runner=None) -> Path | None:
     return matches[0] if matches else None
 
 
+def looks_like_direct_media(url: str) -> bool:
+    return bool(DIRECT_MEDIA_RE.search(urlparse(url).path))
+
+
 def convert_remote_video(
     url: str,
     dest_gif: Path,
@@ -159,8 +164,10 @@ def convert_remote_video(
     download=download_remote_video,
 ) -> str:
     duration_s = probe(url)
-    if not translation_format.should_convert_source(duration_s):
-        return "skipped-unknown" if duration_s is None else "skipped-long"
+    if duration_s is not None and not translation_format.should_convert_source(duration_s):
+        return "skipped-long"
+    if duration_s is None and not looks_like_direct_media(url):
+        return "skipped-unknown"
     with tempfile.TemporaryDirectory() as tmp:
         downloaded = download(url, Path(tmp))
         if downloaded is None:
@@ -245,13 +252,23 @@ def record_section_html(
                 viewport={"width": 640, "height": 360},
                 java_script_enabled=False,
             )
-            page.set_content(html, wait_until="load")
+            try:
+                page.set_content(html, wait_until="networkidle")
+            except Exception:
+                page.set_content(html, wait_until="load")
+            target = page.locator("body > *").first
             with tempfile.TemporaryDirectory() as tmp:
                 frames: list[Path] = []
                 count = max(2, int(duration * 8))
                 for index in range(count):
                     frame = Path(tmp) / f"{index:03d}.png"
-                    page.screenshot(path=str(frame))
+                    try:
+                        if target.count() > 0:
+                            target.screenshot(path=str(frame))
+                        else:
+                            page.screenshot(path=str(frame))
+                    except Exception:
+                        page.screenshot(path=str(frame))
                     frames.append(frame)
                     page.wait_for_timeout(125)
                 browser.close()

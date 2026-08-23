@@ -110,6 +110,23 @@ class RemoteVideoTest(unittest.TestCase):
         )
         self.assertEqual(status, "skipped-unknown")
 
+    def test_direct_mp4_converts_when_remote_duration_missing(self) -> None:
+        if not _have_ffmpeg():
+            self.skipTest("ffmpeg/ffprobe required")
+        with tempfile.TemporaryDirectory() as tmp:
+            clip = Path(tmp) / "clip.mp4"
+            dest = Path(tmp) / "out.gif"
+            _make_color_mp4(clip, 1)
+            status = capture_media.convert_remote_video(
+                "https://example.com/loop.mp4",
+                dest,
+                probe=lambda url: None,
+                download=lambda url, dest_dir: Path(shutil.copy(clip, Path(dest_dir) / "dl.mp4")),
+            )
+            self.assertEqual(status, "converted")
+            self.assertTrue(dest.is_file())
+            self.assertGreater(dest.stat().st_size, 0)
+
 
 class ProcessInboxTest(unittest.TestCase):
     def test_process_inbox_converts_short_local_marker(self) -> None:
