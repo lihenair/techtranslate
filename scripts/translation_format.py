@@ -9,19 +9,19 @@ from urllib.parse import parse_qs, urlparse
 TECH_DOMAINS = frozenset(
     {"android", "frontend", "backend", "security", "mobile", "devops", "ai", "other"}
 )
-# Primary-topic order: earlier buckets win so side mentions do not steal the domain.
+# Heuristic only. Generic words such as agent/prompt/compose are not signals.
 _DOMAIN_SIGNALS = (
     (
         "ai",
         (
             r"\bclaude\b",
             r"\bgpt[- ]?\d",
-            r"\bllm\b",
-            r"\bagents?\b",
+            r"\bllms?\b",
             r"anthropic",
             r"openai",
-            r"\bprompts?\b",
             r"langchain",
+            r"\bai agents?\b",
+            r"coding agents?",
         ),
     ),
     (
@@ -30,7 +30,7 @@ _DOMAIN_SIGNALS = (
     ),
     (
         "android",
-        (r"\bandroid\b", r"jetpack", r"\bcompose\b", r"\bdagger\b", r"recyclerview"),
+        (r"\bandroid\b", r"jetpack", r"\bdagger\b", r"recyclerview"),
     ),
     (
         "mobile",
@@ -141,7 +141,7 @@ ISO8601_DURATION_RE = re.compile(
 
 
 def classify_tech_domain(title: str, body: str = "") -> str:
-    """Pick the article's primary field. Do not use other if a specific bucket fits."""
+    """Hint only. Humans still pick tech_domain by the article's primary topic."""
     blob = f"{title}\n{title}\n{body}".lower()
     for domain, patterns in _DOMAIN_SIGNALS:
         if any(re.search(pattern, blob) for pattern in patterns):

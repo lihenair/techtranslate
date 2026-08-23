@@ -56,7 +56,8 @@ cover_image: https://example.com/cover.png
 | `devops` | CI/CD、K8s、发布流水线本身就是主题 |
 | `other` | 上面都对不上才用。能分清就不要写 `other` |
 
-Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。先看标题和导语在讲什么。可用 `translation_format.classify_tech_domain(title, body)` 对照，但最终按主旨判断。
+Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。先看标题和导语在讲什么。可用 `translation_format.classify_tech_domain(title, body)` 对照，但最终按主旨判断。该函数只是启发式提示，不是权威分类。
+
 Omit `author`, `published_at`, and `cover_image` when unknown. Do not invent them.
 
 Body header, in this order, blank line between blocks:

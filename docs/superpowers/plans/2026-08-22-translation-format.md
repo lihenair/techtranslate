@@ -182,7 +182,7 @@ import re
 from urllib.parse import parse_qs, urlparse
 
 TECH_DOMAINS = frozenset(
-    {"android", "frontend", "backend", "security", "mobile", "devops", "other"}
+    {"android", "frontend", "backend", "security", "mobile", "devops", "ai", "other"}
 )
 MAX_SOURCE_SECONDS = 15.0
 MAX_GIF_BYTES = 1_500_000

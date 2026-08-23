@@ -130,6 +130,29 @@ class TechDomainTest(unittest.TestCase):
             "other",
         )
 
+    def test_classify_ignores_generic_words_that_are_not_the_topic(self) -> None:
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Scaling Kubernetes cluster agents",
+                "helm terraform CI/CD rollout replica agents",
+            ),
+            "devops",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "How to write better git commit prompts",
+                "commit message template",
+            ),
+            "other",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "How to compose CSS layouts",
+                "flexbox browser HTML DOM",
+            ),
+            "frontend",
+        )
+
 
 class DurationGateTest(unittest.TestCase):
     def test_converts_only_known_short_clips(self) -> None:
@@ -163,6 +186,49 @@ class ValidateTranslationTest(unittest.TestCase):
         dirty = SAMPLE + "\n![](https://p9-xtjj-sign.byteimg.com/x)\n"
         errors = tf.validate_translation(dirty)
         self.assertTrue(any("juejin" in e.lower() or "xtjj" in e for e in errors))
+
+
+class ClaudeSteeringTranslationTest(unittest.TestCase):
+    PATH = ROOT / (
+        "10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md"
+    )
+
+    def test_real_translation_matches_format_and_source_structure(self) -> None:
+        text = self.PATH.read_text(encoding="utf-8")
+        self.assertEqual(tf.validate_translation(text), [])
+        self.assertIn("published_at: 2026-06-28", text)
+        self.assertIn("发布于 2026 年 6 月 28 日。", text)
+        self.assertNotIn("嵌入内容（原站 Twitter）", text)
+        for slug in (
+            "why-this-matters-now",
+            "the-10-steering-mechanisms",
+            "1-project-memory-index-claudemd",
+            "2-path-scoped-constraint-rules",
+            "3-just-in-time-procedure-skills",
+            "4-human-triggered-workflow-manual-skills-and-slash-commands",
+            "5-isolated-investigator-subagents",
+            "6-session-posture-output-styles",
+            "7-one-run-overlay-append-system-prompt",
+            "8-live-capability-boundary-mcp-servers",
+            "9-event-gate-hooks",
+            "10-hard-boundary-permissions",
+            "the-decision-tree",
+            "what-changes-in-long-sessions",
+            "final-takeaway",
+        ):
+            self.assertIn(f"](#{slug})", text)
+        for excerpt in (
+            "Package manager: pnpm",
+            'paths:\n  - "src/api/**/*.ts"',
+            "name: release-notes",
+            "disable-model-invocation: true",
+            "name: security-reviewer",
+            "keep-coding-instructions: true",
+            "claude --append-system-prompt-file",
+            '"PreToolUse"',
+            '"Read(./secrets/**)"',
+        ):
+            self.assertIn(excerpt, text)
 
 
 if __name__ == "__main__":

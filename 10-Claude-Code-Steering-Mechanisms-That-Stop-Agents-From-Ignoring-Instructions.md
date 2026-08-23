@@ -3,6 +3,7 @@ title: "阻止 Agent 忽略指令的 10 种 Claude Code 引导机制"
 title_en: "10 Claude Code Steering Mechanisms That Stop Agents From Ignoring Instructions"
 source_url: https://generativeprogrammer.com/p/10-claude-code-steering-mechanisms
 author: Bilgin Ibryam
+published_at: 2026-06-28
 translated_at: 2026-08-23
 tech_domain: ai
 tags: [claude-code, agents, ai, tooling]
@@ -19,7 +20,9 @@ cover_image: https://substackcdn.com/image/fetch/$s_!SGrq!,w_1200,h_675,c_fill,f
 
 作者：[Bilgin Ibryam](https://x.com/bibryam)
 
-**Claude Code（Claude 的编程环境）忽略一条指令时，问题往往不在措辞，而在这条指令放在了哪里。**
+发布于 2026 年 6 月 28 日。
+
+**在记忆（memory）、规则（rules）、技能（skills）、钩子（hooks）、权限（permissions）、子代理（subagents）、输出风格（output styles）和 MCP 之间做选择的实用地图。**
 
 每种 Claude Code 配置都有一种引力，把东西吸进 `CLAUDE.md`。它一开始只是有用的项目备忘：构建命令、测试命令、仓库布局、几条约定；然后慢慢变成发布步骤、迁移规则、安全警告、生产命令、回复风格，以及所有还没找到更好归宿的指令的堆放处。
 
@@ -29,17 +32,15 @@ cover_image: https://substackcdn.com/image/fetch/$s_!SGrq!,w_1200,h_675,c_fill,f
 
 实际问题很简单：
 
-**这条指令应该放在哪里，才能在需要时看得见、不需要时便宜，并且必须生效时真的被执行？**
+这条指令应该放在哪里，才能在需要时看得见、不需要时便宜，并且必须生效时真的被执行？
 
-[嵌入内容（原站 Twitter）](https://x.com/i/status/2091095696808042532)
+## [为什么现在重要](#why-this-matters-now)
 
-## [放置，而不是措辞](#placement-rather-than-wording)
-
-Claude Code 已经长成模型周围的一套小型运行环境：记忆文件保存项目事实，规则限定约束范围，技能打包工作，子代理隔离调查，钩子和权限强制行为，输出风格设定回复姿态，MCP 服务器接上实时能力。仓库里一旦用到其中两种以上，有用的设计问题就变成「放哪里」，而不是「怎么写」。
+Claude Code 已经长成模型周围的一套小型运行环境：记忆文件保存项目事实，规则限定约束范围，技能打包工作，子代理隔离调查，钩子和权限强制行为，输出风格设定回复姿态，MCP 服务器接上实时能力。仓库里一旦用到其中两种以上，有用的设计问题就变成放置，而不是措辞。
 
 本文的具体对象就是 Claude Code 本身。我不是要复述文档，而是抽出团队在配置超出一份共享记忆文件之后真正需要的操作地图。
 
-放置问题有两个维度。第一是**范围（scope）**：这条东西应该作用于每次会话、一个目录、一组文件、一个工作流、一个子代理、一个外部工具，还是一个生命周期事件？第二是**强制力（enforcement）**：这是模型应当遵循的指导，还是运行时必须保证的边界？
+放置问题有两个维度。第一是范围（scope）：这条东西应该作用于每次会话、一个目录、一个 file glob、一个工作流、一个子代理、一个外部工具，还是一个生命周期事件？第二是强制力（enforcement）：这是模型应当遵循的指导，还是运行时必须保证的边界？
 
 这两个维度做对了，Claude 会可靠得多，因为每条指令都有自然位置和匹配的权威。做错了，你会在多个地方重复同一意图，却仍在无关的回合里为它付钱。
 
@@ -49,9 +50,11 @@ Claude Code 已经长成模型周围的一套小型运行环境：记忆文件�
 
 例如「永远不要改生产迁移」不应只写在 `CLAUDE.md` 里。记忆文件可以解释这条政策，边界本身应落在权限规则或钩子里：模型可能忘掉散文，套件（harness）不该忘掉政策。
 
+## [10 种引导机制](#the-10-steering-mechanisms)
+
 它们不只是功能，而是放置机制。每一种都在回答：指令应该住在哪里。
 
-## [CLAUDE.md：稳定的项目记忆](#claudemd-stable-project-memory)
+### [1. 项目记忆索引：CLAUDE.md](#1-project-memory-index-claudemd)
 
 用 `CLAUDE.md` 存放 Claude 在大多数会话里都该知道的稳定项目事实：构建命令、测试命令、仓库布局、架构地标、团队约定。
 
@@ -59,7 +62,17 @@ Claude Code 已经长成模型周围的一套小型运行环境：记忆文件�
 
 **适合：** 信息宽、稳定，而且对很多任务都有用。
 
-## [规则：按路径收窄的约束](#rules-path-scoped-constraints)
+示例：
+
+```
+# Project basics
+- Package manager: pnpm
+- Unit tests: pnpm test
+- API routes live in packages/api/src/routes
+- Service ownership is documented in docs/service-ownership.md
+```
+
+### [2. 按路径收窄的约束：rules](#2-path-scoped-constraint-rules)
 
 规则用来放比项目记忆更窄的约束。它们在 `.claude/rules/` 下；没有 `paths` 时，规则会变成宽上下文；有 `paths` 时，只在 Claude 处理匹配文件时加载。
 
@@ -67,7 +80,16 @@ Claude Code 已经长成模型周围的一套小型运行环境：记忆文件�
 
 **适合：** 约定只作用于某个目录、文件类型或关注点。
 
-## [技能：按需加载的流程](#skills-just-in-time-procedures)
+```
+---
+paths:
+  - "src/api/**/*.ts"
+---
+All API handlers must validate input with Zod before processing.
+Return errors using the shared ApiError format.
+```
+
+### [3. 按需加载的流程：skills](#3-just-in-time-procedure-skills)
 
 可复用的工作流适合做成技能：发布说明、代码审查、事故分析、依赖升级、迁移规划、API 变更审查。
 
@@ -75,19 +97,52 @@ Claude Code 已经长成模型周围的一套小型运行环境：记忆文件�
 
 **适合：** 你总在把同一份清单贴进对话。
 
-## [手动技能和斜杠命令：由人触发的工作流](#manual-skills-and-slash-commands)
+示例：
 
-有些工作流不该只因为 Claude 觉得「看起来可以了」就跑。提交、部署、发布、上线、通知、迁移、改生产，都是由人触发的，因为**何时跑**和步骤本身一样重要。
+```
+---
+name: release-notes
+description: Create release notes from the current git diff and recent commits.
+---
+Create release notes for $ARGUMENTS.
+1. Read the current diff and recent commits.
+2. Group changes into Features, Fixes, Breaking Changes, and Internal.
+3. Mention migration risk only when visible in the diff.
+4. Keep the final output under 400 words.
+```
+
+### [4. 由人触发的工作流：手动技能和斜杠命令](#4-human-triggered-workflow-manual-skills-and-slash-commands)
+
+有些工作流不该只因为 Claude 觉得「看起来可以了」就跑。提交、部署、发布、上线、通知、迁移、改生产，都是由人触发的，因为何时跑和步骤本身一样重要。
 
 自定义命令现在可以装进技能模型，但操作上的区分仍然有用：有些技能 Claude 可以自己选，有些必须由用户显式调用。审查可以图方便，部署策略不行。
 
 **适合：** 工作流有副作用，只应在用户明确动作后开始。
 
+示例：
+
+```
+---
+name: deploy-staging
+description: Deploy the current branch to staging.
+disable-model-invocation: true
+allowed-tools: Bash(pnpm test *) Bash(pnpm build *) Bash(./scripts/deploy-staging *)
+---
+Deploy $ARGUMENTS to staging.
+1. Run tests.
+2. Build the application.
+3. Deploy to staging.
+4. Verify the health endpoint.
+5. Summarise the result.
+```
+
 显式调用：
 
-`/deploy-staging payments-service`
+```
+/deploy-staging payments-service
+```
 
-## [子代理：隔离的调查](#subagents-isolated-investigation)
+### [5. 隔离的调查者：subagents](#5-isolated-investigator-subagents)
 
 子代理在自己的上下文里干活，再把结果交回主会话。它可以有自己的提示、工具、模型、权限、钩子、技能和 MCP 访问，适合调查不该淹没主对话的场合。
 
@@ -97,7 +152,20 @@ Claude 不会只因为文件名听起来相关就选某个子代理。自动委�
 
 **适合：** 工作有用，但实录会污染主线程。
 
-## [输出风格：会话姿态](#output-styles-session-posture)
+示例：
+
+```
+---
+name: security-reviewer
+description: Use proactively after auth, crypto, permission, or data-access changes.
+tools: Read, Grep, Glob
+model: sonnet
+---
+Review the changed files for security risks.
+Return only concrete findings with file references, risk level, and fix suggestions.
+```
+
+### [6. 会话姿态：output styles](#6-session-posture-output-styles)
 
 输出风格通过改系统提示来设定角色、语气和输出形状。适合持久的姿态，但不增加项目知识，也不强制正确性。
 
@@ -105,11 +173,26 @@ Claude 不会只因为文件名听起来相关就选某个子代理。自动委�
 
 **适合：** 你每个回合都在要同一种回复风格。
 
+示例：
+
+```
+---
+name: Architecture Review
+description: Respond as an architecture reviewer who explains trade-offs first.
+keep-coding-instructions: true
+---
+Start with the trade-off being made.
+Then cover coupling, operational impact, security risk, migration cost, and simpler alternatives.
+Keep the answer direct. Avoid generic praise.
+```
+
 在设置里指定：
 
-`{"outputStyle":"Architecture Review"}`
+```
+{"outputStyle":"Architecture Review"}
+```
 
-## [--append-system-prompt：单次叠加](#append-system-prompt-one-run-overlay)
+### [7. 单次叠加：--append-system-prompt](#7-one-run-overlay-append-system-prompt)
 
 往系统提示上追加，是给当前这次调用的临时框架，不改项目记忆、仓库规则或已保存的输出风格。
 
@@ -119,7 +202,9 @@ Claude 不会只因为文件名听起来相关就选某个子代理。自动委�
 
 示例：
 
-`claude --append-system-prompt-file ./prompts/rfc-reviewer.txt`
+```
+claude --append-system-prompt-file ./prompts/rfc-reviewer.txt
+```
 
 其中 `rfc-reviewer.txt` 写：
 
@@ -128,7 +213,7 @@ For this session, review changes as an RFC reviewer.
 Always include risks, alternatives, and migration impact.
 ```
 
-## [MCP 服务器：实时能力边界](#mcp-servers-live-capability-boundaries)
+### [8. 实时能力边界：MCP 服务器](#8-live-capability-boundary-mcp-servers)
 
 MCP 服务器不是另一份记忆文件，也不该被当成记忆文件。它是能力边界：给 Claude 一条受控路径，去碰 GitHub、Jira、数据库、文档、可观测性、浏览器自动化或内部 API。这些地方静态上下文要么过时，要么太大，要么做不了动作。
 
@@ -138,9 +223,11 @@ MCP 服务器不是另一份记忆文件，也不该被当成记忆文件。它�
 
 示例：
 
-`Use the GitHub MCP server to read PR #421, check unresolved comments, and review only the changed files.`
+```
+Use the GitHub MCP server to read PR #421, check unresolved comments, and review only the changed files.
+```
 
-## [钩子：事件闸门](#hooks-event-gates)
+### [9. 事件闸门：hooks](#9-event-gate-hooks)
 
 钩子在提示之外运行，并在生命周期事件上触发：工具调用前、文件编辑后、会话开始、压缩前、一回合结束。
 
@@ -148,9 +235,29 @@ MCP 服务器不是另一份记忆文件，也不该被当成记忆文件。它�
 
 **适合：** 行为必须在已知事件上机械执行。
 
+示例：
+
+```
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block-dangerous-bash.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 脚本可以检查工具输入，看到危险命令就以拦截码退出。
 
-## [权限：硬边界](#permissions-hard-boundaries)
+### [10. 硬边界：permissions](#10-hard-boundary-permissions)
 
 权限决定 Claude 可以使用哪些工具、文件、命令、域名和技能，并且在模型上下文之外强制执行。
 
@@ -158,17 +265,41 @@ MCP 服务器不是另一份记忆文件，也不该被当成记忆文件。它�
 
 **适合：** 无论 Claude 想做什么，该动作都必须被允许、拒绝，或要求批准。
 
-## [实用决策树](#a-practical-decision-tree)
+示例：
+
+```
+{
+  "permissions": {
+    "allow": [
+      "Bash(git diff *)",
+      "Bash(pnpm test *)"
+    ],
+    "ask": [
+      "Bash(git push *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Bash(git push --force *)"
+    ]
+  }
+}
+```
+
+## [决策树](#the-decision-tree)
 
 机制目录告诉你有什么；决策树给你在准备放置一条新指令时的起点。
 
 [![决策树](https://substackcdn.com/image/fetch/$s_!iEFs!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F96492c30-4e2c-4631-b969-ee70de8e1244_4806x3048.png)](https://substackcdn.com/image/fetch/$s_!iEFs!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F96492c30-4e2c-4631-b969-ee70de8e1244_4806x3048.png)
 
-第一个问题是唯一会改类别的问题：**这件事必须被保证吗？** 如果是，别再写一段更好的说明，用权限做允许 / 询问 / 拒绝，或用钩子在生命周期事件上运行、拦截、校验。
+第一个问题是唯一会改类别的问题：这件事必须被保证吗？如果是，别再写一段更好的说明，用权限做允许 / 询问 / 拒绝，或用钩子在生命周期事件上运行、拦截、校验。
 
 如果不是，再判断你是在引导工作、上下文、语气，还是能力。工作变成技能、手动命令或子代理；上下文变成 `CLAUDE.md` 或规则；语气变成输出风格或追加的系统提示；实时数据和外部动作变成 MCP。
 
 听起来选择很多，用起来地图会变快：事实进 `CLAUDE.md`，范围约束进规则，流程进技能，由人触发的流程进斜杠命令，嘈杂调查进子代理，会话语气进输出风格，一次性框架进追加系统提示，实时能力进 MCP，总是要做的进钩子，永不做的边界进权限。
+
+## [长会话里什么会变](#what-changes-in-long-sessions)
 
 长会话会让放置问题露出来，因为压缩（compaction）对待每种机制不一样。根目录 `CLAUDE.md` 和无范围规则在压缩后会回来，但仍会抢注意力。嵌套的 `CLAUDE.md` 和按路径的规则，只有 Claude 再次靠近匹配文件时才回来；技能正文在使用时进入，压缩后可能需要再调用。
 
@@ -176,6 +307,8 @@ MCP 服务器不是另一份记忆文件，也不该被当成记忆文件。它�
 
 钩子和权限不必在压缩中存活，因为它们本来就不依赖主上下文。它们是模型周围的代码和配置，所以最便宜的护栏常常在上下文窗口之外。
 
-最近这篇 [Anthropic 关于引导 Claude Code 的文章](https://claude.com/blog/steering-claude-code-skills-hooks-rules-subagents-and-more) 适合当功能导览，但给团队的功课更偏操作：Claude Code 已是模型周围的小型运行环境，引导层值得和其他系统部分一样认真设计。
+## [最后的要点](#final-takeaway)
+
+最近这篇 [Anthropic 关于引导 Claude Code 的文章](https://claude.com/blog/steering-claude-code-skills-hooks-rules-subagents-and-more) 适合当功能导览，但给团队的功课更偏操作。Claude Code 已是模型周围的小型运行环境，引导层值得和其他系统部分一样认真设计。
 
 范围控制成本，强制力控制可靠性。一旦你知道一条指令该覆盖多宽、是否必须保证，正确的机制就容易选了。
