@@ -335,7 +335,14 @@ def _write_recorded_frames(frames: list[Path], dest: Path) -> str:
         shutil.copyfile(existing[0], png)
         dest.unlink(missing_ok=True)
         return "converted" if png.is_file() and png.stat().st_size > 0 else "skipped-unknown"
-    return stitch_image_sequence(existing, dest)
+    status = stitch_image_sequence(existing, dest)
+    if status == "converted":
+        return status
+    png = dest.with_suffix(".png")
+    png.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(existing[0], png)
+    dest.unlink(missing_ok=True)
+    return "converted" if png.is_file() and png.stat().st_size > 0 else status
 
 
 def record_page_visual(

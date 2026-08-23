@@ -276,6 +276,24 @@ class RecordSectionTest(unittest.TestCase):
         )
         self.assertEqual(status, "skipped-no-browser")
 
+    def test_oversized_visual_falls_back_to_still_png(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            frames = []
+            for color in ("red", "blue"):
+                png = Path(tmp) / f"{color}.png"
+                png.write_bytes(color.encode() + b"\x89PNG\r\n" + color.encode() * 20)
+                frames.append(png)
+            original = capture_media.stitch_image_sequence
+            capture_media.stitch_image_sequence = lambda *_args, **_kwargs: "skipped-too-large"
+            try:
+                dest = Path(tmp) / "out.gif"
+                status = capture_media._write_recorded_frames(frames, dest)
+            finally:
+                capture_media.stitch_image_sequence = original
+            self.assertEqual(status, "converted")
+            self.assertFalse(dest.exists())
+            self.assertTrue(dest.with_suffix(".png").is_file())
+
     def test_missing_playwright_skips_page_visual(self) -> None:
         status = capture_media.record_page_visual(
             "https://example.com/iframe#servers",
