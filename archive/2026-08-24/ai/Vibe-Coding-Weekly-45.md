@@ -42,8 +42,6 @@ Vibe Coding Weekly 想削掉那层噪音，让你带着上下文进周，而不�
 
 若团队里有人该看这期，转发给他们。
 
-![本期配图](https://substackcdn.com/image/fetch/$s_!M6YB!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Faffea579-0101-4806-a6cd-3211a23c8eea_1920x3840.png)
-
 ## [关键 Takeaways](#key-takeaways)
 
 - **OpenAI 把前沿模型输出价砍了三分之一，还把原因说得很直白：****GPT-5.6 Sol** 标准短上下文现价 **输入 $4 / 百万 token**、**输出 $20 / 百万 token**（原 $5 / $30）——输入降 20%、输出降 33%；促销至少到 **2026 年 11 月 21 日**，并覆盖 ChatGPT Work 与 Codex 的 API 额度。Pro / Plus / Business 订阅价不动，刀口对准的是在 API 上建东西的人。路透社转述的说法也不客气：压力来自 Anthropic，也来自中国开源权重模型。季度中途前沿输出 token 掉三分之一，你们七月做的 Agent 成本模型，现在全往对你们有利的方向偏了。[阅读更多 →](https://www.thestar.com.my/tech/tech-news/2026/08/22/openai-cuts-developer-pricing-for-frontier-gpt-56-sol-model-by-more-than-20)
