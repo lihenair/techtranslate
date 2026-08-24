@@ -403,6 +403,8 @@ def validate_translation(markdown: str) -> list[str]:
     if header_covers and not cover:
         errors.append("![文章头图] present but cover_image frontmatter is missing")
     if cover and header_covers:
+        if len(header_covers) > 1:
+            errors.append("![文章头图] must appear at most once")
         cover_key = image_media_key(cover)
         if any(image_media_key(url) != cover_key for url in header_covers):
             errors.append("![文章头图] URL must match cover_image")

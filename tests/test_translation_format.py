@@ -334,6 +334,30 @@ cover_image: https://substackcdn.com/image/fetch/$s_!M6YB!,w_1200,h_675,c_fill,f
         errors = tf.validate_translation(vibe)
         self.assertTrue(any("repeated" in e for e in errors))
 
+        no_cover_ok = """---
+title: "无封面"
+title_en: "No cover"
+source_url: https://example.com/n
+translated_at: 2026-08-24
+tech_domain: other
+tags: [essay]
+---
+
+# 无封面
+
+原文链接：<https://example.com/n>
+
+**导语。**
+"""
+        self.assertEqual(tf.validate_translation(no_cover_ok), [])
+
+        two_headers = SAMPLE.replace(
+            "**导语。**",
+            "![文章头图](https://portswigger.net/cms/images/97/ed/a919-twittercard-article.png)\n\n**导语。**",
+        )
+        errors = tf.validate_translation(two_headers)
+        self.assertTrue(any("at most once" in e for e in errors))
+
 
 class ClaudeSteeringTranslationTest(unittest.TestCase):
     PATH = (
