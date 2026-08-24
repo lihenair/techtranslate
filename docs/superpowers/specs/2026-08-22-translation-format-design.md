@@ -94,7 +94,7 @@ Frontmatter 之后按这个顺序，中间空一行：
 - 代码块、命令、类名、API、原文图片 URL 不译。
 - 章节标题译成中文，锚点保留原文 slug：`## [引言](#introduction)`。原文没有 slug 时，用标题英文 kebab-case。
 - 术语第一次：`消毒（sanitization）`；后文可只用中文或英文，跟邻近译文习惯。叙事文里机构名可保留缩写并首次括注。
-- 图片：栅格图（png / jpg / webp）尽量用原文 URL；alt 写成中文说明。inbox / Jina 正文里的示意图都要进译文对应段落，但不能把已作 `文章头图` 的封面再贴一遍。X 长文的示意图常在 `pbs.twimg.com/media/`，直抓 x.com HTML 往往只剩头图。不要把掘金 `p9-xtjj-sign` 签名链写进仓库。
+- 图片：栅格图（png / jpg / webp）尽量用原文 URL；alt 写成中文说明。inbox / Jina 正文里的示意图都要进译文对应段落，但不能把已作 `文章头图` 的封面再贴一遍。X 长文的示意图常在 `pbs.twimg.com/media/`，直抓 x.com HTML 往往只剩头图；**X Article** 正文图在 fxtwitter 的 `content.blocks` / `media_entities` 里，抓取脚本应走 `api.fxtwitter.com`。不要把掘金 `p9-xtjj-sign` 签名链写进仓库。
 - 同站图示 iframe、内联 SVG、`.svg` 插图：Jina 经常丢掉，HTML 解析要标成 `media:page-visual` / `media:svg` / `section-anim`，转成 `assets/<slug>/` 下的 GIF（有动画）或 PNG（静帧）。译文里不要写 iframe。从 `archive/<date>/<domain>/` 引用时用 `../../../../assets/<slug>/visual-….gif`。
 - 不要把范文里的掘金跳转链 `link.juejin.cn` 学过来。
 
@@ -112,7 +112,7 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 
 ### 识别
 
-抓取时先用 Jina 拿可读正文，再补一次本地 HTML：媒体标记、`section` 片段、以及 Jina 没有的 `author` / `published_at` / `cover_image`。Jina 失败则只用 HTML。译者按标记落盘、写正文：
+抓取时先用 Jina 拿可读正文，再补一次本地 HTML：媒体标记、`section` 片段、以及 Jina 没有的 `author` / `published_at` / `cover_image`。Jina 失败则只用 HTML。对 X/Twitter **status** URL，额外请求 `api.fxtwitter.com`；若该 status 挂了 **X Article**，以 fxtwitter 的 article blocks（含正文图与嵌入推文）为主。译者按标记落盘、写正文：
 
 ```html
 <!-- media:youtube id="fG8xWTHnlLY" url="https://www.youtube.com/watch?v=fG8xWTHnlLY" -->

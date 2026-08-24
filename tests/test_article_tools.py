@@ -636,6 +636,114 @@ class MergeHtmlEnrichmentTest(unittest.TestCase):
         )
 
 
+class FxTwitterArticleTest(unittest.TestCase):
+    def test_x_article_content_keeps_body_media_and_tweet_embeds(self) -> None:
+        content = {
+            "blocks": [
+                {
+                    "type": "unstyled",
+                    "text": "Norvig spoofed the Gettysburg address.",
+                    "entityRanges": [],
+                    "inlineStyleRanges": [],
+                },
+                {
+                    "type": "atomic",
+                    "text": " ",
+                    "entityRanges": [{"key": 0, "length": 1, "offset": 0}],
+                    "inlineStyleRanges": [],
+                },
+                {
+                    "type": "unstyled",
+                    "text": "Then a reply captured the vibe.",
+                    "entityRanges": [],
+                    "inlineStyleRanges": [],
+                },
+                {
+                    "type": "atomic",
+                    "text": " ",
+                    "entityRanges": [{"key": 1, "length": 1, "offset": 0}],
+                    "inlineStyleRanges": [],
+                },
+                {
+                    "type": "header-two",
+                    "text": "Load-bearing complications",
+                    "entityRanges": [],
+                    "inlineStyleRanges": [],
+                },
+                {
+                    "type": "unstyled",
+                    "text": "See Ellen Aitken for the link.",
+                    "entityRanges": [{"key": 2, "length": 12, "offset": 4}],
+                    "inlineStyleRanges": [{"style": "Italic", "offset": 21, "length": 3}],
+                },
+            ],
+            "entityMap": [
+                {
+                    "key": "0",
+                    "value": {
+                        "type": "MEDIA",
+                        "data": {
+                            "mediaItems": [{"mediaId": "111", "mediaCategory": "DraftTweetImage"}]
+                        },
+                    },
+                },
+                {
+                    "key": "1",
+                    "value": {"type": "TWEET", "data": {"tweetId": "2089414077286166911"}},
+                },
+                {
+                    "key": "2",
+                    "value": {
+                        "type": "LINK",
+                        "data": {"url": "https://en.wikipedia.org/wiki/Ellen_Bradshaw_Aitken"},
+                    },
+                },
+            ],
+        }
+        media_entities = [
+            {
+                "media_id": "111",
+                "media_info": {
+                    "original_img_url": "https://pbs.twimg.com/media/HQYD4jqXkAAXaNM.png",
+                },
+            }
+        ]
+        markdown = article_tools.x_article_content_to_markdown(content, media_entities)
+        self.assertIn("HQYD4jqXkAAXaNM.png", markdown)
+        self.assertIn('media:twitter id="2089414077286166911"', markdown)
+        self.assertIn("## Load-bearing complications", markdown)
+        self.assertIn(
+            "[Ellen Aitken](https://en.wikipedia.org/wiki/Ellen_Bradshaw_Aitken)",
+            markdown,
+        )
+        self.assertIn("*the*", markdown)
+        self.assertLess(markdown.index("Gettysburg"), markdown.index("HQYD4jqXkAAXaNM.png"))
+        self.assertLess(markdown.index("HQYD4jqXkAAXaNM.png"), markdown.index("captured the vibe"))
+
+    def test_cover_image_gets_large_suffix(self) -> None:
+        url = article_tools.cover_image_from_fxtwitter_media(
+            {
+                "media_info": {
+                    "original_img_url": "https://pbs.twimg.com/media/HQYSYeZWAAA8yr0.jpg",
+                }
+            }
+        )
+        self.assertEqual(url, "https://pbs.twimg.com/media/HQYSYeZWAAA8yr0.jpg:large")
+
+    def test_strip_cover_duplicate_images(self) -> None:
+        body = (
+            "Intro.\n\n"
+            "![cover again](https://pbs.twimg.com/media/HQYSYeZWAAA8yr0.jpg)\n\n"
+            "More.\n\n"
+            "![diagram](https://pbs.twimg.com/media/HQYD4jqXkAAXaNM.png)\n"
+        )
+        cleaned = article_tools.strip_cover_duplicate_images(
+            body, "https://pbs.twimg.com/media/HQYSYeZWAAA8yr0.jpg:large"
+        )
+        self.assertNotIn("HQYSYeZWAAA8yr0", cleaned)
+        self.assertIn("HQYD4jqXkAAXaNM.png", cleaned)
+
+
 class InboxGitAddTest(unittest.TestCase):
     def test_paths_omit_missing_assets(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
