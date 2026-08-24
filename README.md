@@ -119,4 +119,8 @@
 
 - 2026-08-23 [从 360° 影像入门 3D Gaussian Splatting（360° Gaussian Pro 版）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/graphics/Getting-Started-with-3D-Gaussian-Splatting-from-360-Images.md)
 
+### 其他
+
+- 2026-08-24 [一年前的今天，我们进了 Y Combinator](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/other/One-Year-Ago-Today-We-Got-Into-Y-Combinator.md)
+
 <!-- catalog:end -->

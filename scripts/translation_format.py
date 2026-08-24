@@ -274,9 +274,22 @@ ISO8601_DURATION_RE = re.compile(
 )
 
 
+_URL_RE = re.compile(r"https?://\S+", re.I)
+_MD_IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^)]+\)")
+_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
+
+
+def _prose_for_classify(text: str) -> str:
+    """Drop URLs, markdown images, and HTML comments so filenames do not fake a domain."""
+    cleaned = _HTML_COMMENT_RE.sub(" ", text or "")
+    cleaned = _MD_IMAGE_RE.sub(" ", cleaned)
+    cleaned = _URL_RE.sub(" ", cleaned)
+    return cleaned
+
+
 def _domain_score(patterns: tuple[str, ...], title: str, body: str) -> int:
-    title_l = title.lower()
-    body_l = body.lower()
+    title_l = _prose_for_classify(title).lower()
+    body_l = _prose_for_classify(body).lower()
     score = 0
     for pattern in patterns:
         if re.search(pattern, title_l):

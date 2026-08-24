@@ -199,6 +199,14 @@ class TechDomainTest(unittest.TestCase):
         )
         self.assertEqual(
             tf.classify_tech_domain(
+                "One year ago today we got into Y Combinator",
+                "Five hundred dollars, a Starbucks, and a YC interview.\n\n"
+                "![Article cover image](https://pbs.twimg.com/media/HQZC9ZWWIAA2LAm.jpg)",
+            ),
+            "other",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
                 "How to compose CSS layouts",
                 "flexbox browser HTML DOM",
             ),
