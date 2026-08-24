@@ -11,7 +11,7 @@ Two entry points, one Issue format:
 1. **GitHub:** open **[翻译文章](../../issues/new?template=translate-article.yml)**. One article: URL + optional Chinese title. Several articles: `URL` or `URL | 中文标题` per line in **更多文章**.
 2. **Cursor:** paste URL(s) in chat. The agent runs `python3 scripts/queue_translation.py --create --url …` to open the same Issue, then writes the translation if Copilot does not.
 
-The Action fetches `_inbox/` after the Issue is opened and opens an inbox PR. That PR is only English source; it must **not** say `Closes #<issue>`. The translation PR closes the Issue. If `COPILOT_ASSIGN_TOKEN` is set, the Action also assigns Copilot.
+The Action fetches `_inbox/` after the Issue is opened and opens an **inbox PR** (`translate/issue-<n>`). That PR is only English source; it must **not** say `Closes #<issue>`, and it must **never be merged**. The **translation PR** closes the Issue with `Closes #<issue>`. As soon as the translation PR exists—and again when that PR is merged—**close** the related inbox PR without merging it. If `COPILOT_ASSIGN_TOKEN` is set, the Action also assigns Copilot.
 
 To retry, reopen the issue or add the `translate` label. The issue title should start with `[Translate]`.
 

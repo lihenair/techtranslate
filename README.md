@@ -9,7 +9,7 @@
 1. **GitHub：** 打开 [翻译文章](https://github.com/lihenair/techtranslate/issues/new?template=translate-article.yml)。一篇填链接和可选中文标题；多篇在「更多文章」里每行 `链接` 或 `链接 | 中文标题`。
 2. **Cursor：** 在对话里直接贴网址（可带中文标题）。Agent 先跑 `python3 scripts/queue_translation.py --create --url …` 创建同样格式的 Issue，再写译文。不要只在本地改文件、不建 Issue。
 
-提交 Issue 后 Action 会抓原文、开 inbox PR。仓库若配置了 `COPILOT_ASSIGN_TOKEN`，会自动指派 Copilot 写译文。Cursor 对话里贴的链接，由当前 agent 在建 Issue 之后把译文写完。
+提交 Issue 后 Action 会抓原文、开 **inbox PR**（`translate/issue-<n>`，只含英文 `_inbox/`，**不要合入**）。真正合入的是带中文译文、`Closes #<issue>` 的译文 PR；合入译文时顺手关掉同 Issue 的 inbox PR。仓库若配置了 `COPILOT_ASSIGN_TOKEN`，会自动指派 Copilot 写译文。Cursor 对话里贴的链接，由当前 agent 在建 Issue 之后把译文写完。
 
 重试：关掉再打开 Issue，或补上 `translate` 标签。也可以在 **Actions → Translate article** 里直接跑。
 
