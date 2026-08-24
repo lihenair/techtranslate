@@ -919,6 +919,8 @@ HTTP 很老，但仍是现代 Web 应用背后最重要的技术之一。
 
 [嵌入内容（原站 YouTube）](https://www.youtube.com/watch?v=a3C1DMswClQ)
 
+![嵌入内容（原站 YouTube）](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/Understanding-HTTP-for-Backend-Engineers/yt-a3C1DMswClQ.jpg)
+
 **在 Medium 阅读原文：**
 
 [Understanding HTTP: The Backbone of the Web](https://medium.com/@anuragdotdev/understanding-http-the-backbone-of-the-web-3d2109d0facd)

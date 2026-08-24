@@ -220,6 +220,30 @@ class RemoteVideoTest(unittest.TestCase):
         )
         self.assertEqual(status, "skipped-unknown")
 
+    def test_probe_youtube_page_duration_reads_length_seconds(self) -> None:
+        def fake_get(url: str, timeout: int = 20):
+            return url, '{"videoDetails":{"lengthSeconds":"612"}}'
+
+        duration = capture_media.probe_youtube_page_duration("abc123", http_get=fake_get)
+        self.assertEqual(duration, 612.0)
+
+    def test_save_youtube_thumbnail_downloads_hqdefault(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            dest = Path(tmp) / "yt-abc.gif"
+
+            def fake_download(url: str, path: Path) -> Path | None:
+                self.assertIn("/vi/abc/hqdefault.jpg", url)
+                path.write_bytes(b"jpeg")
+                return path
+
+            old = capture_media._download_http_file
+            capture_media._download_http_file = fake_download
+            try:
+                self.assertTrue(capture_media.save_youtube_thumbnail("abc", dest))
+                self.assertTrue(dest.with_suffix(".jpg").is_file())
+            finally:
+                capture_media._download_http_file = old
+
     def test_direct_mp4_converts_when_remote_duration_missing(self) -> None:
         if not _have_ffmpeg():
             self.skipTest("ffmpeg/ffprobe required")
@@ -260,7 +284,7 @@ class ProcessInboxTest(unittest.TestCase):
             self.assertIn("converted", statuses)
             self.assertTrue(
                 any(
-                    item["status"] in {"skipped-unknown", "skipped-long"}
+                    item["status"] in {"skipped-unknown", "skipped-long", "thumbnail"}
                     for item in report["items"]
                     if item.get("kind") == "youtube"
                 )

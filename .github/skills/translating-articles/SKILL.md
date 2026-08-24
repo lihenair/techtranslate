@@ -117,13 +117,19 @@ Omit any header line you cannot fill. Do not use `[原文链接](URL)`.
 [嵌入内容（原站 Twitter）](https://x.com/i/status/ID)
 ```
 
-If `assets/<slug>/` has a GIF for that item (source duration ≤ 15s, or a short `section` animation), add the image on the next line:
+If `assets/<slug>/` has a GIF for that item (source duration ≤ 15s, or a short `section` animation), add the image on the next line. Prefer `https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/<slug>/…` so GitHub preview renders reliably:
 
 ```markdown
-![嵌入内容（原站 YouTube）](assets/slug/yt-ID.gif)
+![嵌入内容（原站 YouTube）](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/slug/yt-ID.gif)
 ```
 
-If capture skipped the item (`skipped-long`, `skipped-unknown`, `skipped-no-browser`, `skipped-too-large`), write the link only, or `原文此处有短视频` / `原文为网页动画` for `section` demos with no recoverable URL. Do not add YouTube keys or cookies. Keep the YouTube text link.
+If the video is longer than 15s or yt-dlp cannot download it, `capture_media.py` saves `assets/<slug>/yt-ID.jpg` (YouTube 缩略图). Keep the text link and add:
+
+```markdown
+![嵌入内容（原站 YouTube）](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/slug/yt-ID.jpg)
+```
+
+If capture skipped a `section` demo (`skipped-no-browser`, `skipped-too-large`), write `原文为网页动画` only when the article clearly had an inline animation with no static image. X/Twitter 长文若已有 `pbs.twimg.com` 配图，不必为误报的 section 动画补 GIF。Do not add YouTube keys or cookies. Keep the YouTube text link.
 
 ## README
 
