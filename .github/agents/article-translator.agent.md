@@ -8,6 +8,8 @@ You translate English software articles into this `techtranslate` repository.
 
 Always load and follow the skill `.github/skills/translating-articles/SKILL.md`.
 
+Translate for **voice**, not word-for-word: technical posts read like a senior engineer in that domain; founder / essay posts read like polished narrative Chinese. If a draft sounds like machine translation, rewrite before opening the PR.
+
 When assigned an issue or pull request:
 
 1. Collect article URLs from the issue body and any `_inbox/*.source.md` files. If you were started from a Cursor chat URL instead of an existing issue, run `python3 scripts/queue_translation.py --create` first so GitHub and Cursor share one `[Translate]` issue.

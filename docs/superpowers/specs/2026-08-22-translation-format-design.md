@@ -90,12 +90,21 @@ Frontmatter 之后按这个顺序，中间空一行：
 
 ## 正文写法
 
-- 简体中文。代码块、命令、类名、API、原文图片 URL 不译。
+- 简体中文，且必须**按文类润色**：工程文用该领域工程师口吻；创业/随笔用叙事散文口吻；安全研究用研究员口吻。意译优先，拆长句，去掉翻译腔（「进行」「使得」「一个…的…的…」）。成稿应像中文作者写的，不是字对字直译。
+- 代码块、命令、类名、API、原文图片 URL 不译。
 - 章节标题译成中文，锚点保留原文 slug：`## [引言](#introduction)`。原文没有 slug 时，用标题英文 kebab-case。
-- 术语第一次：`消毒（sanitization）`；后文可只用中文或英文，跟邻近译文习惯。
+- 术语第一次：`消毒（sanitization）`；后文可只用中文或英文，跟邻近译文习惯。叙事文里机构名可保留缩写并首次括注。
 - 图片：栅格图（png / jpg / webp）尽量用原文 URL；alt 写成中文说明。inbox / Jina 正文里的每一张图都要进译文对应段落，不能只留 `cover_image`。X 长文的示意图常在 `pbs.twimg.com/media/`，直抓 x.com HTML 往往只剩头图。不要把掘金 `p9-xtjj-sign` 签名链写进仓库。
 - 同站图示 iframe、内联 SVG、`.svg` 插图：Jina 经常丢掉，HTML 解析要标成 `media:page-visual` / `media:svg` / `section-anim`，转成 `assets/<slug>/` 下的 GIF（有动画）或 PNG（静帧）。译文里不要写 iframe。从 `archive/<date>/<domain>/` 引用时用 `../../../../assets/<slug>/visual-….gif`。
 - 不要把范文里的掘金跳转链 `link.juejin.cn` 学过来。
+
+### 口吻速查
+
+| 文类 | 口吻 |
+| --- | --- |
+| 工程技术（ai / backend / frontend / devops / systems / graphics / security / android / mobile） | 资深工程师：清楚、利落、术语准 |
+| 创业随笔 / 非工程（多为 `other`） | 叙事散文：有节奏、保留冷幽默，勿通稿腔 |
+| 产品 / 增长 | 结论先行、例子落地 |
 
 ## 视频与 GIF
 
