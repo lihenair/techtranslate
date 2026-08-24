@@ -84,6 +84,14 @@ cover_image: https://example.com/cover.png
 
 Omit `author`, `published_at`, and `cover_image` when unknown. Do not invent them.
 
+**头图（cover）规则：**
+
+- 有可靠封面才写：`cover_image` frontmatter **和** 正文头 `![文章头图](...)` 成对出现（URL 可差 CDN 参数 / `:large`，须是同一资源）。
+- 没有可靠封面就两处都省略——**允许一篇没有头图**；不要为了「每篇都有图」去编或硬塞第一张正文示意图当头图。
+- **头图只出现一次。** 正文里不要再贴同一张封面（同一 `pbs.twimg.com/media/…` id、同一资产 UUID、或 Substack 里同一 hero 的另一尺寸）。**跨站同画面**（X 头图 vs Beehiiv/YouTube 播客卡）校验器认不出，译者须目视删掉重复。inbox 常在文首头图之后又重复贴一次 hero /「本期配图」——译文只留 `文章头图`。
+- 正文示意图仍要全部保留；只跳过与头图重复的那一张。
+- `![文章头图]` 在全文只写一次。
+
 Body header, in this order, blank line between blocks:
 
 ```markdown
@@ -133,7 +141,7 @@ Omit any header line you cannot fill. Do not use `[原文链接](URL)`.
 ## Body rules
 
 - Simplified Chinese, **polished to the voice table above**. Keep code, commands, API names, and original raster image URLs (`png` / `jpg` / `webp`). Same-origin diagram iframes and SVG (inline or `.svg`) must be converted into `assets/<slug>/` GIF or PNG; GitHub cannot show those iframes, and Jina drops them. From `archive/<date>/<domain>/` use `../../../../assets/<slug>/visual-….gif`.
-- Copy **every** inbox raster image into the Chinese post at the matching section — not only `cover_image`. X/Twitter long posts often have 3–6 `pbs.twimg.com/media/…` diagrams that Jina keeps and x.com HTML drops. If the Chinese file only has the header cover, the body diagrams are missing.
+- Copy **every** inbox raster diagram into the Chinese post at the matching section — not only `cover_image`. Skip any body image that is the same asset as `文章头图` (do not paste the cover twice). X/Twitter long posts often have 3–6 `pbs.twimg.com/media/…` diagrams that Jina keeps and x.com HTML drops. If the Chinese file only has the header cover, the body diagrams are missing.
 - Headings: `## [引言](#introduction)` — Chinese title, original slug.
 - First use of a term: `消毒（sanitization）`.
 - No `iframe`. No `p9-xtjj-sign` / `link.juejin.cn` URLs.

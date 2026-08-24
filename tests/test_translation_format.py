@@ -27,6 +27,8 @@ cover_image: https://portswigger.net/cms/images/97/ed/a919-twittercard-article.p
 
 原文作者：Gareth Heyes
 
+![文章头图](https://portswigger.net/cms/images/97/ed/a919-twittercard-article.png)
+
 **导语。**
 
 ## [引言](#introduction)
@@ -282,6 +284,79 @@ class ValidateTranslationTest(unittest.TestCase):
         dirty = SAMPLE + "\n![](https://p9-xtjj-sign.byteimg.com/x)\n"
         errors = tf.validate_translation(dirty)
         self.assertTrue(any("juejin" in e.lower() or "xtjj" in e for e in errors))
+
+    def test_cover_image_pairs_with_header_and_is_not_repeated(self) -> None:
+        self.assertEqual(
+            tf.image_media_key(
+                "https://pbs.twimg.com/media/HQbcgTAXQAA0_Nl.jpg:large"
+            ),
+            tf.image_media_key("https://pbs.twimg.com/media/HQbcgTAXQAA0_Nl.jpg"),
+        )
+        missing_header = SAMPLE.replace(
+            "![文章头图](https://portswigger.net/cms/images/97/ed/a919-twittercard-article.png)\n\n",
+            "",
+        )
+        errors = tf.validate_translation(missing_header)
+        self.assertTrue(any("文章头图" in e for e in errors))
+
+        no_cover = SAMPLE.replace(
+            "cover_image: https://portswigger.net/cms/images/97/ed/a919-twittercard-article.png\n",
+            "",
+        )
+        errors = tf.validate_translation(no_cover)
+        self.assertTrue(any("cover_image" in e for e in errors))
+
+        repeated = SAMPLE + (
+            "\n![又一张](https://portswigger.net/cms/images/97/ed/a919-twittercard-article.png?w=800)\n"
+        )
+        errors = tf.validate_translation(repeated)
+        self.assertTrue(any("repeated" in e for e in errors))
+
+        # Same Substack asset under different fetch params counts as one cover.
+        vibe = """---
+title: "周报"
+title_en: "Weekly"
+source_url: https://example.com/w
+translated_at: 2026-08-24
+tech_domain: ai
+tags: [ai]
+cover_image: https://substackcdn.com/image/fetch/$s_!M6YB!,w_1200,h_675,c_fill,f_jpg/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Faffea579-0101-4806-a6cd-3211a23c8eea_1920x3840.png
+---
+
+# 周报
+
+原文链接：<https://example.com/w>
+
+![文章头图](https://substackcdn.com/image/fetch/$s_!M6YB!,w_1200,h_675,c_fill,f_jpg/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Faffea579-0101-4806-a6cd-3211a23c8eea_1920x3840.png)
+
+![本期配图](https://substackcdn.com/image/fetch/$s_!M6YB!,w_1456,c_limit,f_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Faffea579-0101-4806-a6cd-3211a23c8eea_1920x3840.png)
+"""
+        errors = tf.validate_translation(vibe)
+        self.assertTrue(any("repeated" in e for e in errors))
+
+        no_cover_ok = """---
+title: "无封面"
+title_en: "No cover"
+source_url: https://example.com/n
+translated_at: 2026-08-24
+tech_domain: other
+tags: [essay]
+---
+
+# 无封面
+
+原文链接：<https://example.com/n>
+
+**导语。**
+"""
+        self.assertEqual(tf.validate_translation(no_cover_ok), [])
+
+        two_headers = SAMPLE.replace(
+            "**导语。**",
+            "![文章头图](https://portswigger.net/cms/images/97/ed/a919-twittercard-article.png)\n\n**导语。**",
+        )
+        errors = tf.validate_translation(two_headers)
+        self.assertTrue(any("at most once" in e for e in errors))
 
 
 class ClaudeSteeringTranslationTest(unittest.TestCase):

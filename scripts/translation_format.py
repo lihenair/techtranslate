@@ -349,6 +349,27 @@ def _parse_simple_yaml(block: str) -> dict[str, str]:
     return data
 
 
+def image_media_key(url: str) -> str:
+    """Stable-ish key so the same asset is not pasted twice under different CDN params."""
+    text = (url or "").strip()
+    tw = re.search(r"pbs\.twimg\.com/media/([A-Za-z0-9_-]+)", text)
+    if tw:
+        return f"tw:{tw.group(1)}"
+    file_id = re.search(r"/file/([a-f0-9-]{36})/", text, re.I)
+    if file_id:
+        return f"file:{file_id.group(1).lower()}"
+    uuid = re.search(
+        r"([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})",
+        text,
+        re.I,
+    )
+    if uuid:
+        return f"uuid:{uuid.group(1).lower()}"
+    cleaned = re.sub(r"[?#].*$", "", text)
+    cleaned = re.sub(r":large$", "", cleaned)
+    return f"base:{cleaned.rsplit('/', 1)[-1].lower()}"
+
+
 def validate_translation(markdown: str) -> list[str]:
     errors: list[str] = []
     match = FRONTMATTER_RE.match(markdown)
@@ -375,6 +396,25 @@ def validate_translation(markdown: str) -> list[str]:
             errors.append("H1 must not contain 【翻译】")
     if not re.search(r"^原文链接：<https?://[^>]+>$", body, re.MULTILINE):
         errors.append("missing 原文链接：<URL> line")
+    cover = (meta.get("cover_image") or "").strip()
+    header_covers = re.findall(r"!\[文章头图\]\(([^)]+)\)", body)
+    if cover and not header_covers:
+        errors.append("cover_image set but missing ![文章头图](...) in body header")
+    if header_covers and not cover:
+        errors.append("![文章头图] present but cover_image frontmatter is missing")
+    if cover and header_covers:
+        if len(header_covers) > 1:
+            errors.append("![文章头图] must appear at most once")
+        cover_key = image_media_key(cover)
+        if any(image_media_key(url) != cover_key for url in header_covers):
+            errors.append("![文章头图] URL must match cover_image")
+        # Cover may appear once as 文章头图; never again in the body.
+        for alt, url in re.findall(r"!\[([^\]]*)\]\(([^)]+)\)", body):
+            if alt == "文章头图":
+                continue
+            if image_media_key(url) == cover_key:
+                errors.append("cover image must not be repeated in the body")
+                break
     if "<iframe" in markdown.lower():
         errors.append("iframe is not allowed")
     if "p9-xtjj-sign" in markdown or "link.juejin.cn" in markdown:

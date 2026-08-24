@@ -52,7 +52,7 @@ cover_image: https://portswigger.net/cms/images/97/ed/a919-twittercard-article.p
 | `translated_at` | 是 | 翻译当天 `YYYY-MM-DD`（UTC 日期） |
 | `tech_domain` | 是 | 按**主旨**选一个：`android` / `frontend` / `backend` / `security` / `mobile` / `devops` / `ai` / `systems` / `graphics` / `other`。先跑 `classify_tech_domain(title, body)`，能分清就不要用 `other`。分类器会忽略 `http(s)` URL、Markdown 图片、HTML 注释、路径型媒体名（如 `cover.jpg`），避免配图把创业随笔误判成 `systems`；标题正文里的 **JPG / WebP** 仍可判为编解码/`systems`。创始人回忆、YC 故事、非工程随笔用 `other`。AI Agent / Claude / 提示词 / AI 芯片产品文用 `ai`；体系结构、微架构、ISA、OS、编译器、图像编解码用 `systems`；3DGS、高斯溅射、图形图像用 `graphics`。不要因为文中出现 CI、hooks、deploy 就把 Agent 文改成 `devops`，也不要因为举例提到 LLM 就把体系结构文改成 `ai`，也不要因为遮罩用了 SAM 就把 3DGS 文改成 `ai`。 |
 | `tags` | 是 | 3–6 个英文小写词，例如 `[security, web, frontend]` |
-| `cover_image` | 能确定才写 | 原文封面绝对 URL；没有就省略 |
+| `cover_image` | 能确定才写 | 原文封面绝对 URL；没有就省略该行，正文也不写 `文章头图`。有则必须与正文头 `![文章头图](...)` 成对，且正文不再重复同一封面。 |
 
 禁止写入：译者名、掘金 `category_id` / `tag_ids`、过期签名图链、空字符串占位。
 
@@ -83,7 +83,7 @@ Frontmatter 之后按这个顺序，中间空一行：
 | H1 | 与 `title` 相同 |
 | 原文链接 | `原文链接：<URL>`，尖括号自动链接，不用 `[原文链接](URL)` |
 | 原文作者 | 有作者才写；否则整行省略 |
-| 头图 | 有 `cover_image` 才写 `![文章头图](cover_image)`；否则整行省略 |
+| 头图 | 有可靠 `cover_image` 才写 `![文章头图](cover_image)`，且与 frontmatter **成对**；没有就两处都省略（允许无头图）。**头图只出现一次**：正文不要再贴同一封面。校验器能识别同一 CDN 资源的不同尺寸 / `pbs.twimg.com` `:large`；**跨站同图**（如 X 卡片 vs Beehiiv/YouTube 播客封面）须译者目视去掉，机器对不上。 |
 | 作者行 | 能还原主页 / 社交才写链接；只有名字则纯文本；都没有则省略 |
 | 发布/更新 | 原文怎么写就怎么译；只有日期就写「发布于 YYYY 年 M 月 D 日」；完全没有则省略 |
 | 导语 | 译原文 lead / dek；没有则用译文首段加粗，不超过 120 个汉字 |
@@ -94,7 +94,7 @@ Frontmatter 之后按这个顺序，中间空一行：
 - 代码块、命令、类名、API、原文图片 URL 不译。
 - 章节标题译成中文，锚点保留原文 slug：`## [引言](#introduction)`。原文没有 slug 时，用标题英文 kebab-case。
 - 术语第一次：`消毒（sanitization）`；后文可只用中文或英文，跟邻近译文习惯。叙事文里机构名可保留缩写并首次括注。
-- 图片：栅格图（png / jpg / webp）尽量用原文 URL；alt 写成中文说明。inbox / Jina 正文里的每一张图都要进译文对应段落，不能只留 `cover_image`。X 长文的示意图常在 `pbs.twimg.com/media/`，直抓 x.com HTML 往往只剩头图。不要把掘金 `p9-xtjj-sign` 签名链写进仓库。
+- 图片：栅格图（png / jpg / webp）尽量用原文 URL；alt 写成中文说明。inbox / Jina 正文里的示意图都要进译文对应段落，但不能把已作 `文章头图` 的封面再贴一遍。X 长文的示意图常在 `pbs.twimg.com/media/`，直抓 x.com HTML 往往只剩头图。不要把掘金 `p9-xtjj-sign` 签名链写进仓库。
 - 同站图示 iframe、内联 SVG、`.svg` 插图：Jina 经常丢掉，HTML 解析要标成 `media:page-visual` / `media:svg` / `section-anim`，转成 `assets/<slug>/` 下的 GIF（有动画）或 PNG（静帧）。译文里不要写 iframe。从 `archive/<date>/<domain>/` 引用时用 `../../../../assets/<slug>/visual-….gif`。
 - 不要把范文里的掘金跳转链 `link.juejin.cn` 学过来。
 

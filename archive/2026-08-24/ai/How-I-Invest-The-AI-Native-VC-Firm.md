@@ -32,8 +32,6 @@ cover_image: https://pbs.twimg.com/media/HQbcgTAXQAA0_Nl.jpg:large
 
 [嵌入内容（原站 YouTube）](https://www.youtube.com/watch?v=LcfIFMbDecA)
 
-![How I Invest 播客](https://media.beehiiv.com/cdn-cgi/image/fit=scale-down,quality=80,format=auto,onerror=redirect/uploads/asset/file/612d65d6-098f-455a-8117-765ac30c784c/image.png?t=1787509808)
-
 完整长文也发在 newsletter：[Data Driven VC](https://www.newsletter.datadrivenvc.io/p/how-i-invest-the-ai-native-vc-firm)。
 
 ## [1. VC 里最大的错，往往是你没投那家](#1-the-biggest-mistake-in-vc-is-often-the-company-you-didnt-invest-in)
