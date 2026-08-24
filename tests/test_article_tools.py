@@ -447,6 +447,21 @@ class MediaExtractTest(unittest.TestCase):
         parser.feed(html)
         _title, markdown = parser.result("https://example.com/cite")
         self.assertNotIn("media:section-anim", markdown)
+
+    def test_bloated_section_snippet_is_dropped(self) -> None:
+        huge_style = "x{color:red}" * 5000
+        html = f"""<html><head><title>X</title>
+        <style>{huge_style}</style>
+        </head><body>
+        <h1>X</h1>
+        <section class="demo"><div class="box">Hi</div></section>
+        <p>Enough article text so the extract is not considered empty padding padding padding padding.</p>
+        </body></html>"""
+        parser = article_tools._HTMLArticleParser()
+        parser.feed(html)
+        _title, markdown = parser.result("https://x.com/example/status/1")
+        self.assertNotIn("media:section-anim", markdown)
+        self.assertFalse(parser.section_snippets)
         self.assertNotIn("media:frames", markdown)
 
     def test_inline_linked_stylesheets_rewrites_relative_urls(self) -> None:

@@ -35,6 +35,8 @@ CSS_URL_RE = re.compile(r"""url\(\s*(["']?)([^)'"]+)\1\s*\)""", re.I)
 CSS_ANIM_PROP_RE = re.compile(r"""(?:^|[;\s"'])animation(?:-[a-z]+)?\s*:""", re.I)
 MEDIA_COMMENT_RE = re.compile(r"<!--\s*media:[^>]+-->")
 MEDIA_CONTAINER_TAGS = {"section", "figure", "div"}
+MAX_SECTION_SNIPPET_CHARS = 16_384
+MAX_SECTION_STYLE_RATIO = 0.4
 ASPECT_RE = re.compile(r"aspect-\[(\d+)/(\d+)\]")
 IFRAME_SKIP_HOSTS = (
     "youtube.com",
@@ -222,6 +224,24 @@ def slug_from_url(url: str, title: str | None = None, max_len: int = 80) -> str:
     if not slug:
         slug = "article"
     return slug[:max_len].rstrip("-._")
+
+
+def section_snippet_is_recordable(markup: str, styles: list[str] | None = None) -> bool:
+    """Drop X/Twitter page chrome and other bloated HTML before section GIF capture."""
+    if len(markup) > MAX_SECTION_SNIPPET_CHARS:
+        return False
+    style_len = sum(len(block) for block in styles or [])
+    style_len += sum(
+        len(block)
+        for block in re.findall(r"<style[^>]*>.*?</style>", markup, flags=re.I | re.S)
+    )
+    body_len = len(re.sub(r"<style[^>]*>.*?</style>", "", markup, flags=re.I | re.S))
+    # Tiny extracted fragment plus page-wide CSS (common on x.com) is not a real demo.
+    if style_len > 8192 and body_len < 512:
+        return False
+    if body_len > 4096 and style_len > body_len * MAX_SECTION_STYLE_RATIO:
+        return False
+    return True
 
 
 def inbox_filename(url: str, title: str | None = None) -> str:
@@ -494,6 +514,8 @@ class _HTMLArticleParser(HTMLParser):
             self._chunks.append("\n\n" + format_media_comment("frames", src="|".join(imgs)) + "\n")
             return
         if is_anim or has_css_anim:
+            if not section_snippet_is_recordable(markup, self.styles):
+                return
             style_html = "".join(f"<style>{block}</style>" for block in self.styles)
             snippet = (
                 "<!doctype html><html><head><meta charset=\"utf-8\">"
@@ -515,6 +537,8 @@ class _HTMLArticleParser(HTMLParser):
             return
         markup = "".join(self._svg_parts)
         if "<svg" not in markup.lower():
+            return
+        if not section_snippet_is_recordable(markup, self.styles):
             return
         style_html = "".join(f"<style>{block}</style>" for block in self.styles)
         snippet = (

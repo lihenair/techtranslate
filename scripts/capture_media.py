@@ -32,6 +32,11 @@ GIF_ENCODE_STEPS = (
 )
 COOKIES_ENV = "TECHTRANSLATE_YTDLP_COOKIES"
 YOUTUBE_API_KEY_ENV = "YOUTUBE_API_KEY"
+YOUTUBE_THUMB_URL = "https://i.ytimg.com/vi/{video_id}/hqdefault.jpg"
+YOUTUBE_PAGE_DURATION_RES = (
+    re.compile(r'"lengthSeconds"\s*:\s*"(\d+)"'),
+    re.compile(r'"approxDurationMs"\s*:\s*"(\d+)"'),
+)
 
 
 def parse_media_comments(markdown: str) -> list[dict[str, str]]:
@@ -210,7 +215,11 @@ def probe_remote_duration(
     video_id = translation_format.youtube_id_from_url(url)
     key = (youtube_api_key if youtube_api_key is not None else os.environ.get(YOUTUBE_API_KEY_ENV, "")).strip()
     if video_id and key:
-        return probe_youtube_api_duration(video_id, key, getter=http_get)
+        api_duration = probe_youtube_api_duration(video_id, key, getter=http_get)
+        if api_duration is not None:
+            return api_duration
+    if video_id:
+        return probe_youtube_page_duration(video_id, http_get=http_get)
     return None
 
 
@@ -319,6 +328,35 @@ def _download_http_file(url: str, dest: Path) -> Path | None:
         return dest if dest.is_file() and dest.stat().st_size > 0 else None
     except OSError:
         return None
+
+
+def probe_youtube_page_duration(
+    video_id: str,
+    http_get=None,
+) -> float | None:
+    if not video_id:
+        return None
+    get = http_get or _http_get_text
+    url = translation_format.youtube_watch_url(video_id)
+    try:
+        _final, body = get(url, timeout=20)
+    except OSError:
+        return None
+    for index, pattern in enumerate(YOUTUBE_PAGE_DURATION_RES):
+        match = pattern.search(body)
+        if not match:
+            continue
+        value = float(match.group(1))
+        return value / 1000.0 if index else value
+    return None
+
+
+def save_youtube_thumbnail(video_id: str, dest: Path) -> bool:
+    if not video_id:
+        return False
+    thumb = dest if dest.suffix.lower() == ".jpg" else dest.with_suffix(".jpg")
+    downloaded = _download_http_file(YOUTUBE_THUMB_URL.format(video_id=video_id), thumb)
+    return downloaded is not None
 
 
 def _write_recorded_frames(frames: list[Path], dest: Path) -> str:
@@ -490,6 +528,17 @@ def process_inbox(inbox_dir: Path, repo_root: Path) -> dict:
                 dest = repo_root / "assets" / slug / f"yt-{video_id}.gif"
                 url = marker.get("url") or translation_format.youtube_watch_url(video_id)
                 status = convert_remote_video(url, dest)
+                thumb_dest = repo_root / "assets" / slug / f"yt-{video_id}.jpg"
+                item: dict[str, str] = {"file": source.name, "kind": kind, "status": status, "dest": ""}
+                if status == "converted":
+                    media_count += 1
+                    written = dest
+                    item["dest"] = str(written.relative_to(repo_root))
+                elif save_youtube_thumbnail(video_id, thumb_dest):
+                    item["status"] = "thumbnail"
+                    item["dest"] = str(thumb_dest.relative_to(repo_root))
+                report["items"].append(item)
+                continue
             elif kind == "twitter":
                 status_id = marker.get("id") or translation_format.twitter_status_from_url(marker.get("url") or "") or "tweet"
                 dest = repo_root / "assets" / slug / f"tw-{status_id}.gif"
