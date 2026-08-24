@@ -1,31 +1,31 @@
 # domain/filename	date	title
-android/Android 7.1静态快捷方式.md	2016-10-27	Android 7.1 Static Shortcut
-android/Android support Annotation.md	2016-09-28	Android support Annotation
+android/Android 7.1静态快捷方式.md	2016-10-27	Android 7.1 静态快捷方式
+android/Android support Annotation.md	2016-09-28	Android Support 注解
 android/AndroidWeekly248期 源码库与代码.md	2017-08-25	AndroidWeekly248期 源码库与代码
 android/Android原生支持Java8的Lambdas表达式.md	2016-08-25	Android原生支持Java8的Lambdas表达式
 android/Android架构组件 - 查看Lifecycles - 第3部分.md	2017-08-25	Android架构组件 - 查看Lifecycles - 第3部分
 android/Android架构组件 – 查看Room和LiveData – 第一部分.md	2017-08-25	Android架构组件 – 查看Room和LiveData – 第一部分
 android/Android的构建时依赖性修补程序.md	2017-08-25	Android的构建时依赖性修补程序
-android/Andro使用AnimatedVectorDrawables处理线路转换.md	2017-08-25	Andro使用AnimatedVectorDrawables处理线路转换
-android/Animation- Jump-through.md	2017-08-25	Animation: Jump-through
-android/Annotation Processing in Android Studio.md	2016-10-08	Annotation Processing in Android Studio
-android/CompositionLocal-Made-Easy.md	2021-11-07	CompositionLocal-Made-Easy
-android/DI101 - 第一部分.md	2016-12-29	DI101 - 第一部分
-android/DI101-Part1.md	2016-12-29	DI101-第一部分
+android/Andro使用AnimatedVectorDrawables处理线路转换.md	2017-08-25	用 AnimatedVectorDrawable 做路径形变
+android/Animation- Jump-through.md	2017-08-25	动画：Jump-through
+android/Annotation Processing in Android Studio.md	2016-10-08	在 Android Studio 里做注解处理
+android/CompositionLocal-Made-Easy.md	2021-11-07	轻松理解 Jetpack Compose 的 CompositionLocal
+android/DI101 - 第一部分.md	2016-12-29	DI101：Android 平台依赖注入（第一部分）
+android/DI101-Part1.md	2016-12-29	DI101：Android 平台依赖注入（第一部分）
 android/Dagger 2 on producton—reducing methods count.md	2016-08-17	产品使用Dagger 2——减少方法数
 android/DiffUtil是必须的!.md	2017-08-25	DiffUtil是必须的!
-android/Extension Function.md	2017-08-25	Extension Function
+android/Extension Function.md	2017-08-25	Kotlin 扩展函数
 android/Jack和Jill的阴暗面.md	2016-08-17	Jack和Jill的阴暗面
-android/Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!).md	2016-09-07	Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!)
-android/Kotlin Contract.md	2021-03-29	Kotlin Contracts
-android/Kotlin Data Class.md	2017-08-25	Kotlin Data Class
-android/No More findViewById.md	2016-08-17	No More findViewById
+android/Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!).md	2016-09-07	别让运行时权限把应用搞乱（Headless Dialog Fragment）
+android/Kotlin Contract.md	2021-03-29	Kotlin 合约（Contracts）
+android/Kotlin Data Class.md	2017-08-25	Kotlin 数据类
+android/No More findViewById.md	2016-08-17	不再需要 findViewById
 android/Playing with Java annotation processing.md	2016-08-17	把玩Java注解处理
-android/Recomposition-Made-Easy.md	2021-11-07	Recomposition-Made-Easy
+android/Recomposition-Made-Easy.md	2021-11-07	轻松理解 Jetpack Compose 的 Recomposition
 android/RenderScript.md	2017-08-25	RenderScript
 android/Using Dagger 2.md	2016-08-17	Android项目使用Dagger2进行依赖注入
-android/[译]Android架构组件 – 查看ViewModel – 第二部分.md	2017-08-25	[译]Android架构组件 – 查看ViewModel – 第二部分
-android/annotation.html	2016-08-17	Annotation
+android/[译]Android架构组件 – 查看ViewModel – 第二部分.md	2017-08-25	Android架构组件 – 查看ViewModel – 第二部分
+android/annotation.html	2016-08-17	Java 注解（HTML）
 android/何时调整你的网络图片？.md	2017-08-25	何时调整你的网络图片？
 android/使用Dagger 2进行依赖注入.md	2016-08-17	使用Dagger 2进行依赖注入 - API介绍
 android/使用DiffUtil更新RecyclerView的智能方式.md	2017-08-25	使用DiffUtil更新RecyclerView的智能方式
