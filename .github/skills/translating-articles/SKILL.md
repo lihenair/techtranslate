@@ -80,7 +80,7 @@ cover_image: https://example.com/cover.png
 | `graphics` | 三维重建、3DGS、高斯溅射、图形图像本身；文中出现 SAM / 训练也不改成 `ai` |
 | `other` | 上面都对不上才用。能分清就不要写 `other` |
 
-用 `translation_format.classify_tech_domain(title, body)` 选领域，inbox 里的 `tech_domain` 就是这个结果。标题主旨优先于正文顺带提到的词。只有分类器也返回 `other` 时才写 `other`。Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。体系结构正典即使举例用到 LLM / H100，仍是 `systems`。3DGS / 高斯溅射即使写到 SAM、训练，仍是 `graphics`。
+用 `translation_format.classify_tech_domain(title, body)` 选领域，inbox 里的 `tech_domain` 就是这个结果。标题主旨优先于正文顺带提到的词。分类时忽略 `http(s)` URL、Markdown 图片、HTML 注释，以及路径型媒体名（`cover.jpg`、`/media/x.webp`）；标题里的词 **JPG / WebP** 仍可判为 `systems`。只有分类器也返回 `other` 时才写 `other`。创始人回忆、YC 故事、非工程随笔用 `other`，tags 仍写 3–6 个英文小写词（如 `startup`, `ycombinator`）。Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。体系结构正典即使举例用到 LLM / H100，仍是 `systems`。3DGS / 高斯溅射即使写到 SAM、训练，仍是 `graphics`。
 
 Omit `author`, `published_at`, and `cover_image` when unknown. Do not invent them.
 
@@ -104,9 +104,35 @@ Body header, in this order, blank line between blocks:
 
 Omit any header line you cannot fill. Do not use `[原文链接](URL)`.
 
+## Voice and polish（必做）
+
+翻译不是字对字搬运。先定 **口吻**，再写通顺中文；成稿应像该领域作者自己用中文写的，而不是机器直译。
+
+### 先认文类
+
+| 文类 | 典型 `tech_domain` / 信号 | 口吻 |
+| --- | --- | --- |
+| 工程技术文 | `ai` / `backend` / `frontend` / `devops` / `systems` / `graphics` / `security` / `android` / `mobile` | 该领域资深工程师：清楚、利落、术语准；可以说「坑」「摊开」「顶满」，少文言腔 |
+| 创业 / 创始人随笔 | `other` + startup / YC / founder 故事 | 叙事散文：有节奏、有画面；保留冷幽默与自嘲，别写成通稿 |
+| 产品 / 增长 / 运营 | 常落在 `other` 或夹带业务词 | 产品/运营人说话：结论先行，例子落地，少堆术语括号 |
+| 安全研究 | `security` | 安全研究员：精确、克制；漏洞名与概念第一次给中英对照 |
+
+### 润色规则
+
+- **意译优先**：长定语、英文从句拆成短句；「It is difficult to… when…」写成中文自然因果，不要「当…的时候，很难…」一路套。
+- **忌翻译腔**：少用「进行」「进行了」「进行中」；少「一个…的…的…」叠罗汉；少「使得」「予以」「针对…进行」。
+- **术语**：技术文第一次 `中文（English）`，后文跟邻近习惯；叙事文里机构名可保留英文缩写并在首次括注全称（如 YC、ETH）。
+- **语气对齐原文**：原文毒舌就毒舌，原文冷静就冷静；不要统一成公文或鸡汤。
+- **自检**：读一遍，若明显像 DeepL / 字面直译，整段重写后再提交。
+
+反例（生硬）→ 正例（可接受）：
+
+- 「我对太多事感兴趣，大多不肯放弃，还有一个更乏味的问题」→ 「兴趣太多，哪样都不肯放手；更现实的是，每学期大概得挣一万二，才能付下一学期学费。」
+- 「成功相对失败有个好用的属性：它不改行动，只改形容词」→ 「成功和失败做的是同一套动作，换的只是事后形容词。」
+
 ## Body rules
 
-- Simplified Chinese. Keep code, commands, API names, and original raster image URLs (`png` / `jpg` / `webp`). Same-origin diagram iframes and SVG (inline or `.svg`) must be converted into `assets/<slug>/` GIF or PNG; GitHub cannot show those iframes, and Jina drops them. From `archive/<date>/<domain>/` use `../../../../assets/<slug>/visual-….gif`.
+- Simplified Chinese, **polished to the voice table above**. Keep code, commands, API names, and original raster image URLs (`png` / `jpg` / `webp`). Same-origin diagram iframes and SVG (inline or `.svg`) must be converted into `assets/<slug>/` GIF or PNG; GitHub cannot show those iframes, and Jina drops them. From `archive/<date>/<domain>/` use `../../../../assets/<slug>/visual-….gif`.
 - Copy **every** inbox raster image into the Chinese post at the matching section — not only `cover_image`. X/Twitter long posts often have 3–6 `pbs.twimg.com/media/…` diagrams that Jina keeps and x.com HTML drops. If the Chinese file only has the header cover, the body diagrams are missing.
 - Headings: `## [引言](#introduction)` — Chinese title, original slug.
 - First use of a term: `消毒（sanitization）`.
