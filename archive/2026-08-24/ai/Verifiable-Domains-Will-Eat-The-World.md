@@ -28,6 +28,8 @@ cover_image: https://pbs.twimg.com/media/HQYSYeZWAAA8yr0.jpg:large
 
 那个年代最出名的 PowerPoint 恶搞，大概是 Peter Norvig 用幻灯片重述林肯葛底斯堡演说。
 
+![Norvig 的葛底斯堡演说 PowerPoint](https://pbs.twimg.com/media/HQYD4jqXkAAXaNM.png)
+
 林肯那两百七十二个词，每个词与其他词咬合得如此精确，尽管语域抬得很高，却仍有一种自然与完整，让人觉得它只能以这种形态诞生。
 
 Norvig 的 PowerPoint（扭曲）版之所以意外又好笑，是因为我们隐约却深刻地感到：那篇演说构造里那些有说服力的细节，携带着一种干巴巴复述同一堆事实所无法承载的「真」。
@@ -66,11 +68,15 @@ NRSV 译成 “various ways” 的，正是 Wilson 译成 “complicated” 的�
 
 可以想象《希伯来书》作者小心拧着用词旋钮——像 Rick Rubin 在混音台上拧「选词」（polytropos）与「词序」（离开王室之家、受苦、拯救、归家）——直到奥德修斯的形象与耶稣的形象在听众心里对焦，再彼此重叠。
 
+![选词与词序像混音台上的旋钮](https://pbs.twimg.com/media/HQYLrprXYAAsEov.jpg)
+
 当然，作者本可以用别的词开篇，但那就做不到把奥德修斯与耶稣并置的修辞工作。选词是交际行为里有意的一部分；用一个讨人厌的 Claude 腔词说，它是「承重的（load-bearing）」。
 
 ## [AI 水印之争](#the-ai-watermarking-controversy)
 
 上面绕这么大，是为了点出一个多数人凭直觉就懂的事实：选词对文本冲击读者的完整效果事关重大。所以当一位技术界兄弟用数学给我们 mansplain，说 Anthropic 加水印的文本相对无水印文本「没有质量损失」时，我们可能会想回一句：「不，两段措辞不同的文本并不相同，你这绝对的超级宅小丑。回你的火车话题去吧，把品味的事留给有品味的人。」
+
+[嵌入内容（原站 Twitter）](https://x.com/random_walker/status/2089414077286166911)
 
 看看下面这段、一篇还算不错的水印问题解说：
 
@@ -83,6 +89,8 @@ NRSV 译成 “various ways” 的，正是 Wilson 译成 “complicated” 的�
 对我们其余人来说，选词问题与品味、身份、作者性紧密相连，而这些又连着所有权、地位与利润。
 
 这种直觉层面的反应，在下面这则对水印决定的回应里抓得很准。
+
+[嵌入内容（原站 Twitter）](https://x.com/JonTeets005/status/2089824388812005680)
 
 至于对 Anthropic 水印里不那么「靠 vibe」的作者性 / 所有权异议，Ben Thompson 概括得很利落：
 

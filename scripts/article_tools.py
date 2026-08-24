@@ -485,6 +485,256 @@ def fetch_via_jina(url: str, timeout: int = 45) -> FetchedArticle:
     return FetchedArticle(url=url, title=title, markdown=markdown, method="jina")
 
 
+def _parse_twitter_created_at(value: str) -> str | None:
+    raw = (value or "").strip()
+    if not raw:
+        return None
+    for fmt in ("%a %b %d %H:%M:%S %z %Y", "%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%SZ"):
+        try:
+            return datetime.strptime(raw, fmt).date().isoformat()
+        except ValueError:
+            continue
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", raw):
+        return raw
+    return None
+
+
+def _normalize_draft_entity_map(raw: object) -> dict[str, dict]:
+    out: dict[str, dict] = {}
+    if isinstance(raw, list):
+        for item in raw:
+            if not isinstance(item, dict):
+                continue
+            key = str(item.get("key", ""))
+            value = item.get("value")
+            if key and isinstance(value, dict):
+                out[key] = value
+    elif isinstance(raw, dict):
+        for key, value in raw.items():
+            if isinstance(value, dict):
+                out[str(key)] = value
+    return out
+
+
+def _media_urls_by_id(media_entities: object) -> dict[str, str]:
+    by_id: dict[str, str] = {}
+    if not isinstance(media_entities, list):
+        return by_id
+    for item in media_entities:
+        if not isinstance(item, dict):
+            continue
+        mid = str(item.get("media_id") or "")
+        info = item.get("media_info") if isinstance(item.get("media_info"), dict) else {}
+        url = str(info.get("original_img_url") or "").strip()
+        if mid and url:
+            by_id[mid] = url
+    return by_id
+
+
+def cover_image_from_fxtwitter_media(cover_media: object) -> str | None:
+    if not isinstance(cover_media, dict):
+        return None
+    info = cover_media.get("media_info") if isinstance(cover_media.get("media_info"), dict) else {}
+    url = str(info.get("original_img_url") or "").strip()
+    if not url:
+        return None
+    if "pbs.twimg.com/media/" in url and not re.search(r":(?:large|orig|small|thumb)$", url, re.I):
+        url = f"{url}:large"
+    return url
+
+
+def _decorate_draft_text(
+    text: str,
+    style_ranges: list | None,
+    entity_ranges: list | None,
+    entity_map: dict[str, dict],
+) -> str:
+    ops: list[tuple[int, int, str, str, str | None]] = []
+    for rng in style_ranges or []:
+        if not isinstance(rng, dict):
+            continue
+        style = str(rng.get("style") or "").lower()
+        if style == "italic":
+            open_m, close_m = "*", "*"
+        elif style == "bold":
+            open_m, close_m = "**", "**"
+        elif style == "code":
+            open_m, close_m = "`", "`"
+        else:
+            continue
+        start = int(rng.get("offset") or 0)
+        length = int(rng.get("length") or 0)
+        end = start + length
+        if length <= 0 or start < 0 or end > len(text):
+            continue
+        ops.append((start, end, "style", open_m, close_m))
+    for rng in entity_ranges or []:
+        if not isinstance(rng, dict):
+            continue
+        key = str(rng.get("key"))
+        ent = entity_map.get(key) or {}
+        if str(ent.get("type") or "").upper() != "LINK":
+            continue
+        data = ent.get("data") if isinstance(ent.get("data"), dict) else {}
+        url = str(data.get("url") or "").strip()
+        start = int(rng.get("offset") or 0)
+        length = int(rng.get("length") or 0)
+        end = start + length
+        if not url or length <= 0 or start < 0 or end > len(text):
+            continue
+        ops.append((start, end, "link", url, None))
+    # Apply from the end so earlier offsets stay valid; longer spans before shorter.
+    ops.sort(key=lambda item: (-item[0], -(item[1] - item[0])))
+    out = text
+    for start, end, kind, a, b in ops:
+        inner = out[start:end]
+        if kind == "link":
+            out = f"{out[:start]}[{inner}]({a}){out[end:]}"
+        else:
+            out = f"{out[:start]}{a}{inner}{b}{out[end:]}"
+    return out
+
+
+def _atomic_draft_markdown(
+    entity_ranges: list | None,
+    entity_map: dict[str, dict],
+    media_by_id: dict[str, str],
+) -> str:
+    parts: list[str] = []
+    for rng in entity_ranges or []:
+        if not isinstance(rng, dict):
+            continue
+        key = str(rng.get("key"))
+        ent = entity_map.get(key) or {}
+        etype = str(ent.get("type") or "").upper()
+        data = ent.get("data") if isinstance(ent.get("data"), dict) else {}
+        if etype == "MEDIA":
+            for item in data.get("mediaItems") or []:
+                if not isinstance(item, dict):
+                    continue
+                mid = str(item.get("mediaId") or "")
+                url = media_by_id.get(mid)
+                if url:
+                    parts.append(f"![]({url})")
+        elif etype == "TWEET":
+            tid = str(data.get("tweetId") or "")
+            if tid.isdigit():
+                status_url = translation_format.twitter_status_url(tid)
+                parts.append(format_media_comment("twitter", id=tid, url=status_url))
+    return "\n\n".join(parts)
+
+
+def x_article_content_to_markdown(content: object, media_entities: object) -> str:
+    if not isinstance(content, dict):
+        return ""
+    blocks = content.get("blocks") or []
+    if not isinstance(blocks, list):
+        return ""
+    entity_map = _normalize_draft_entity_map(content.get("entityMap"))
+    media_by_id = _media_urls_by_id(media_entities)
+    out_blocks: list[str] = []
+    for block in blocks:
+        if not isinstance(block, dict):
+            continue
+        btype = str(block.get("type") or "unstyled")
+        text = str(block.get("text") or "")
+        entity_ranges = block.get("entityRanges") if isinstance(block.get("entityRanges"), list) else []
+        style_ranges = (
+            block.get("inlineStyleRanges") if isinstance(block.get("inlineStyleRanges"), list) else []
+        )
+        if btype == "atomic":
+            atomic = _atomic_draft_markdown(entity_ranges, entity_map, media_by_id)
+            if atomic:
+                out_blocks.append(atomic)
+            continue
+        decorated = _decorate_draft_text(text, style_ranges, entity_ranges, entity_map)
+        if btype == "header-one":
+            out_blocks.append(f"# {decorated}")
+        elif btype == "header-two":
+            out_blocks.append(f"## {decorated}")
+        elif btype == "header-three":
+            out_blocks.append(f"### {decorated}")
+        elif btype == "blockquote":
+            lines = decorated.split("\n")
+            out_blocks.append("\n".join(f"> {line}" if line.strip() else ">" for line in lines))
+        elif btype == "unordered-list-item":
+            out_blocks.append(f"- {decorated}")
+        elif btype == "ordered-list-item":
+            out_blocks.append(f"1. {decorated}")
+        elif btype == "code-block":
+            out_blocks.append(f"```\n{text}\n```")
+        elif decorated.strip():
+            out_blocks.append(decorated)
+    return ("\n\n".join(out_blocks).strip() + "\n") if out_blocks else ""
+
+
+def strip_cover_duplicate_images(markdown: str, cover_url: str | None) -> str:
+    cover_key = image_url_key(cover_url or "")
+    if not cover_key:
+        return markdown or ""
+
+    def _drop(match: re.Match[str]) -> str:
+        return "" if image_url_key(match.group(2)) == cover_key else match.group(0)
+
+    cleaned = IMAGE_MD_RE.sub(_drop, markdown or "")
+    return re.sub(r"\n{3,}", "\n\n", cleaned).strip() + ("\n" if cleaned.strip() else "")
+
+
+def fetch_via_fxtwitter(url: str, timeout: int = 45) -> FetchedArticle:
+    """Fetch an X/Twitter status via FixupX/fxtwitter API (needed for X Articles)."""
+    status_id = translation_format.twitter_status_from_url(url)
+    if not status_id:
+        raise FetchError("Not a Twitter/X status URL")
+    _, body = _http_get(f"https://api.fxtwitter.com/status/{status_id}", timeout=timeout)
+    try:
+        payload = json.loads(body)
+    except json.JSONDecodeError as exc:
+        raise FetchError(f"fxtwitter returned non-JSON: {exc}") from exc
+    tweet = payload.get("tweet") if isinstance(payload, dict) else None
+    if not isinstance(tweet, dict):
+        tweet = payload if isinstance(payload, dict) else None
+    if not isinstance(tweet, dict):
+        raise FetchError("fxtwitter response missing tweet")
+    author_obj = tweet.get("author") if isinstance(tweet.get("author"), dict) else {}
+    author_name = str(author_obj.get("name") or author_obj.get("screen_name") or "").strip() or None
+    published_at = _parse_twitter_created_at(str(tweet.get("created_at") or ""))
+    article = tweet.get("article")
+    if isinstance(article, dict) and article.get("content"):
+        title = str(article.get("title") or "").strip() or f"X Article {status_id}"
+        markdown = x_article_content_to_markdown(
+            article.get("content"),
+            article.get("media_entities") or [],
+        )
+        cover = cover_image_from_fxtwitter_media(article.get("cover_media"))
+        markdown = strip_cover_duplicate_images(markdown, cover)
+        if len(markdown.strip()) < 80:
+            raise FetchError("fxtwitter article returned too little text")
+        markdown = inject_youtube_comments(markdown.strip())
+        comments = extract_media_comments(markdown)
+        return FetchedArticle(
+            url=url,
+            title=title,
+            markdown=markdown,
+            method="fxtwitter-article",
+            author=author_name,
+            published_at=published_at,
+            cover_image=cover,
+            media_comments=comments or None,
+        )
+    text = str(tweet.get("text") or tweet.get("raw_text") or "").strip()
+    if len(text) < 40:
+        raise FetchError("fxtwitter status returned too little text")
+    title = text.split("\n", 1)[0][:80] or f"Tweet {status_id}"
+    return FetchedArticle(
+        url=url,
+        title=title,
+        markdown=text + "\n",
+        method="fxtwitter",
+        author=author_name,
+        published_at=published_at,
+    )
+
+
 def _attr_html(attrs: list[tuple[str, str | None]]) -> str:
     parts = []
     for key, value in attrs:
@@ -934,6 +1184,12 @@ def fetch_article(url: str, timeout: int = 45) -> FetchedArticle:
     errors: list[str] = []
     jina_article: FetchedArticle | None = None
     html_article: FetchedArticle | None = None
+    fx_article: FetchedArticle | None = None
+    if translation_format.twitter_status_from_url(url):
+        try:
+            fx_article = fetch_via_fxtwitter(url, timeout=timeout)
+        except (FetchError, HTTPError, URLError, TimeoutError, ssl.SSLError, OSError, json.JSONDecodeError) as exc:
+            errors.append(f"fetch_via_fxtwitter: {exc}")
     try:
         jina_article = fetch_via_jina(url, timeout=timeout)
     except (FetchError, HTTPError, URLError, TimeoutError, ssl.SSLError, OSError) as exc:
@@ -942,14 +1198,37 @@ def fetch_article(url: str, timeout: int = 45) -> FetchedArticle:
         html_article = fetch_via_html(url, timeout=timeout)
     except (FetchError, HTTPError, URLError, TimeoutError, ssl.SSLError, OSError) as exc:
         errors.append(f"fetch_via_html: {exc}")
+    # X Articles: body MEDIA lives in fxtwitter JSON; x.com HTML/Jina usually miss it.
+    if fx_article and fx_article.method == "fxtwitter-article":
+        if html_article:
+            return merge_html_enrichment(fx_article, html_article)
+        return fx_article
     if jina_article and html_article:
         merged = merge_html_enrichment(jina_article, html_article)
         merged.markdown = merge_inline_images(merged.markdown or "", jina_article.markdown or "")
+        if fx_article:
+            merged.markdown = merge_inline_images(merged.markdown or "", fx_article.markdown or "")
         return merged
     if jina_article:
+        if fx_article:
+            jina_article.markdown = merge_inline_images(
+                jina_article.markdown or "", fx_article.markdown or ""
+            )
         return jina_article
     if html_article:
+        if fx_article:
+            html_article.markdown = merge_inline_images(
+                html_article.markdown or "", fx_article.markdown or ""
+            )
+            if not html_article.cover_image and fx_article.cover_image:
+                html_article.cover_image = fx_article.cover_image
+            if not html_article.author and fx_article.author:
+                html_article.author = fx_article.author
+            if not html_article.published_at and fx_article.published_at:
+                html_article.published_at = fx_article.published_at
         return html_article
+    if fx_article:
+        return fx_article
     raise FetchError("All fetch methods failed: " + " | ".join(errors))
 
 
