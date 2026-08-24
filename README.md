@@ -56,6 +56,7 @@
 
 ### Android
 
+- 2026-08-24 [安卓车机恶意软件](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/android/The-invisible-passenger-in-your-car.md)
 - 2021-11-07 [Recomposition-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Recomposition-Made-Easy.md)
 - 2021-11-07 [CompositionLocal-Made-Easy](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/CompositionLocal-Made-Easy.md)
 - 2021-03-29 [Kotlin Contracts](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/android/Kotlin%20Contract.md)
