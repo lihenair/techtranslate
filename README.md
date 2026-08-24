@@ -40,6 +40,7 @@
 ### AI
 
 - 2026-08-24 [我如何用 AI 写作](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/How-I-Write-with-AI.md)
+- 2026-08-24 [我如何投资：AI 原生的 VC 机构](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/How-I-Invest-The-AI-Native-VC-Firm.md)
 - 2026-08-24 [循环与图：如何不再逐步盯着 Agent，只审批最后一步](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/Loops-and-Graphs-How-to-Stop-Babysitting-Agents.md)
 - 2026-08-24 [Vibe Coding 周报 #45](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/Vibe-Coding-Weekly-45.md)
 - 2026-08-24 [Claude Code 的 token 都花在哪了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/Where-Claude-Code-Tokens-Actually-Go.md)
