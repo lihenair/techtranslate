@@ -80,6 +80,18 @@ class CatalogTest(unittest.TestCase):
             self.assertEqual(by_path["archive/earlier/android/legacy.md"].date, "2016-08-17")
             self.assertEqual(by_path["archive/earlier/android/legacy.md"].title, "旧安卓标题")
 
+    def test_scan_skips_duplicate_names_and_strips_translation_prefix(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            android = root / "archive" / "earlier" / "android"
+            android.mkdir(parents=True)
+            (android / "keep.md").write_text("# 【翻译】保留标题\n", encoding="utf-8")
+            (android / "DI101 - 第一部分.md").write_text("# 重复条目\n", encoding="utf-8")
+            entries = ta.scan_archive(root)
+            names = [Path(item.relpath).name for item in entries]
+            self.assertEqual(names, ["keep.md"])
+            self.assertEqual(entries[0].title, "保留标题")
+
 
 class RepoLayoutTest(unittest.TestCase):
     def test_translations_live_under_archive(self) -> None:
@@ -101,6 +113,36 @@ class RepoLayoutTest(unittest.TestCase):
         self.assertIn("### AI", readme)
         self.assertIn("2026-08-23", readme)
         self.assertIn("archive/2026-08-23/ai/", readme)
+
+    def test_readme_explains_inbox_vs_translation_pr_and_lists_ci(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("| **inbox PR**", readme)
+        self.assertIn("| **译文 PR**", readme)
+        self.assertIn(".github/workflows/article-tools.yml", readme)
+        self.assertIn("close-inbox-pr.yml", readme)
+
+    def test_catalog_uses_chinese_titles_and_skips_duplicate_di101(self) -> None:
+        entries = ta.scan_archive(ROOT)
+        by_name = {Path(item.relpath).name: item.title for item in entries}
+        self.assertEqual(by_name["Android 7.1静态快捷方式.md"], "Android 7.1 静态快捷方式")
+        self.assertEqual(by_name["Recomposition-Made-Easy.md"], "轻松理解 Jetpack Compose 的 Recomposition")
+        self.assertEqual(by_name["CompositionLocal-Made-Easy.md"], "轻松理解 Jetpack Compose 的 CompositionLocal")
+        self.assertEqual(
+            by_name["Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!).md"],
+            "别让运行时权限把应用搞乱（Headless Dialog Fragment）",
+        )
+        self.assertEqual(by_name["Andro使用AnimatedVectorDrawables处理线路转换.md"], "用 AnimatedVectorDrawable 做路径形变")
+        self.assertEqual(
+            by_name["[译]Android架构组件 – 查看ViewModel – 第二部分.md"],
+            "Android架构组件 – 查看ViewModel – 第二部分",
+        )
+        self.assertEqual(by_name["NoBuzz.md"], "NoBuzz：把 Claude 的腔调译回人话")
+        names = [Path(item.relpath).name for item in entries]
+        self.assertIn("DI101-Part1.md", names)
+        self.assertNotIn("DI101 - 第一部分.md", names)
+        for title in by_name.values():
+            self.assertFalse(title.startswith("[译]"), title)
+            self.assertFalse(title.startswith("【翻译】"), title)
 
 
 if __name__ == "__main__":

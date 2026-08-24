@@ -40,27 +40,32 @@ DOMAIN_HEADINGS = {
 }
 README_TITLES = {
     "10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md": "阻止 Agent 忽略指令的 10 种 Claude Code 引导机制",
-    "Android 7.1静态快捷方式.md": "Android 7.1 Static Shortcut",
+    "Android 7.1静态快捷方式.md": "Android 7.1 静态快捷方式",
     "Android Security-Welcome To Shell.md": "Android安全性: 欢迎来到Shell(权限)",
-    "Android support Annotation.md": "Android support Annotation",
+    "Android support Annotation.md": "Android Support 注解",
     "Android原生支持Java8的Lambdas表达式.md": "Android原生支持Java8的Lambdas表达式",
-    "Annotation Processing in Android Studio.md": "Annotation Processing in Android Studio",
-    "CompositionLocal-Made-Easy.md": "CompositionLocal-Made-Easy",
-    "DI101-Part1.md": "DI101-第一部分",
+    "Annotation Processing in Android Studio.md": "在 Android Studio 里做注解处理",
+    "CompositionLocal-Made-Easy.md": "轻松理解 Jetpack Compose 的 CompositionLocal",
+    "DI101-Part1.md": "DI101：Android 平台依赖注入（第一部分）",
     "Dagger 2 on producton—reducing methods count.md": "产品使用Dagger 2——减少方法数",
     "How JPG Works.md": "JPG如何工作的",
     "How WebP Works.md": "WebP是如何工作的(有损模式)",
     "I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md": "我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端",
     "Jack和Jill的阴暗面.md": "Jack和Jill的阴暗面",
     "Java注解.md": "Java注解",
-    "Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!).md": "Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!)",
-    "Kotlin Contract.md": "Kotlin Contracts",
-    "No More findViewById.md": "No More findViewById",
-    "NoBuzz.md": "NoBuzz",
+    "Keeping Android runtime permissions from cluttering your app (Headless Dialog Fragments!).md": "别让运行时权限把应用搞乱（Headless Dialog Fragment）",
+    "Kotlin Contract.md": "Kotlin 合约（Contracts）",
+    "No More findViewById.md": "不再需要 findViewById",
+    "NoBuzz.md": "NoBuzz：把 Claude 的腔调译回人话",
     "Playing with Java annotation processing.md": "把玩Java注解处理",
-    "Recomposition-Made-Easy.md": "Recomposition-Made-Easy",
+    "Recomposition-Made-Easy.md": "轻松理解 Jetpack Compose 的 Recomposition",
     "Using Dagger 2.md": "Android项目使用Dagger2进行依赖注入",
-    "annotation.html": "Annotation",
+    "Andro使用AnimatedVectorDrawables处理线路转换.md": "用 AnimatedVectorDrawable 做路径形变",
+    "[译]Android架构组件 – 查看ViewModel – 第二部分.md": "Android架构组件 – 查看ViewModel – 第二部分",
+    "Animation- Jump-through.md": "动画：Jump-through",
+    "Extension Function.md": "Kotlin 扩展函数",
+    "Kotlin Data Class.md": "Kotlin 数据类",
+    "annotation.html": "Java 注解（HTML）",
     "使用Dagger 2进行依赖注入.md": "使用Dagger 2进行依赖注入 - API介绍",
     "使用Gradle额外属性管理Android依赖版本.md": "使用Gradle额外属性管理Android依赖版本",
     "使用Picasso加载图片.md": "使用Picasso加载图片",
@@ -71,6 +76,7 @@ README_TITLES = {
     "路由器.md": "Router——一切都在正确的位置 映射功能到应用的组件",
     "鼓捣RxAnroid-介绍.md": "鼓捣RxAndroid--介绍",
 }
+SKIP_ARCHIVE_NAMES = {"DI101 - 第一部分.md"}
 LEGACY_DOMAINS = {
     "Android Security-Welcome To Shell.md": "security",
     "How JPG Works.md": "systems",
@@ -84,6 +90,7 @@ LEGACY_DOMAINS = {
     "NoBuzz.md": "ai",
 }
 SKIP_ROOT_NAMES = {"README.md", "AGENTS.md"}
+TRANSLATION_PREFIX_RE = re.compile(r"^(?:【翻译】|\[译\])\s*")
 CATALOG_START = "<!-- catalog:start -->"
 CATALOG_END = "<!-- catalog:end -->"
 
@@ -109,18 +116,22 @@ def github_blob_url(relpath: str) -> str:
     return f"{GITHUB_BLOB}/{encoded}"
 
 
+def _clean_catalog_title(title: str) -> str:
+    return TRANSLATION_PREFIX_RE.sub("", title.strip())
+
+
 def _title_from_text(text: str, filename: str) -> str:
     if filename in README_TITLES:
-        return README_TITLES[filename]
+        return _clean_catalog_title(README_TITLES[filename])
     match = FRONTMATTER_RE.match(text)
     if match:
         title = _parse_simple_yaml(match.group(1)).get("title", "").strip()
         if title:
-            return title
+            return _clean_catalog_title(title)
     heading = re.search(r"^#\s+(.+)$", text, re.MULTILINE)
     if heading:
-        return heading.group(1).strip().rstrip("#").strip()
-    return Path(filename).stem
+        return _clean_catalog_title(heading.group(1).strip().rstrip("#").strip())
+    return _clean_catalog_title(Path(filename).stem)
 
 
 def _load_earlier_meta(earlier_dir: Path) -> dict[str, tuple[str, str]]:
@@ -154,7 +165,7 @@ def scan_archive(repo_root: Path) -> list[CatalogEntry]:
         if len(parts) < 4:
             continue
         date_dir, domain, filename = parts[1], parts[2], parts[-1]
-        if domain not in TECH_DOMAINS:
+        if domain not in TECH_DOMAINS or filename in SKIP_ARCHIVE_NAMES:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         title = _title_from_text(text, filename)
@@ -164,7 +175,7 @@ def scan_archive(repo_root: Path) -> list[CatalogEntry]:
             key = f"{domain}/{filename}"
             date, extra_title = earlier_meta.get(key, ("较早", ""))
             if extra_title:
-                title = extra_title
+                title = _clean_catalog_title(extra_title)
         entries.append(CatalogEntry(title=title, relpath=str(rel), date=date, domain=domain))
     return entries
 
