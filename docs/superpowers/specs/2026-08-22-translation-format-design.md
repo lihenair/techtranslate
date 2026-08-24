@@ -50,7 +50,7 @@ cover_image: https://portswigger.net/cms/images/97/ed/a919-twittercard-article.p
 | `author` | 能确定才写 | 原文作者名；不确定就省略该行，不编造 |
 | `published_at` | 能确定才写 | `YYYY-MM-DD`，原文首次发布日 |
 | `translated_at` | 是 | 翻译当天 `YYYY-MM-DD`（UTC 日期） |
-| `tech_domain` | 是 | 按**主旨**选一个：`android` / `frontend` / `backend` / `security` / `mobile` / `devops` / `ai` / `systems` / `graphics` / `other`。先跑 `classify_tech_domain(title, body)`，能分清就不要用 `other`。AI Agent / Claude / 提示词 / AI 芯片产品文用 `ai`；体系结构、微架构、ISA、OS、编译器、图像编解码用 `systems`；3DGS、高斯溅射、图形图像用 `graphics`。不要因为文中出现 CI、hooks、deploy 就把 Agent 文改成 `devops`，也不要因为举例提到 LLM 就把体系结构文改成 `ai`，也不要因为遮罩用了 SAM 就把 3DGS 文改成 `ai`。 |
+| `tech_domain` | 是 | 按**主旨**选一个：`android` / `frontend` / `backend` / `security` / `mobile` / `devops` / `ai` / `systems` / `graphics` / `other`。先跑 `classify_tech_domain(title, body)`，能分清就不要用 `other`。分类器会忽略 `http(s)` URL、Markdown 图片、HTML 注释、路径型媒体名（如 `cover.jpg`），避免配图把创业随笔误判成 `systems`；标题正文里的 **JPG / WebP** 仍可判为编解码/`systems`。创始人回忆、YC 故事、非工程随笔用 `other`。AI Agent / Claude / 提示词 / AI 芯片产品文用 `ai`；体系结构、微架构、ISA、OS、编译器、图像编解码用 `systems`；3DGS、高斯溅射、图形图像用 `graphics`。不要因为文中出现 CI、hooks、deploy 就把 Agent 文改成 `devops`，也不要因为举例提到 LLM 就把体系结构文改成 `ai`，也不要因为遮罩用了 SAM 就把 3DGS 文改成 `ai`。 |
 | `tags` | 是 | 3–6 个英文小写词，例如 `[security, web, frontend]` |
 | `cover_image` | 能确定才写 | 原文封面绝对 URL；没有就省略 |
 
@@ -90,7 +90,7 @@ Frontmatter 之后按这个顺序，中间空一行：
 
 ## 正文写法
 
-- 简体中文，且必须**按文类润色**：工程文用该领域工程师口吻；创业/随笔用叙事散文口吻；安全研究用研究员口吻。意译优先，拆长句，去掉翻译腔（「进行」「使得」「一个…的…的…」）。成稿应像中文作者写的，不是字对字直译。
+- 简体中文，且必须**按文类润色**：工程文用该领域工程师口吻；创业/随笔用叙事散文口吻；安全研究用研究员口吻。意译优先，拆长句，少用翻译腔（少「进行了 / 针对…进行」、少「使得」「予以」、少「一个…的…的…」叠罗汉）。成稿应像中文作者写的，不是字对字直译。
 - 代码块、命令、类名、API、原文图片 URL 不译。
 - 章节标题译成中文，锚点保留原文 slug：`## [引言](#introduction)`。原文没有 slug 时，用标题英文 kebab-case。
 - 术语第一次：`消毒（sanitization）`；后文可只用中文或英文，跟邻近译文习惯。叙事文里机构名可保留缩写并首次括注。

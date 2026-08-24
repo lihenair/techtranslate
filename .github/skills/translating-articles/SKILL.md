@@ -80,7 +80,7 @@ cover_image: https://example.com/cover.png
 | `graphics` | 三维重建、3DGS、高斯溅射、图形图像本身；文中出现 SAM / 训练也不改成 `ai` |
 | `other` | 上面都对不上才用。能分清就不要写 `other` |
 
-用 `translation_format.classify_tech_domain(title, body)` 选领域，inbox 里的 `tech_domain` 就是这个结果。标题主旨优先于正文顺带提到的词。分类时忽略图片 URL / 文件名（`.jpg` 配图不会把创业随笔判成 `systems`）。只有分类器也返回 `other` 时才写 `other`。创始人回忆、YC 故事、非工程随笔用 `other`，tags 仍写 3–6 个英文小写词（如 `startup`, `ycombinator`）。Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。体系结构正典即使举例用到 LLM / H100，仍是 `systems`。3DGS / 高斯溅射即使写到 SAM、训练，仍是 `graphics`。
+用 `translation_format.classify_tech_domain(title, body)` 选领域，inbox 里的 `tech_domain` 就是这个结果。标题主旨优先于正文顺带提到的词。分类时忽略 `http(s)` URL、Markdown 图片、HTML 注释，以及路径型媒体名（`cover.jpg`、`/media/x.webp`）；标题里的词 **JPG / WebP** 仍可判为 `systems`。只有分类器也返回 `other` 时才写 `other`。创始人回忆、YC 故事、非工程随笔用 `other`，tags 仍写 3–6 个英文小写词（如 `startup`, `ycombinator`）。Claude Code / Agent 文即使写到 hooks、CI、deploy，仍是 `ai`。体系结构正典即使举例用到 LLM / H100，仍是 `systems`。3DGS / 高斯溅射即使写到 SAM、训练，仍是 `graphics`。
 
 Omit `author`, `published_at`, and `cover_image` when unknown. Do not invent them.
 

@@ -277,13 +277,17 @@ ISO8601_DURATION_RE = re.compile(
 _URL_RE = re.compile(r"https?://\S+", re.I)
 _MD_IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^)]+\)")
 _HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
+# Path-like media names (cover.jpg, /media/x.webp) must not fake codec topics.
+# Bare words JPG / WebP / JPEG in titles still classify via domain patterns.
+_MEDIA_FILENAME_RE = re.compile(r"(?<!\w)[\w./-]+\.(?:jpe?g|png|gif|webp|avif|svg)\b", re.I)
 
 
 def _prose_for_classify(text: str) -> str:
-    """Drop URLs, markdown images, and HTML comments so filenames do not fake a domain."""
+    """Drop URLs, markdown images, HTML comments, and path-like media filenames."""
     cleaned = _HTML_COMMENT_RE.sub(" ", text or "")
     cleaned = _MD_IMAGE_RE.sub(" ", cleaned)
     cleaned = _URL_RE.sub(" ", cleaned)
+    cleaned = _MEDIA_FILENAME_RE.sub(" ", cleaned)
     return cleaned
 
 

@@ -207,6 +207,27 @@ class TechDomainTest(unittest.TestCase):
         )
         self.assertEqual(
             tf.classify_tech_domain(
+                "One year ago today we got into Y Combinator",
+                "See https://cdn.example.com/media/HQZC9ZWWIAA2LAm.jpg for the photo.",
+            ),
+            "other",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Founder notes from YC",
+                "<!-- cover: assets/foo/cover.jpg -->\nWe interviewed at YC.",
+            ),
+            "other",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
+                "Founder notes from YC",
+                "Local path cover.jpg and /media/x.webp should stay non-technical.",
+            ),
+            "other",
+        )
+        self.assertEqual(
+            tf.classify_tech_domain(
                 "How to compose CSS layouts",
                 "flexbox browser HTML DOM",
             ),

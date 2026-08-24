@@ -6,7 +6,7 @@ author: wen
 published_at: 2026-08-23
 translated_at: 2026-08-24
 tech_domain: other
-tags: [startup, ycombinator, founders, yc]
+tags: [startup, ycombinator, founders, essay]
 cover_image: https://pbs.twimg.com/media/HQZC9ZWWIAA2LAm.jpg:large
 ---
 
