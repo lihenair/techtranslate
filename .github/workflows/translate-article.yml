@@ -132,7 +132,7 @@ jobs:
           EOF
           )
           if [[ -n "$ISSUE_NUMBER" ]]; then
-            PR_BODY+=$'\n\n'"Related to #${ISSUE_NUMBER}. Do not merge this inbox PR to close the issue — the translation PR must say \`Closes #${ISSUE_NUMBER}\`."
+            PR_BODY+=$'\n\n'"Related to #${ISSUE_NUMBER}. **Do not merge this inbox PR.** When the translation PR (\`Closes #${ISSUE_NUMBER}\`) is opened or merged, close this PR without merging."
           fi
           PR_URL=$(gh pr list --head "$BRANCH" --json url --jq '.[0].url' || true)
           if [[ -z "$PR_URL" ]]; then
@@ -203,7 +203,7 @@ jobs:
               "target_repo": "${GITHUB_REPOSITORY}",
               "base_branch": "${BRANCH}",
               "custom_agent": "article-translator",
-              "custom_instructions": "Translate every _inbox/*.source.md file using .github/skills/translating-articles/SKILL.md. Update README.md and delete the inbox sources when done."
+              "custom_instructions": "Translate every _inbox/*.source.md file using .github/skills/translating-articles/SKILL.md. Update README.md and delete the inbox sources when done. Translation PR body must include Closes #<issue>. Never merge the Action inbox PR (branch translate/issue-<n>, title Translate: …); close that inbox PR without merging as soon as your translation PR exists, and again when the translation is merged."
             }
           }
           EOF
