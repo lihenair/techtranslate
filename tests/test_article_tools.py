@@ -592,6 +592,49 @@ class MergeHtmlEnrichmentTest(unittest.TestCase):
         self.assertEqual(merged.published_at, "2025-12-01")
         self.assertEqual(merged.cover_image, "https://example.com/jina.png")
 
+    def test_merge_keeps_jina_images_html_is_missing(self) -> None:
+        jina = article_tools.FetchedArticle(
+            url="https://x.com/example/status/1",
+            title="T",
+            markdown=(
+                "That is the moment people blame the model.\n\n"
+                "![diagram 1](https://pbs.twimg.com/media/HQZ4wCCWgAA5YYj.png)\n\n"
+                "The graph is the layer above."
+            ),
+            method="jina",
+        )
+        html = article_tools.FetchedArticle(
+            url="https://x.com/example/status/1",
+            title="T",
+            markdown="That is the moment people blame the model.\n\nThe graph is the layer above.",
+            method="html",
+            cover_image="https://pbs.twimg.com/media/HQaNiAyXMAEIPNz.jpg:large",
+        )
+        merged = article_tools.merge_html_enrichment(jina, html)
+        self.assertIn("HQZ4wCCWgAA5YYj.png", merged.markdown)
+        self.assertLess(
+            merged.markdown.index("blame the model"),
+            merged.markdown.index("HQZ4wCCWgAA5YYj.png"),
+        )
+        self.assertLess(
+            merged.markdown.index("HQZ4wCCWgAA5YYj.png"),
+            merged.markdown.index("The graph is the layer above"),
+        )
+
+    def test_merge_copies_source_images_into_image_poor_target(self) -> None:
+        target = "That is the moment people blame the model.\n\nThe graph is the layer above."
+        source = (
+            "That is the moment people blame the model.\n\n"
+            "![diagram 1](https://pbs.twimg.com/media/HQZ4wCCWgAA5YYj.png)\n\n"
+            "The graph is the layer above."
+        )
+        merged = article_tools.merge_inline_images(target, source)
+        self.assertIn("HQZ4wCCWgAA5YYj.png", merged)
+        self.assertLess(
+            merged.index("blame the model"),
+            merged.index("HQZ4wCCWgAA5YYj.png"),
+        )
+
 
 class InboxGitAddTest(unittest.TestCase):
     def test_paths_omit_missing_assets(self) -> None:

@@ -64,6 +64,8 @@ cover_image: https://pbs.twimg.com/media/HQaNiAyXMAEIPNz.jpg:large
 
 这时人们会怪模型。也是下一层开始回本的时刻。
 
+![完美循环套在错误形状上](https://pbs.twimg.com/media/HQZ4wCCWgAA5YYj.png)
+
 ## [图是上一层](#the-graph-is-the-layer-above)
 
 **图**是工作的形状：什么跑、什么并行、什么等待、什么根本不跑，以及结果往哪回流。
@@ -110,6 +112,8 @@ Splitter、worker、code node、gate。词汇就这些。
 
 每条边都是 Agent 的图，是在为自己的布线付租金。
 
+![四类节点，其中一类不是模型](https://pbs.twimg.com/media/HQZ5BxZXwAAY8_J.png)
+
 ## [循环真正住在哪里](#where-the-loop-actually-lives)
 
 一句话解开全部混淆：**循环住在节点里，图住在节点之间**。
@@ -141,6 +145,8 @@ Splitter、worker、code node、gate。词汇就这些。
 注意它落在哪里。不在 worker 指令里，而在**决定工作如何被切分**的 brief 里。
 
 已确认的原因变成规则，下一次故障从这一次结束的地方开始。
+
+![两条回路：修正边与学习边](https://pbs.twimg.com/media/HQZ6Gt9WQAAbTUk.png)
 
 ## [退回单元，不是整批](#return-the-unit-not-the-batch)
 
@@ -179,6 +185,8 @@ Splitter、worker、code node、gate。词汇就这些。
 第三行不是「阈值设很高」，而是**通道关闭**——阈值会被调，关闭的通道不会。
 
 在开放的通道里，gate 按顺序读证据：确定性结果 → 本次运行轨迹 → 该节点历史 rollback 频率 → 最后才是模型自评。
+
+![按爆炸半径开门，不按置信度](https://pbs.twimg.com/media/HQZ5mTxXUAANsQt.jpg)
 
 ## [从你自己的工作入手](#where-to-start-on-your-own-work)
 

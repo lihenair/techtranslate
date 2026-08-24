@@ -34,6 +34,7 @@ HREF_RE = re.compile(r"""\bhref=["']([^"']+)["']""", re.I)
 CSS_URL_RE = re.compile(r"""url\(\s*(["']?)([^)'"]+)\1\s*\)""", re.I)
 CSS_ANIM_PROP_RE = re.compile(r"""(?:^|[;\s"'])animation(?:-[a-z]+)?\s*:""", re.I)
 MEDIA_COMMENT_RE = re.compile(r"<!--\s*media:[^>]+-->")
+IMAGE_MD_RE = re.compile(r"!\[([^\]]*)\]\((https?://[^)\s]+)\)")
 MEDIA_CONTAINER_TAGS = {"section", "figure", "div"}
 MAX_SECTION_SNIPPET_CHARS = 16_384
 MAX_SECTION_STYLE_RATIO = 0.4
@@ -306,6 +307,42 @@ def is_tiny_svg(attrs: dict[str, str | None]) -> bool:
 
 def extract_media_comments(markdown: str) -> list[str]:
     return [match.group(0) for match in MEDIA_COMMENT_RE.finditer(markdown or "")]
+
+
+def image_url_key(url: str) -> str:
+    path = urlparse(url or "").path
+    name = path.rsplit("/", 1)[-1]
+    return re.sub(r":(?:large|orig|small|thumb)$", "", name, flags=re.I)
+
+
+def markdown_image_urls(text: str) -> list[str]:
+    return [match.group(2) for match in IMAGE_MD_RE.finditer(text or "")]
+
+
+def merge_inline_images(target: str, source: str) -> str:
+    """Copy markdown images from source that target is missing, after the matching prior paragraph."""
+    if not source:
+        return target or ""
+    out = target or ""
+    existing = {image_url_key(url) for url in markdown_image_urls(out)}
+    last = 0
+    for match in IMAGE_MD_RE.finditer(source):
+        url = match.group(2)
+        key = image_url_key(url)
+        if not key or key in existing:
+            last = match.end()
+            continue
+        before = source[last : match.start()]
+        needle = last_paragraph_needle(before)
+        snippet = match.group(0)
+        if needle and needle in out:
+            at = out.index(needle) + len(needle)
+            out = out[:at].rstrip() + "\n\n" + snippet + "\n\n" + out[at:].lstrip()
+        else:
+            out = out.rstrip() + "\n\n" + snippet + "\n"
+        existing.add(key)
+        last = match.end()
+    return out
 
 
 def last_paragraph_needle(text: str) -> str:
@@ -854,6 +891,7 @@ def merge_html_enrichment(article: FetchedArticle, html_article: FetchedArticle)
             existing.add(comment)
     article.media_comments = comments or None
     article.markdown = place_media_comments(article.markdown or "", html_article.markdown or "")
+    article.markdown = merge_inline_images(article.markdown or "", html_article.markdown or "")
     if html_article.section_snippets and not article.section_snippets:
         article.section_snippets = list(html_article.section_snippets)
     if not article.author:
@@ -905,7 +943,9 @@ def fetch_article(url: str, timeout: int = 45) -> FetchedArticle:
     except (FetchError, HTTPError, URLError, TimeoutError, ssl.SSLError, OSError) as exc:
         errors.append(f"fetch_via_html: {exc}")
     if jina_article and html_article:
-        return merge_html_enrichment(jina_article, html_article)
+        merged = merge_html_enrichment(jina_article, html_article)
+        merged.markdown = merge_inline_images(merged.markdown or "", jina_article.markdown or "")
+        return merged
     if jina_article:
         return jina_article
     if html_article:

@@ -107,6 +107,7 @@ Omit any header line you cannot fill. Do not use `[原文链接](URL)`.
 ## Body rules
 
 - Simplified Chinese. Keep code, commands, API names, and original raster image URLs (`png` / `jpg` / `webp`). Same-origin diagram iframes and SVG (inline or `.svg`) must be converted into `assets/<slug>/` GIF or PNG; GitHub cannot show those iframes, and Jina drops them. From `archive/<date>/<domain>/` use `../../../../assets/<slug>/visual-….gif`.
+- Copy **every** inbox raster image into the Chinese post at the matching section — not only `cover_image`. X/Twitter long posts often have 3–6 `pbs.twimg.com/media/…` diagrams that Jina keeps and x.com HTML drops. If the Chinese file only has the header cover, the body diagrams are missing.
 - Headings: `## [引言](#introduction)` — Chinese title, original slug.
 - First use of a term: `消毒（sanitization）`.
 - No `iframe`. No `p9-xtjj-sign` / `link.juejin.cn` URLs.
