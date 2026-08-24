@@ -8,7 +8,7 @@ body:
       value: |
         一篇文章：填原文链接，可选填中文标题。
         多篇文章：不要共用一个标题，在「更多文章」里每行一篇，写成 `链接` 或 `链接 | 中文标题`。
-        提交后 GitHub Action 会抓原文并开 inbox PR；若仓库配置了 `COPILOT_ASSIGN_TOKEN`，会自动指派 Copilot 写译文。
+        提交后 GitHub Action 会抓原文并开 **inbox PR**（只含英文，**不要合入**；译文合入、Issue 关闭后会自动关掉）。若仓库配置了 `COPILOT_ASSIGN_TOKEN`，会自动指派 Copilot 写译文。
   - type: input
     id: url
     attributes:

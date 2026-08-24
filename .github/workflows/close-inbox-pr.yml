@@ -1,0 +1,53 @@
+# Close Action inbox PRs after the translation lands.
+# When a [Translate] issue closes (usually via Closes #<n> on the translation PR),
+# close the leftover inbox PR (translate/issue-<n>) without merging it.
+name: Close translation inbox PR
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  close-inbox:
+    if: >
+      startsWith(github.event.issue.title, '[Translate]') ||
+      contains(join(github.event.issue.labels.*.name, ','), 'translate') ||
+      contains(join(github.event.issue.labels.*.name, ','), 'translation-queued')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close translate/issue-<n> inbox PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          BRANCH="translate/issue-${ISSUE_NUMBER}"
+          PR_JSON=$(gh pr list --repo "$REPO" --head "$BRANCH" --state open \
+            --json number,url,title --jq '.[0] // empty')
+          if [[ -n "$PR_JSON" ]]; then
+            NUM=$(jq -r '.number' <<<"$PR_JSON")
+            URL=$(jq -r '.url' <<<"$PR_JSON")
+            echo "Closing inbox PR #${NUM} (${URL}) for closed issue #${ISSUE_NUMBER}."
+            gh pr close "$NUM" --repo "$REPO" \
+              --comment "Closing inbox PR: #${ISSUE_NUMBER} closed after the translation PR. Inbox PRs are never merged."
+            exit 0
+          fi
+          mapfile -t CANDIDATES < <(
+            gh pr list --repo "$REPO" --state open --limit 50 \
+              --json number,headRefName,body \
+              --jq ".[] | select(.headRefName|startswith(\"translate/issue-\")) | select(.body|test(\"Related to #${ISSUE_NUMBER}\\\\b\")) | .number"
+          )
+          if [[ ${#CANDIDATES[@]} -eq 0 ]]; then
+            echo "No open inbox PR for issue #${ISSUE_NUMBER}."
+            exit 0
+          fi
+          for num in "${CANDIDATES[@]}"; do
+            echo "Closing inbox PR #${num} (Related to #${ISSUE_NUMBER})."
+            gh pr close "$num" --repo "$REPO" \
+              --comment "Closing inbox PR: translation for #${ISSUE_NUMBER} is done. Inbox PRs are never merged."
+          done

@@ -190,20 +190,21 @@ Open or update a pull request with the translation, README, and any `assets/<slu
 | **译文 PR** | `cursor/translate-…`，标题「翻译：…」 | **合入**；正文写 `Closes #<issue>` |
 | **inbox PR** | `translate/issue-<n>`，标题 `Translate: …`，作者多为 `github-actions` | **永不合入**；只作英文原文暂存 |
 
-译文 PR 一开出来（或 CI 通过、准备可审）时，立刻关掉同 Issue 的 inbox PR，**不要等用户催**。用户说「合入 / 合并」时：
+译文 PR 一开出来（或 CI 通过、准备可审）时，立刻关掉同 Issue 的 inbox PR，**不要等用户催**。Issue 因 `Closes #` 关闭时，Action `Close translation inbox PR` 也会自动关 inbox PR；agent 仍应主动关，别只靠自动化。用户说「合入 / 合并」时：
 
 1. 合入译文 PR（merge）
 2. **马上**关掉仍打开的相关 inbox PR：`translate/issue-<同一 issue 号>`，以及正文写 `Related to #<issue>` 的 Action PR
 3. 确认 `[Translate]` Issue 已因 `Closes #` 关闭
 
-找法示例：
+找法 / 关掉（不合入）：
 
 ```bash
-gh pr list --repo OWNER/REPO --state open --json number,title,headRefName,body \
-  --jq '.[] | select(.headRefName=="translate/issue-N" or (.body|test("Related to #N")))'
-# 关掉（不合入）：
+# 按分支（把 N 换成 issue 号）
+gh pr list --repo OWNER/REPO --head "translate/issue-N" --state open --json number,url
 gh pr close <inbox-pr-number> --repo OWNER/REPO
 ```
+
+Cursor Cloud agent 若不能用 `gh pr close` 写操作，用 `ManagePullRequest`：`action=set_pr_status`，`status=closed`，传入 inbox PR 的 `pr_url`。
 
 Validate before you finish:
 

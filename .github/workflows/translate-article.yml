@@ -203,7 +203,7 @@ jobs:
               "target_repo": "${GITHUB_REPOSITORY}",
               "base_branch": "${BRANCH}",
               "custom_agent": "article-translator",
-              "custom_instructions": "Translate every _inbox/*.source.md file using .github/skills/translating-articles/SKILL.md. Update README.md and delete the inbox sources when done."
+              "custom_instructions": "Translate every _inbox/*.source.md file using .github/skills/translating-articles/SKILL.md. Update README.md and delete the inbox sources when done. Translation PR body must include Closes #<issue>. Never merge the Action inbox PR (branch translate/issue-<n>, title Translate: …); close that inbox PR without merging as soon as your translation PR exists, and again when the translation is merged."
             }
           }
           EOF

@@ -22,6 +22,7 @@
 | 路径 | 作用 |
 | --- | --- |
 | `.github/workflows/translate-article.yml` | 抓取链接，写入 `_inbox/`，开 inbox PR |
+| `.github/workflows/close-inbox-pr.yml` | Issue 关闭后自动关掉 `translate/issue-<n>` inbox PR（不合入） |
 | `.github/agents/article-translator.agent.md` | Copilot 自定义翻译 agent |
 | `.github/skills/translating-articles/SKILL.md` | Cursor / Copilot 共用的翻译技能 |
 | `scripts/article_tools.py` | 抽 URL、Jina 正文、HTML 媒体/meta 合并 |
