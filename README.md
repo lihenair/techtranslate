@@ -43,6 +43,7 @@
 - 2026-08-24 [循环与图：如何不再逐步盯着 Agent，只审批最后一步](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/Loops-and-Graphs-How-to-Stop-Babysitting-Agents.md)
 - 2026-08-24 [Vibe Coding 周报 #45](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/Vibe-Coding-Weekly-45.md)
 - 2026-08-24 [Claude Code 的 token 都花在哪了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/Where-Claude-Code-Tokens-Actually-Go.md)
+- 2026-08-24 [Agent 的 token 都花在哪了（以及该怎么管）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/Where-Your-Agents-Tokens-Actually-Go.md)
 - 2026-08-23 [阻止 Agent 忽略指令的 10 种 Claude Code 引导机制](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/10-Claude-Code-Steering-Mechanisms-That-Stop-Agents-From-Ignoring-Instructions.md)
 - 2026-08-23 [用 Unsloth 本地微调 Gemma 4](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/Fine-tune-Gemma-4-locally-with-Unsloth.md)
 - 2026-08-23 [AI 芯片架构](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/ai/AI-Chip-Architectures.md)
