@@ -119,6 +119,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### 移动
 
 - 2026-08-25 [在 React Native 里做即时、正确、可保留状态的根级 Tab](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/mobile/Building-Instant-Correct-Retained-Root-Tabs-in-React-Native.md)
+- 2026-08-25 [Lights Out：Compose Multiplatform 自动骨架屏加载（KMP Bits）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/mobile/Lights-Out-Automatic-Skeleton-Loading-in-Compose-Multiplatform-KMP-Bits.md)
 - 2026-08-25 [DeviceCheck 与 App Attest：在 iOS 应用里拦住欺诈](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/mobile/DeviceCheck-and-App-Attest-Stopping-Fraud-in-iOS-Apps.md)
 
 ### 前端
