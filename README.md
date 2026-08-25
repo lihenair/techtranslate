@@ -72,6 +72,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### Android
 
+- 2026-08-25 [用 Mesh Gradients 做好玩动画：Jetpack Compose 1.12](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/android/Fun-Animations-with-Mesh-Gradients-Jetpack-Compose-1.12.md)
 - 2026-08-25 [用 Hilt 做 Android 可观测性：在 Google Now in Android 应用上跑 Kotzilla SDK 和 MCP Server](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/android/Android-observability-with-Hilt-Kotzilla-SDK-and-MCP-Server-on-Googles-Now-in-Android-app.md)
 - 2026-08-25 [Tinder 用新的 R8 Configuration Analyzer 把应用冷启动砍掉 47%](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/android/Tinder-cuts-app-cold-starts-by-47-with-new-R8-Configuration-Analyzer.md)
 - 2026-08-25 [Android 技术栈大重置：移动系统设计简史](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/android/The-Great-Android-Stack-Reset-A-History-of-Mobile-System-Design.md)
