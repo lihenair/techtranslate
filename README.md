@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-08-25 [靠 JetBrains，Qwen 3.6 在 Mac 本地跑起来容易多了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/ai/Qwen-3.6-is-now-much-easier-to-run-locally-on-your-Mac-thanks-to-JetBrains.md)
 - 2026-08-25 [我用 Claude Code 把 2.1 MB 的 JavaScript 包砍到 890 KB](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/ai/How-I-Cut-a-2.1-MB-JavaScript-Bundle-to-890-KB-With-Claude-Code.md)
 - 2026-08-24 [我如何用 AI 写作](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/How-I-Write-with-AI.md)
 - 2026-08-24 [我如何投资：AI 原生的 VC 机构](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/How-I-Invest-The-AI-Native-VC-Firm.md)
