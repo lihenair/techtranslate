@@ -66,6 +66,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### 安全
 
 - 2026-08-25 [规模化推进内存安全：AI 辅助将 C/C++ 依赖重写为 Rust](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/security/Scaling-Memory-Safety-AI-Assisted-Rewrites-of-C-C-Dependencies-to-Rust.md)
+- 2026-08-25 [AAOS SDV：默认安全设计](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/security/AAOS-SDV-Secure-by-Design.md)
 - 2026-08-25 [2026 年后量子 TLS：证书检查器目前能告诉你什么、还不能告诉你什么](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/security/Post-Quantum-TLS-in-2026-What-a-Certificate-Inspector-Can-and-Cannot-Tell-You-Yet.md)
 - 2016-08-24 [Android安全性: 欢迎来到Shell(权限)](https://github.com/lihenair/techtranslate/blob/master/archive/earlier/security/Android%20Security-Welcome%20To%20Shell.md)
 
