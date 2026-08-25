@@ -135,6 +135,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### 系统
 
 - 2026-08-25 [你的可执行文件其实是个 SQLite 数据库](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/systems/Your-executable-is-a-SQLite-database.md)
+- 2026-08-25 [Go 1.27 发布了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/systems/Go-1.27-is-released.md)
 - 2026-08-23 [计算机体系结构原理](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/systems/Principles-of-Computer-Architecture.md)
 - 2026-08-23 [如何设计芯片](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/systems/How-To-Design-A-Chip-From-Scratch.md)
 - 2026-08-22 [我用 Rust + Metal 做了个 10 MB 的 GPU 加速终端](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-22/systems/I-Built-a-10-MB-GPU-Accelerated-Terminal-in-Rust-Metal.md)
