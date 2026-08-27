@@ -51,6 +51,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 - 2026-08-27 [你需要软件工厂吗？](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/Do-you-need-a-software-factory.md)
 - 2026-08-27 [GLM-5.3-Flash：前沿智能，Flash 成本](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/GLM-5.3-Flash-Frontier-Intelligence-Flash-Cost.md)
 - 2026-08-27 [AI Weekly：2026 年 8 月 25 日（第 231 期）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/AI-Weekly-for-Tuesday-August-25-2026-Issue-231.md)
+- 2026-08-27 [8 步组建真正能协作的 AI Agent 团队（完整教程）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/How-to-Build-a-team-of-AI-Agents-that-actually-work-together-in-8-Steps-Full-course.md)
 - 2026-08-25 [靠 JetBrains，Qwen 3.6 在 Mac 本地跑起来容易多了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/ai/Qwen-3.6-is-now-much-easier-to-run-locally-on-your-Mac-thanks-to-JetBrains.md)
 - 2026-08-25 [我用 Claude Code 把 2.1 MB 的 JavaScript 包砍到 890 KB](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/ai/How-I-Cut-a-2.1-MB-JavaScript-Bundle-to-890-KB-With-Claude-Code.md)
 - 2026-08-24 [我如何用 AI 写作](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/ai/How-I-Write-with-AI.md)
