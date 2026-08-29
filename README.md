@@ -50,6 +50,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 - 2026-08-29 [把 LLM 里的 KV、Prefix、Prompt 与 Semantic Caching 讲清楚](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/ai/KV-Prefix-Prompt-and-Semantic-Caching-in-LLMs-clearly-explained.md)
 - 2026-08-29 [我不小心把 LLM 记忆做成了程序分析](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/ai/I-accidentally-turned-LLM-memory-into-program-analysis.md)
+- 2026-08-29 [在 Uber 的规模上高效运转一座「软件工厂」](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/ai/Running-a-Software-Factory-Efficiently-at-Uber-Scale.md)
 - 2026-08-29 [Harness 根本不重要](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/ai/The-Harness-Doesnt-Matter.md)
 - 2026-08-27 [你需要软件工厂吗？](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/Do-you-need-a-software-factory.md)
 - 2026-08-27 [GLM-5.3-Flash：前沿智能，Flash 成本](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/GLM-5.3-Flash-Frontier-Intelligence-Flash-Cost.md)
