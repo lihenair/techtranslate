@@ -71,6 +71,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 安全
 
+- 2026-08-29 [21 个字节就能崩掉 FFmpeg：一个 vibe coding 出来的 fuzzer，挖出了多年审计都没碰到的坑](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/security/21-Bytes-Can-Crash-FFmpeg-Inside-the-Vibecoded-Fuzzer-That-Found-What-Years-of-Audits-Missed.md)
 - 2026-08-28 [后量子认证：接下来该做什么](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-28/security/Post-Quantum-Authentication-Up-Next.md)
 - 2026-08-25 [规模化推进内存安全：AI 辅助将 C/C++ 依赖重写为 Rust](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/security/Scaling-Memory-Safety-AI-Assisted-Rewrites-of-C-C-Dependencies-to-Rust.md)
 - 2026-08-25 [AAOS SDV：默认安全设计](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/security/AAOS-SDV-Secure-by-Design.md)
