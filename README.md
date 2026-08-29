@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-08-29 [我不小心把 LLM 记忆做成了程序分析](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/ai/I-accidentally-turned-LLM-memory-into-program-analysis.md)
 - 2026-08-27 [你需要软件工厂吗？](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/Do-you-need-a-software-factory.md)
 - 2026-08-27 [GLM-5.3-Flash：前沿智能，Flash 成本](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/GLM-5.3-Flash-Frontier-Intelligence-Flash-Cost.md)
 - 2026-08-27 [AI Weekly：2026 年 8 月 25 日（第 231 期）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-27/ai/AI-Weekly-for-Tuesday-August-25-2026-Issue-231.md)
