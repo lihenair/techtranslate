@@ -143,6 +143,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 后端
 
+- 2026-08-30 [序列化与反序列化：后端工程的通用语言](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-30/backend/Serialization-and-Deserialization-The-Universal-Language-of-Backend-Engineering.md)
 - 2026-08-25 [签名要诚实：Kotlin 里的领域错误与函数式处理](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/backend/Signatures-be-true-domain-errors-and-functional-handling-in-Kotlin.md)
 - 2026-08-24 [理解 HTTP：后端工程师的基石](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/backend/Understanding-HTTP-for-Backend-Engineers.md)
 - 2026-08-23 [让 768 台服务器看起来像 1 台](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/backend/Making-768-servers-look-like-1.md)
