@@ -49,8 +49,9 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### AI
 
 - 2026-09-01 [Agent Skill 的运行时可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Runtime-Observability-for-Agent-Skills.md)
-- 2026-09-01 [AI Harness 工程：面向基础模型软件 Agent 的运行时基底](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/AI-Harness-Engineering-A-Runtime-Substrate-for-Foundation-Model-Software-Agents.md)
+- 2026-09-01 [构建可靠的 Coding Agent：评估与运维模型周围的系统](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Engineering-Reliable-Coding-Agents-Evaluating-and-Operating-the-System-Around-the-Model.md)
 - 2026-09-01 [别再升级模型了，先修 Harness](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Stop-Upgrading-the-Model-Fix-the-Harness.md)
+- 2026-09-01 [AI Harness 工程：面向基础模型软件 Agent 的运行时基底](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/AI-Harness-Engineering-A-Runtime-Substrate-for-Foundation-Model-Software-Agents.md)
 - 2026-08-31 [Trace Engineering：自主 AI Agent 的可观测性架构](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-31/ai/Trace-Engineering-The-Observability-Architecture-for-Autonomous-AI-Agents.md)
 - 2026-08-29 [用 Hermes Bots 搭起一人媒体公司](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/ai/How-to-Build-a-One-Person-Media-Company-With-Hermes-Bots.md)
 - 2026-08-29 [把 LLM 里的 KV、Prefix、Prompt 与 Semantic Caching 讲清楚](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/ai/KV-Prefix-Prompt-and-Semantic-Caching-in-LLMs-clearly-explained.md)
