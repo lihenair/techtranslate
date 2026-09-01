@@ -160,6 +160,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 系统
 
+- 2026-09-01 [每秒 765,846 次写入是个谎言：只用 Rust 标准库构建崩溃安全的键值存储](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/systems/765-846-Writes-Second-Was-a-Lie-Building-a-Crash-Safe-Key-Value-Store-With-Only-Rusts-Standard-Library.md)
 - 2026-08-25 [你的可执行文件其实是个 SQLite 数据库](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/systems/Your-executable-is-a-SQLite-database.md)
 - 2026-08-25 [Go 1.27 发布了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/systems/Go-1.27-is-released.md)
 - 2026-08-23 [计算机体系结构原理](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/systems/Principles-of-Computer-Architecture.md)
