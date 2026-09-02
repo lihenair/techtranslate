@@ -159,6 +159,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### DevOps
 
+- 2026-09-02 [可观测性架构：OpenTelemetry 与 Loki 集成完整指南](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/devops/Architecting-Observability-A-Complete-Guide-to-OTel-and-Loki-Integration.md)
 - 2026-08-23 [Kubernetes 每六分钟杀掉我的 Pod，应用日志里什么都没有](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-23/devops/Kubernetes-Killed-My-Pods-Every-Six-Minutes-and-the-Application-Logs-Showed-Nothing.md)
 
 ### 系统
