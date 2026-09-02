@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-02 [2026 智能体记忆盘点：争夺 AI 通用记忆](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/Agent-Memory-Roundup-2026-The-Race-to-Build-Universal-Memory-for-AI.md)
 - 2026-09-01 [Agent Skill 的运行时可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Runtime-Observability-for-Agent-Skills.md)
 - 2026-09-01 [构建可靠的 Coding Agent：评估与运维模型周围的系统](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Engineering-Reliable-Coding-Agents-Evaluating-and-Operating-the-System-Around-the-Model.md)
 - 2026-09-01 [别再升级模型了，先修 Harness](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Stop-Upgrading-the-Model-Fix-the-Harness.md)
