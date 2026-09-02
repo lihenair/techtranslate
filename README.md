@@ -50,6 +50,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 - 2026-09-02 [没人认真讨论 AI 需求](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/Nobody-is-talking-seriously-about-AI-demand.md)
 - 2026-09-02 [如何构建智能体记忆：知识住在哪里？](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/How-to-Build-Agent-Memory-Where-Does-Knowledge-Live.md)
+- 2026-09-02 [如何在 Grok Bot 上搭建 7×24 做市台（完整指南）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/How-to-Build-a-24-7-Market-Making-Desk-on-Grok-Bot-Complete-Guide.md)
 - 2026-09-02 [如何为你的产品构建一个 Agent](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/How-to-build-an-agent-for-your-product.md)
 - 2026-09-02 [2026 智能体记忆盘点：争夺 AI 通用记忆](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/Agent-Memory-Roundup-2026-The-Race-to-Build-Universal-Memory-for-AI.md)
 - 2026-09-01 [构建可靠的 Coding Agent：评估与运维模型周围的系统](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Engineering-Reliable-Coding-Agents-Evaluating-and-Operating-the-System-Around-the-Model.md)
@@ -84,6 +85,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 安全
 
+- 2026-09-02 [用 React 与 Node.js 构建安全的 Google OAuth 2.0 登录](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/security/How-to-Build-a-Secure-Google-OAuth-2.0-Login-Using-React-Node.js.md)
 - 2026-08-29 [21 个字节就能崩掉 FFmpeg：一个 vibe coding 出来的 fuzzer，挖出了多年审计都没碰到的坑](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/security/21-Bytes-Can-Crash-FFmpeg-Inside-the-Vibecoded-Fuzzer-That-Found-What-Years-of-Audits-Missed.md)
 - 2026-08-28 [后量子认证：接下来该做什么](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-28/security/Post-Quantum-Authentication-Up-Next.md)
 - 2026-08-25 [规模化推进内存安全：AI 辅助将 C/C++ 依赖重写为 Rust](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/security/Scaling-Memory-Safety-AI-Assisted-Rewrites-of-C-C-Dependencies-to-Rust.md)
@@ -185,6 +187,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 其他
 
+- 2026-09-02 [我们如何建起一座软件工厂，扛住 6 倍产品反馈](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/other/How-we-built-a-software-factory-to-handle-6x-more-product-feedback.md)
 - 2026-08-24 [一年前的今天，我们进了 Y Combinator](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/other/One-Year-Ago-Today-We-Got-Into-Y-Combinator.md)
 
 <!-- catalog:end -->
