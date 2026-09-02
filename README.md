@@ -49,10 +49,12 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### AI
 
 - 2026-09-02 [如何构建智能体记忆：知识住在哪里？](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/How-to-Build-Agent-Memory-Where-Does-Knowledge-Live.md)
+- 2026-09-02 [如何为你的产品构建一个 Agent](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/How-to-build-an-agent-for-your-product.md)
 - 2026-09-02 [2026 智能体记忆盘点：争夺 AI 通用记忆](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/Agent-Memory-Roundup-2026-The-Race-to-Build-Universal-Memory-for-AI.md)
-- 2026-09-01 [Agent Skill 的运行时可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Runtime-Observability-for-Agent-Skills.md)
 - 2026-09-01 [构建可靠的 Coding Agent：评估与运维模型周围的系统](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Engineering-Reliable-Coding-Agents-Evaluating-and-Operating-the-System-Around-the-Model.md)
 - 2026-09-01 [别再升级模型了，先修 Harness](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Stop-Upgrading-the-Model-Fix-the-Harness.md)
+- 2026-09-01 [Agent Skill 的运行时可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Runtime-Observability-for-Agent-Skills.body.md)
+- 2026-09-01 [Agent Skill 的运行时可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/Runtime-Observability-for-Agent-Skills.md)
 - 2026-09-01 [AI Harness 工程：面向基础模型软件 Agent 的运行时基底](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-01/ai/AI-Harness-Engineering-A-Runtime-Substrate-for-Foundation-Model-Software-Agents.md)
 - 2026-08-31 [Trace Engineering：自主 AI Agent 的可观测性架构](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-31/ai/Trace-Engineering-The-Observability-Architecture-for-Autonomous-AI-Agents.md)
 - 2026-08-29 [用 Hermes Bots 搭起一人媒体公司](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/ai/How-to-Build-a-One-Person-Media-Company-With-Hermes-Bots.md)
