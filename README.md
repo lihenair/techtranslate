@@ -151,6 +151,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 前端
 
+- 2026-09-03 [让 React Testing Library 测试快 43%](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/frontend/Making-React-Testing-Library-Tests-43-Faster.md)
 - 2026-08-25 [我用 React DataGrid 做了一个真实的太空任务浏览器](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/frontend/I-Used-React-DataGrid-to-Build-a-Real-Space-Mission-Explorer.md)
 - 2026-08-25 [Vue 反应性说明：ref vs reactive（附速查表）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/frontend/Vue-Reactivity-Explained-ref-vs-reactive-Cheat-Sheet.md)
 
