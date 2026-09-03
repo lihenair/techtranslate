@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-03 [AI Weekly：2026 年 9 月 1 日（第 232 期）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/ai/AI-Weekly-for-Tuesday-September-1-2026-Issue-232.md)
 - 2026-09-02 [没人认真讨论 AI 需求](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/Nobody-is-talking-seriously-about-AI-demand.md)
 - 2026-09-02 [如何构建智能体记忆：知识住在哪里？](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/How-to-Build-Agent-Memory-Where-Does-Knowledge-Live.md)
 - 2026-09-02 [如何在 Grok Bot 上搭建 7×24 做市台（完整指南）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/ai/How-to-Build-a-24-7-Market-Making-Desk-on-Grok-Bot-Complete-Guide.md)
