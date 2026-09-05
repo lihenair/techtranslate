@@ -168,7 +168,8 @@ If `capture_media.py` returns `skipped-no-browser` / `skipped-too-large` for `se
 
 1. Prefer GIF when the diagram is animated (SMIL `<animate>`, CSS `@keyframes`, JS demo); PNG is OK when a single clear frame shows the same information.
 2. When Playwright is missing, still rasterize: open `_inbox/media/<slug>-N.html` (or the live article SVG) with system Chrome/Chromium headless (`--screenshot` / `--virtual-time-budget`), or `cairosvg` / similar for static SVG, and write `assets/<slug>/visual-….png` (or `.gif` if you can stitch frames).
-3. Only write bare `原文为网页动画` when every capture path failed **and** there is no readable diagram to embed. If you have a PNG/GIF, embed it — do not leave the placeholder instead of the asset.
+3. For **SMIL SVG** specifically: do not settle for one static PNG. Seek the timeline with `svg.pauseAnimations(); svg.setCurrentTime(t)` (Chrome CDP or a small HTML wrapper), capture ~6–8 fps across one loop, stitch with `ffmpeg` `palettegen`/`paletteuse`, and embed the `.gif`. Static PNG is only a stopgap if seeking fails.
+4. Only write bare `原文为网页动画` when every capture path failed **and** there is no readable diagram to embed. If you have a PNG/GIF, embed it — do not leave the placeholder instead of the asset.
 
 X/Twitter 长文若已有 `pbs.twimg.com` 配图，不必为误报的 section 动画补 GIF。Do not add YouTube keys or cookies. Keep the YouTube text link.
 
