@@ -147,6 +147,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### 移动
 
 - 2026-09-05 [介绍 Expo Observe：应用可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Introducing-Observe-Performance-monitoring-for-Expo-apps-now-generally-available.md)
+- 2026-09-05 [React Native Gesture Handler 的 Touchable：我们早该有的按钮](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Gesture-Handler-s-Touchable-Button-We-Wish-We-Had-Sooner.md)
 - 2026-08-29 [iOS Dev Weekly 第 765 期](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/mobile/Issue-765-iOS-Dev-Weekly.md)
 - 2026-08-26 [React Native 0.87：默认 Strict TypeScript API、Metro 更新、SwiftPM 与 AGP 9](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-26/mobile/React-Native-0.87-Strict-TypeScript-API-Metro-Update-Swift-Package-Manager-AGP-9.md)
 - 2026-08-25 [在 React Native 里做即时、正确、可保留状态的根级 Tab](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/mobile/Building-Instant-Correct-Retained-Root-Tabs-in-React-Native.md)
