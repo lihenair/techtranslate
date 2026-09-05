@@ -159,6 +159,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 前端
 
+- 2026-09-05 [CSS 的未来：用类名前缀选择器一次命中多个 class](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/frontend/The-Future-of-CSS-Target-Multiple-Classes-with-the-Class-Prefix-Selector.md)
 - 2026-09-03 [让 React Testing Library 测试快 43%](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/frontend/Making-React-Testing-Library-Tests-43-Faster.md)
 - 2026-09-03 [用 Vite 给 React 做静态站点生成](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/frontend/SSG-for-React-with-Vite.md)
 - 2026-08-25 [我用 React DataGrid 做了一个真实的太空任务浏览器](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/frontend/I-Used-React-DataGrid-to-Build-a-Real-Space-Mission-Explorer.md)
