@@ -163,9 +163,9 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 | --- | --- |
 | `<section>` / `<figure>` / `<div>` 包着 `<video autoplay loop muted playsinline src>` | 按时长规则：≤15 秒下载 src 转 GIF；更长或无时长不处理，能还原 src 就写「原文此处有短视频」+ 链接 |
 | section 内多张按序帧图 | 按 8fps 估算：帧数 ≤ 120 则拼 GIF，否则只留第一张静图 + 说明 |
-| 纯 CSS / HTML `@keyframes`，无媒体文件 | 无片源：最多录 15 秒转 GIF；无浏览器或失败则 1 张静帧 +「原文为网页动画」 |
+| 纯 CSS / HTML `@keyframes`，无媒体文件 | 无片源：最多录 15 秒转 GIF；Playwright 不可用时先用系统 Chrome/Chromium headless 或 cairosvg 对 `_inbox/media/*.html` / SVG 出静帧（优先）或拼帧 GIF；仍失败才允许「原文为网页动画」，且**不能**用该句顶替已有可用 PNG/GIF |
 | 同站图示 iframe（SVG / JS 动画，非 YouTube / Twitter） | 当网页动画录：默认 4 秒，JS 打开；各帧相同则落 PNG |
-| `<img src="*.svg">` 或够大的正文内联 SVG（不是 48px 以下图标） | 静图转 PNG，带 `<animate>` / CSS 动画的转 GIF |
+| `<img src="*.svg">` 或够大的正文内联 SVG（不是 48px 以下图标） | 静图转 PNG，带 `<animate>` / CSS 动画的转 GIF；脚本 `skipped-no-browser` 时同样要走 Chrome/cairosvg 补救，不要直接写占位句 |
 
 不要把整页滚动、导航、广告当成动画。只处理文章正文里、看起来像插图的那一块：`demo` / `anim` / `gif` 一类 class，或节点上真有 `animation:` / `@keyframes`。正文里出现 “animation” 这个词、外层包着几张说明图的 `<section>`，都不算。同站 stylesheet 会内联进 `section` 片段，相对 `url()` 改成绝对地址后再录。
 
