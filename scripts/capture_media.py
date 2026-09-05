@@ -367,6 +367,57 @@ def _write_recorded_frames(frames: list[Path], dest: Path) -> str:
     return stitch_image_sequence(existing, dest)
 
 
+def _chrome_binary() -> str | None:
+    for name in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser"):
+        found = shutil.which(name)
+        if found:
+            return found
+    return None
+
+
+def _chrome_headless_png(
+    url: str,
+    dest: Path,
+    width: int = 800,
+    height: int = 400,
+    virtual_time_ms: int = 800,
+) -> str:
+    """Fallback when Playwright is missing: one Chrome headless screenshot → PNG."""
+    chrome = _chrome_binary()
+    if not chrome or not url:
+        return "skipped-no-browser"
+    dest = dest.with_suffix(".png")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory() as tmp:
+        shot = Path(tmp) / "shot.png"
+        profile = Path(tmp) / "chrome-profile"
+        profile.mkdir(parents=True, exist_ok=True)
+        cmd = [
+            chrome,
+            "--headless=new",
+            "--disable-gpu",
+            "--hide-scrollbars",
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            f"--user-data-dir={profile}",
+            f"--window-size={int(width)},{int(height)}",
+            f"--virtual-time-budget={max(int(virtual_time_ms), 200)}",
+            f"--screenshot={shot}",
+            url,
+        ]
+        try:
+            subprocess.run(cmd, check=False, capture_output=True, timeout=25)
+        except subprocess.TimeoutExpired:
+            # Chrome often writes the PNG then hangs on shutdown in CI/cloud VMs.
+            pass
+        except OSError:
+            return "skipped-no-browser"
+        if not shot.is_file() or shot.stat().st_size == 0:
+            return "skipped-no-browser"
+        shutil.copyfile(shot, dest)
+        return "converted"
+
+
 def record_page_visual(
     url: str,
     dest: Path,
@@ -383,7 +434,7 @@ def record_page_visual(
         try:
             from playwright.sync_api import sync_playwright
         except ImportError:
-            return "skipped-no-browser"
+            return _chrome_headless_png(url, dest, width=width, height=height)
         factory = sync_playwright
     if not url:
         return "skipped-unknown"
@@ -416,7 +467,7 @@ def record_page_visual(
     except Exception:  # noqa: BLE001 - recording is best-effort
         dest.unlink(missing_ok=True)
         dest.with_suffix(".png").unlink(missing_ok=True)
-        return "skipped-no-browser"
+        return _chrome_headless_png(url, dest, width=width, height=height)
 
 
 def convert_svg(
@@ -454,6 +505,19 @@ def record_section_html(
     playwright_factory=...,
 ) -> str:
     duration = min(max(seconds, 0.2), translation_format.MAX_SOURCE_SECONDS)
+
+    def _chrome_fallback() -> str:
+        with tempfile.TemporaryDirectory() as tmp:
+            html_path = Path(tmp) / "section.html"
+            html_path.write_text(html or "", encoding="utf-8")
+            return _chrome_headless_png(
+                html_path.as_uri(),
+                dest,
+                width=640,
+                height=360,
+                virtual_time_ms=max(int(duration * 1000), 400),
+            )
+
     if playwright_factory is None:
         return "skipped-no-browser"
     factory = playwright_factory
@@ -461,14 +525,18 @@ def record_section_html(
         try:
             from playwright.sync_api import sync_playwright
         except ImportError:
-            return "skipped-no-browser"
+            return _chrome_fallback()
         factory = sync_playwright
+    # SMIL SVG animates without JS; CSS/JS demos need it — enable when markup looks animated.
+    needs_js = bool(
+        re.search(r"@keyframes|animation(?:-)|<script\b|requestAnimationFrame", html or "", re.I)
+    )
     try:
         with factory() as playwright:
             browser = playwright.chromium.launch()
             page = browser.new_page(
                 viewport={"width": 640, "height": 360},
-                java_script_enabled=False,
+                java_script_enabled=needs_js,
             )
             try:
                 page.set_content(html, wait_until="networkidle")
@@ -493,7 +561,7 @@ def record_section_html(
                 return stitch_image_sequence(frames, dest)
     except Exception:  # noqa: BLE001 - recording is best-effort
         dest.unlink(missing_ok=True)
-        return "skipped-no-browser"
+        return _chrome_fallback()
 
 
 def _inbox_slug(text: str, source: Path) -> str:

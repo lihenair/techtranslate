@@ -31,7 +31,7 @@ tags: [mobile, react-native, jsi, bridgeless, concurrency]
 
 Bridgeless 改了这个顺序。新的 `RCTInstance` 在旧实例还没失效完时就开始了。旧实例有几秒钟清理预算，时间一到不论做没做完都会被拆掉。中间有一段**真实**窗口——不是假想的——两代运行时同时活着，都在碰同一份原生模块状态。
 
-原文为网页动画
+![旧 Bridge 无重叠；Bridgeless 下两代运行时短暂并存](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/React-Native-Bridgeless-race-conditions-with-concurrent-JS-runtimes/visual-01-bridgeless-overlap.png)
 
 Bridgeless 让两代重叠几秒——够长，全局状态会被两边同时碰到。
 
@@ -60,7 +60,7 @@ namespace opsqlite {
 - 等这件事发生时，新运行时已经用自己的指针换掉了共享状态。
 - op-sqlite 没有「代」的概念，于是要么把回调排到错误的 invoker 上，要么在非 JS 线程上销毁 JS 对象——两者都不合法。
 
-原文为网页动画
+![后台查询被打断后仍经 invoker 回报，期间 install() 已换掉共享指针，最终错线程/陈旧 invoker 崩溃](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/React-Native-Bridgeless-race-conditions-with-concurrent-JS-runtimes/visual-02-stale-invoker.png)
 
 被打断的查询仍要回报——等它回报时，所依赖的共享指针可能已经指向另一代。
 
@@ -97,7 +97,7 @@ void DBHostObject::on_update(...) {
 
 所有 update hook 一下子都修好了，调用点不用改——检查落在捕获了自己那一代身份的对象上，不会被全局指针之后变成什么样所骗。
 
-原文为网页动画
+![入队时捕获 invoker 与 alive；运行时 alive->load()，true 则 invokeAsync，false 则跳过陈旧代](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/React-Native-Bridgeless-race-conditions-with-concurrent-JS-runtimes/visual-03-generation-check.png)
 
 同一份已排队工作，两种可能结果——创建时绑定的那一代决定走哪条，真正运行时再检查。
 

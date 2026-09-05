@@ -164,7 +164,13 @@ If the video is longer than 15s or yt-dlp cannot download it, `capture_media.py`
 ![嵌入内容（原站 YouTube）](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/slug/yt-ID.jpg)
 ```
 
-If capture skipped a `section` demo (`skipped-no-browser`, `skipped-too-large`), write `原文为网页动画` only when the article clearly had an inline animation with no static image. X/Twitter 长文若已有 `pbs.twimg.com` 配图，不必为误报的 section 动画补 GIF。Do not add YouTube keys or cookies. Keep the YouTube text link.
+If `capture_media.py` returns `skipped-no-browser` / `skipped-too-large` for `section-anim` / inline SVG / `page-visual`, **do not** stop at `原文为网页动画`. That phrase is a **last resort** after you tried an alternate rasterization and still have nothing usable:
+
+1. Prefer GIF when the diagram is animated (SMIL `<animate>`, CSS `@keyframes`, JS demo); PNG is OK when a single clear frame shows the same information.
+2. When Playwright is missing, still rasterize: open `_inbox/media/<slug>-N.html` (or the live article SVG) with system Chrome/Chromium headless (`--screenshot` / `--virtual-time-budget`), or `cairosvg` / similar for static SVG, and write `assets/<slug>/visual-….png` (or `.gif` if you can stitch frames).
+3. Only write bare `原文为网页动画` when every capture path failed **and** there is no readable diagram to embed. If you have a PNG/GIF, embed it — do not leave the placeholder instead of the asset.
+
+X/Twitter 长文若已有 `pbs.twimg.com` 配图，不必为误报的 section 动画补 GIF。Do not add YouTube keys or cookies. Keep the YouTube text link.
 
 ## README
 
