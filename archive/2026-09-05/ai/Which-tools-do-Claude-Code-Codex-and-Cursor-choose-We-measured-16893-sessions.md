@@ -135,7 +135,7 @@ Claude Code 分析代码库，五分钟后回答：
 *   Stripe 十场赢九场，只在特定欧盟监管场景输给更专的玩家（Paddle、Mollie）。
 *   Neon 赢 66%，其后是云平台原生方案（Azure、AWS）。
 *   文件存储上 Amazon S3 以 45% 领先，Azure 与 GCP 各约 20%。
-*   Resend 与 Postmark 咬得很紧，安装率分别约 35.6% 与 27.4%。
+*   Resend 与 Postmark 咬得很紧，安装率分别为 35.6% 与 27.4%。
 
 这只是实验的开头，我们会继续发布编程智能体如何选择第三方服务的洞察。也计划跑全新实验，想知道你还关心哪些问题，欢迎写信到 [contact@armature.tech](mailto:contact@armature.tech)。
 
