@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-05 [开发者该懂的 20 个智能体 AI 术语（白话版）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/20-Agentic-AI-Terms-Every-Developer-Should-Know-Explained-Simply.md)
 - 2026-09-04 [AI 驱动的数据仓库：给每个 AI 产品的架构启示](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-04/ai/AI-Powered-Data-Warehouses-Architectural-Lessons-for-Every-AI-Product.md)
 - 2026-09-03 [我们用上下文工程把转化做到 5 倍、激活做到 2 倍](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/ai/We-used-context-engineering-to-5x-conversion-and-2x-activation.md)
 - 2026-09-03 [AI Weekly：2026 年 9 月 1 日（第 232 期）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/ai/AI-Weekly-for-Tuesday-September-1-2026-Issue-232.md)
