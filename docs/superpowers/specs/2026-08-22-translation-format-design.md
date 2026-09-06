@@ -75,7 +75,7 @@ Frontmatter 之后按这个顺序，中间空一行：
 
 发布于 2026 年 8 月 6 日星期四 22:00 UTC。更新于 2026 年 8 月 13 日星期四 09:21 UTC。
 
-**加粗导语。关键术语第一次出现写成 中文（English）。**
+**加粗导语。通用概念第一次可写 中文（English）；产品名 / 架构名 / API 等专有英文不译（见 `docs/keep-english-terms.md`）。**
 ```
 
 | 行 | 规则 |
@@ -93,7 +93,8 @@ Frontmatter 之后按这个顺序，中间空一行：
 - 简体中文，且必须**按文类润色**：工程文用该领域工程师口吻；创业/随笔用叙事散文口吻；安全研究用研究员口吻。意译优先，拆长句，少用翻译腔（少「进行了 / 针对…进行」、少「使得」「予以」、少「一个…的…的…」叠罗汉）。成稿应像中文作者写的，不是字对字直译。
 - 代码块、命令、类名、API、原文图片 URL 不译。
 - 章节标题译成中文，锚点保留原文 slug：`## [引言](#introduction)`。原文没有 slug 时，用标题英文 kebab-case。
-- 术语第一次：`消毒（sanitization）`；后文可只用中文或英文，跟邻近译文习惯。叙事文里机构名可保留缩写并首次括注。
+- **专有英文不译**（产品、架构、API、引擎、协议、标准特性正式名、指标缩写）：直接写 `Bridgeless` / `JSI` / `TTI`，不要「无桥接（Bridgeless）」；词表见 `docs/keep-english-terms.md`，缺词就补表。
+- 通用概念第一次：`消毒（sanitization）`；后文可只用中文或英文。叙事文机构缩写可保留并首次括注英文全称。
 - 图片：栅格图（png / jpg / webp）尽量用原文 URL；alt 写成中文说明。inbox / Jina 正文里的示意图都要进译文对应段落，但不能把已作 `文章头图` 的封面再贴一遍。X 长文的示意图常在 `pbs.twimg.com/media/`，直抓 x.com HTML 往往只剩头图；**X Article** 正文图在 fxtwitter 的 `content.blocks` / `media_entities` 里，抓取脚本应走 `api.fxtwitter.com`。不要把掘金 `p9-xtjj-sign` 签名链写进仓库。
 - 同站图示 iframe、内联 SVG、`.svg` 插图：Jina 经常丢掉，HTML 解析要标成 `media:page-visual` / `media:svg` / `section-anim`，转成 `assets/<slug>/` 下的 GIF（有动画）或 PNG（静帧）。译文里不要写 iframe。从 `archive/<date>/<domain>/` 引用时用 `../../../../assets/<slug>/visual-….gif`。
 - 不要把范文里的掘金跳转链 `link.juejin.cn` 学过来。
@@ -165,7 +166,7 @@ GitHub Markdown **不能**内嵌 YouTube / iframe。仓库里不写 iframe，也
 | section 内多张按序帧图 | 按 8fps 估算：帧数 ≤ 120 则拼 GIF，否则只留第一张静图 + 说明 |
 | 纯 CSS / HTML `@keyframes`，无媒体文件 | 无片源：最多录 15 秒转 GIF；Playwright 不可用时先用系统 Chrome/Chromium headless 或 cairosvg 对 `_inbox/media/*.html` / SVG 出静帧（优先）或拼帧 GIF；仍失败才允许「原文为网页动画」，且**不能**用该句顶替已有可用 PNG/GIF |
 | 同站图示 iframe（SVG / JS 动画，非 YouTube / Twitter） | 当网页动画录：默认 4 秒，JS 打开；各帧相同则落 PNG |
-| `<img src="*.svg">` 或够大的正文内联 SVG（不是 48px 以下图标） | 静图转 PNG，带 `<animate>` / CSS 动画的转 GIF；脚本 `skipped-no-browser` 时同样要走 Chrome/cairosvg 补救，不要直接写占位句 |
+| `<img src="*.svg">` 或够大的正文内联 SVG（不是 48px 以下图标） | 静图转 PNG；带 `<animate>` / CSS 动画的用 `svg.setCurrentTime(t)` 逐帧截屏拼 GIF（约 6–8fps、一个循环）。脚本 `skipped-no-browser` 时同样要走 Chrome CDP / headless 补救，不要用静帧 PNG 或「原文为网页动画」顶替动效 |
 
 不要把整页滚动、导航、广告当成动画。只处理文章正文里、看起来像插图的那一块：`demo` / `anim` / `gif` 一类 class，或节点上真有 `animation:` / `@keyframes`。正文里出现 “animation” 这个词、外层包着几张说明图的 `<section>`，都不算。同站 stylesheet 会内联进 `section` 片段，相对 `url()` 改成绝对地址后再录。
 
