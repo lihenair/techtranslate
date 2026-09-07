@@ -112,6 +112,12 @@
 | KIVI | KV 量化方法 |
 | FLOPs / HBM | |
 | Needle-in-a-Haystack | 评测名 |
+| RouteLLM | ICLR routing 论文 / 方法 |
+| Plano / Plano-Orchestrator | DigitalOcean AI-native proxy |
+| Arch-Router / Katanemo | routing 专用小模型 |
+| Inference Router | DigitalOcean 产品名 |
+| model affinity / session pinning | agent 会话钉模型 |
+| MT Bench / Chatbot Arena | 评测 / 偏好数据源 |
 
 ## 后端 / 系统 / 安全
 
