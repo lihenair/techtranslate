@@ -94,6 +94,25 @@
 | LSP / grep | 作工具名时保留 |
 | token / tokenizer | 常留 token |
 
+## AI / LLM Serving
+
+| 保留英文 | 备注 |
+| --- | --- |
+| KV cache | 勿译「键值缓存」当专名替代；叙述可写「缓存」 |
+| GQA / MQA / MHA | Grouped / Multi / Multi-head query attention |
+| MLA / CLA | Multi-head Latent Attention / Cross-Layer Attention |
+| Quest / H2O / SnapKV / PyramidKV | 稀疏读 / 驱逐类方法名 |
+| PagedAttention | vLLM 分页注意力 |
+| prefix caching | 前缀缓存机制专名；叙述可写「前缀复用」 |
+| vLLM | serving 引擎 |
+| DeepSeek / DeepSeek-V2 / DeepSeek-V3 / DeepSeek-V4 | |
+| Mamba / Gated DeltaNet / Jamba | 循环 / hybrid 架构 |
+| Gemma / Llama | 模型族名 |
+| BF16 / FP8 | 数值格式 |
+| KIVI | KV 量化方法 |
+| FLOPs / HBM | |
+| Needle-in-a-Haystack | 评测名 |
+
 ## 后端 / 系统 / 安全
 
 | 保留英文 | 备注 |
