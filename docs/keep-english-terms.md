@@ -32,6 +32,20 @@
 
 ---
 
+## Android / 身份与备份
+
+| 保留英文 | 备注 |
+| --- | --- |
+| Restore Credentials | Google Play / Credential Manager 能力名 |
+| Credential Manager | `androidx.credentials` |
+| WebAuthn | W3C / FIDO；可括注 Web Authentication 一次 |
+| passkey | 勿译「通行密钥」当专名替代（叙述可用中文） |
+| relying party / RelyingParty | WebAuthn 术语；API 类型留英文 |
+| resident key / discoverable credential | WebAuthn 术语 |
+| BackupAgent / Auto Backup | Android 备份 API |
+| JWT | |
+| Google Play Services | |
+
 ## React Native / 移动
 
 | 保留英文 | 备注 |
