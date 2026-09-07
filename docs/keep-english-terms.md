@@ -93,6 +93,12 @@
 | Cursor / Copilot | |
 | LSP / grep | 作工具名时保留 |
 | token / tokenizer | 常留 token |
+| Gen AI SDK / google-genai-kotlin | Google 官方 Kotlin Gemini 客户端 |
+| Gemini / Gemma | Google 模型族 |
+| Koog | Kotlin agent 框架 |
+| FormAI | 示例 App 名 |
+| LoRA | 微调方法名 |
+| Flow / coroutines | Kotlin 并发原语，专名留英文 |
 
 ## AI / LLM Serving
 
