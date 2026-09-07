@@ -49,6 +49,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### AI
 
 - 2026-09-07 [把 LLM Serving 的 KV Cache 工程讲清楚](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/KV-Cache-Engineering-for-LLM-Serving-clearly-explained.md)
+- 2026-09-07 [LLM Routing 可能比不 Routing 更贵](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/LLM-Routing-Can-Cost-More-Than-Not-Routing.md)
 - 2026-09-05 [在 React Native 中构建 3D AI 形象](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Building-a-3D-AI-assistant-using-React-Native-and-GPT-Realtime.md)
 - 2026-09-05 [Grep 为何仍打赢 LSP：智能体 harness 的教训](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Grep-beats-LSP-Why-coding-agents-ignore-your-fancier-tools.md)
 - 2026-09-04 [AI 驱动的数据仓库：给每个 AI 产品的架构启示](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-04/ai/AI-Powered-Data-Warehouses-Architectural-Lessons-for-Every-AI-Product.md)
