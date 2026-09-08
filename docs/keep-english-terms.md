@@ -45,6 +45,18 @@
 | BackupAgent / Auto Backup | Android 备份 API |
 | JWT | |
 | Google Play Services | |
+| LiteRT | 前身 TensorFlow Lite；Google 端侧 ML 运行时 |
+| ONNX Runtime Mobile / onnxruntime-android | |
+| NNAPI | Android Neural Networks API |
+| QNN / QAIRT | Qualcomm AI 运行时 / delegate |
+| XNNPack | CPU 推理后端 |
+| Stable Diffusion / SD1.5 / SD2.1 | 扩散模型族 |
+| UNet / DiT / VAE / CFG / CLIP / T5 | 扩散管线组件与引导 |
+| LMK | Low Memory Killer |
+| SoC / LPDDR / NPU / Adreno / Mali / Hexagon | 硬件专名 |
+| Snapdragon / Dimensity / Google Tensor | SoC 产品线 |
+| LCM / SDXS | 减步 / 蒸馏类扩散变体 |
+| MNN | 端侧推理框架 |
 
 ## React Native / 移动
 
