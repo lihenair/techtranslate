@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-10 [LLM-as-Judge 架构：把评测做进 Agent 运行时](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/ai/LLM-as-Judge-Architectures-Putting-Evals-Into-Your-Agent-Runtime.md)
 - 2026-09-07 [用 Gen AI Kotlin SDK 把 Gemini 接到 Android / KMP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/Using-the-new-Google-Gen-AI-SDK-for-Kotlin.md)
 - 2026-09-07 [把 LLM Serving 的 KV Cache 工程讲清楚](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/KV-Cache-Engineering-for-LLM-Serving-clearly-explained.md)
 - 2026-09-07 [LLM Routing 可能比不 Routing 更贵](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/LLM-Routing-Can-Cost-More-Than-Not-Routing.md)
