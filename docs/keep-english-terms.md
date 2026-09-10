@@ -125,6 +125,14 @@
 | FormAI | 示例 App 名 |
 | LoRA | 微调方法名 |
 | Flow / coroutines | Kotlin 并发原语，专名留英文 |
+| LLM-as-judge / judge | 评测架构模式；judge 作角色名留英文 |
+| LangSmith / Phoenix / DeepEval | 应用评测产品 |
+| G-Eval / Prometheus | 评测方法 / 专用 judge 模型 |
+| Galileo | 评估产品 |
+| MAJ-EVAL | 多 agent 审议式评测 |
+| LLMBar / JudgeBench / RewardBench | judge / reward 评测基准 |
+| Bloom | Anthropic 评测工具 |
+| rubric | 评分标准；可首次括注 |
 
 ## AI / LLM Serving
 
