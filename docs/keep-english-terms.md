@@ -133,6 +133,13 @@
 | LLMBar / JudgeBench / RewardBench | judge / reward 评测基准 |
 | Bloom | Anthropic 评测工具 |
 | rubric | 评分标准；可首次括注 |
+| harness | agent 外围程序/运行时环；专名留英文 |
+| Mem0 | 记忆产品 |
+| DGM / Darwin Gödel Machine | 自改写 agent 研究系统 |
+| AGENTS.md / SKILL.md / MEMORY.md | agent 约定文件名 |
+| Live-SWE / mini-SWE / SWE-Exp | 研究系统名 |
+| SkillsBench / CODESKILL | 评测 / 方法名 |
+| Prime Agent / Hermes / Pi | agent 产品或 harness 名 |
 
 ## AI / LLM Serving
 
