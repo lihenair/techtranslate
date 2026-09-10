@@ -98,6 +98,13 @@
 | Chromium / Firefox / Safari | |
 | CodePen | |
 | React / Vue / Svelte / Solid | |
+| View Transition / `<ViewTransition>` | React 19.3 API；浏览器 API 亦留英文 |
+| Fragment Refs / FragmentInstance | |
+| Suspense / Activity | |
+| Server Components / RSC | |
+| Trusted Types | 浏览器安全 API |
+| startTransition / useDeferredValue / useEffectEvent | Hooks / API 名 |
+| Strict Mode / Fast Refresh | |
 | Next.js / Nuxt / Vite | |
 | Server Components / RSC | |
 | Tailwind CSS | |
