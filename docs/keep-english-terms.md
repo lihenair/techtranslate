@@ -159,6 +159,11 @@
 | KIVI | KV 量化方法 |
 | FLOPs / HBM | |
 | Needle-in-a-Haystack | 评测名 |
+| Grok / Grok Bot / Grok 4.6 | xAI 产品与模型 |
+| harness / routine | agent 运行环境 / 可复用路径；专名留英文 |
+| CursorBench / DeepSWE / FrontierCode | agent 评测名 |
+| APEX-Agents / AA-Briefcase | agent 评测名 |
+| computer use | 无 API 时的桌面/浏览器操作能力 |
 | RouteLLM | ICLR routing 论文 / 方法 |
 | Plano / Plano-Orchestrator | DigitalOcean AI-native proxy |
 | Arch-Router / Katanemo | routing 专用小模型 |
