@@ -185,6 +185,11 @@
 | XSS / CSRF / SSRF / RCE | 漏洞名保留英文 |
 | OAuth / OIDC / JWT | |
 | WASM / eBPF | |
+| DNSSEC / DNSKEY / DS / RRSIG / RRset | DNSSEC 记录与协议专名 |
+| ML-DSA / ML-DSA-44 | NIST 后量子签名；正文留英文 |
+| EDNS(0) / DoH / DoT | DNS 扩展与加密传输 |
+| Big Pineapple | Cloudflare DNS 平台专名（正文随原文） |
+| 1.1.1.1 | Cloudflare 公共 DNS resolver |
 
 ## 指标与缩写
 

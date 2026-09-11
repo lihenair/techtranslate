@@ -95,6 +95,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 安全
 
+- 2026-09-11 [后量子 DNSSEC：1.1.1.1](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-11/security/1.1.1.1-now-supports-post-quantum-DNSSEC-all-2-420-bytes-of-it.md)
 - 2026-09-02 [用 React 与 Node.js 构建安全的 Google OAuth 2.0 登录](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/security/How-to-Build-a-Secure-Google-OAuth-2.0-Login-Using-React-Node.js.md)
 - 2026-08-29 [21 个字节就能崩掉 FFmpeg：一个 vibe coding 出来的 fuzzer，挖出了多年审计都没碰到的坑](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/security/21-Bytes-Can-Crash-FFmpeg-Inside-the-Vibecoded-Fuzzer-That-Found-What-Years-of-Audits-Missed.md)
 - 2026-08-28 [后量子认证：接下来该做什么](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-28/security/Post-Quantum-Authentication-Up-Next.md)
