@@ -154,6 +154,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 移动
 
+- 2026-09-11 [原生成了 Shopify 移动端的未来（2026）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-11/mobile/Native-is-now-the-future-of-mobile-at-Shopify-2026.md)
 - 2026-09-05 [使用 React Native Super App Showcase 仓库](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Working-With-the-React-Native-Super-App-Showcase-Repository.md)
 - 2026-09-05 [介绍 Expo Observe：应用可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Introducing-Observe-Performance-monitoring-for-Expo-apps-now-generally-available.md)
 - 2026-09-05 [React Native Gesture Handler 的 Touchable：我们早该有的按钮](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Gesture-Handler-s-Touchable-Button-We-Wish-We-Had-Sooner.md)
