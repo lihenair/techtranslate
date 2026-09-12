@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-12 [Code review 实用技巧](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/ai/Stop-being-the-code-review-bottleneck.md)
 - 2026-09-10 [带记忆的自演进 Harness](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/ai/Self-Evolving-Harness-With-Memory.md)
 - 2026-09-10 [LLM-as-Judge 架构：把评测做进 Agent 运行时](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/ai/LLM-as-Judge-Architectures-Putting-Evals-Into-Your-Agent-Runtime.md)
 - 2026-09-07 [用 Gen AI Kotlin SDK 把 Gemini 接到 Android / KMP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/Using-the-new-Google-Gen-AI-SDK-for-Kotlin.md)
@@ -168,9 +169,9 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 前端
 
-- 2026-09-12 [React Compiler 的 lint：Oxlint 迎来 Rust 原生加速](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Compiler-Linting-Just-Got-a-Rust-Native-Speedup-in-Oxlint.md)
 - 2026-09-12 [React 现在全线锈化了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Now-Rusted-All-The-Way-Out.md)
 - 2026-09-12 [React DevTools CDT MCP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/react-devtools-cdt-mcp.md)
+- 2026-09-12 [React Compiler 的 lint：Oxlint 迎来 Rust 原生加速](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Compiler-Linting-Just-Got-a-Rust-Native-Speedup-in-Oxlint.md)
 - 2026-09-10 [React 19.3](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/frontend/React-19.3.md)
 - 2026-09-05 [CSS 的未来：用类名前缀选择器一次命中多个 class](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/frontend/The-Future-of-CSS-Target-Multiple-Classes-with-the-Class-Prefix-Selector.md)
 - 2026-09-03 [让 React Testing Library 测试快 43%](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/frontend/Making-React-Testing-Library-Tests-43-Faster.md)
