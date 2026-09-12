@@ -107,6 +107,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### Android
 
+- 2026-09-12 [从权限到会话：重新思考 Android 17 的定位访问](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/android/From-Permissions-to-Sessions-Rethinking-Location-Access-in-Android-17.md)
 - 2026-09-08 [Android 端侧图像生成：边缘生成式 AI 的系统工程](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-08/android/On-Device-Image-Generation-on-Android-Systems-Engineering-for-Edge-Generative-AI.md)
 - 2026-09-07 [Android Restore Credentials API：从零讲清](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/android/Androids-Restore-Credentials-API-Explained-From-Zero.md)
 - 2026-08-25 [用 Mesh Gradients 做好玩动画：Jetpack Compose 1.12](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/android/Fun-Animations-with-Mesh-Gradients-Jetpack-Compose-1.12.md)
