@@ -107,7 +107,7 @@
 | Strict Mode / Fast Refresh | |
 | Next.js / Nuxt / Vite | |
 | React Compiler | 编译器产品名；勿译成「React 编译器」当专名替代 |
-| oxc / Oxlint / oxc-transform-react | Rust JS 工具链；包名与产品名留英文 |
+| oxc / Oxlint / oxfmt / oxc-transform-react | Rust JS 工具链；包名与产品名留英文 |
 | Rolldown / `@rolldown/plugin-babel` | Vite/Rolldown 生态包名 |
 | Server Components / RSC | |
 | Tailwind CSS | |
