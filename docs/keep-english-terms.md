@@ -86,6 +86,13 @@
 | Nitro Modules / NitroFetch | |
 | VisionCamera | |
 | FlashList | |
+| SwiftPM / Swift Package Manager | iOS 包管理；可写 SwiftPM |
+| CocoaPods | |
+| SceneDelegate | UIKit 生命周期 API |
+| LogBox / RedBox | RN 开发期错误 UI |
+| PlatformColor | RN 颜色 API |
+| Upgrade Helper | 社区升级工具名 |
+| hermesc / hermes-engine | Hermes 工具链 |
 
 ## Web / CSS / 前端
 
