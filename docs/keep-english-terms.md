@@ -121,6 +121,8 @@
 | LLM / GPT / Claude / Gemini | |
 | OpenAI / Anthropic | |
 | MCP | Model Context Protocol；勿译「模型上下文协议」当专名替代 |
+| chrome-devtools-mcp | Chrome DevTools MCP server 包名 |
+| DevTools | Chrome / React DevTools 专名 |
 | Agent / tool calling | tool calling 保留；「工具调用」可作叙述 |
 | RAG / embedding | |
 | Cursor / Copilot | |
