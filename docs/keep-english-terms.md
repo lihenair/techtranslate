@@ -93,6 +93,9 @@
 | PlatformColor | RN 颜色 API |
 | Upgrade Helper | 社区升级工具名 |
 | hermesc / hermes-engine | Hermes 工具链 |
+| Expo Modules / Expo Modules 2.0 | Expo 原生模块 API |
+| `@ExpoModule` / `@JS` / `@Record` / `@SharedObject` / `@Event` | Expo Modules 2.0 Swift macros |
+| Flashlight / Maestro / Perfetto | 性能测量工具 |
 
 ## Web / CSS / 前端
 
@@ -122,6 +125,9 @@
 | DOM / HTML / SVG / SMIL | |
 | Shadow DOM / Custom Elements | |
 | Playwright / Puppeteer | |
+| AbortSignal / AbortController | Fetch 取消 API |
+| ReadableStream / TransformStream | Web Streams |
+| ffetch | fetch-kit 库名 |
 | Testing Library / Jest / Vitest | |
 
 ## AI / 智能体
