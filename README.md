@@ -168,6 +168,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 前端
 
+- 2026-09-12 [React Compiler 的 lint：Oxlint 迎来 Rust 原生加速](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Compiler-Linting-Just-Got-a-Rust-Native-Speedup-in-Oxlint.md)
 - 2026-09-12 [React 现在全线锈化了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Now-Rusted-All-The-Way-Out.md)
 - 2026-09-12 [React DevTools CDT MCP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/react-devtools-cdt-mcp.md)
 - 2026-09-10 [React 19.3](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/frontend/React-19.3.md)
