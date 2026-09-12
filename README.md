@@ -156,7 +156,9 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 移动
 
+- 2026-09-12 [React Native 导航现状](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-Navigation-Benchmarks.md)
 - 2026-09-12 [React Native 0.88.0-rc.0](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-0.88.0-rc.0.md)
+- 2026-09-12 [Expo Modules 2.0 抢先看](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/An-early-look-at-Expo-Modules-2.0.md)
 - 2026-09-11 [原生成了 Shopify 移动端的未来（2026）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-11/mobile/Native-is-now-the-future-of-mobile-at-Shopify-2026.md)
 - 2026-09-05 [使用 React Native Super App Showcase 仓库](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Working-With-the-React-Native-Super-App-Showcase-Repository.md)
 - 2026-09-05 [介绍 Expo Observe：应用可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Introducing-Observe-Performance-monitoring-for-Expo-apps-now-generally-available.md)
@@ -173,6 +175,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 - 2026-09-12 [React 现在全线锈化了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Now-Rusted-All-The-Way-Out.md)
 - 2026-09-12 [React DevTools CDT MCP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/react-devtools-cdt-mcp.md)
 - 2026-09-12 [React Compiler 的 lint：Oxlint 迎来 Rust 原生加速](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Compiler-Linting-Just-Got-a-Rust-Native-Speedup-in-Oxlint.md)
+- 2026-09-12 [Fetch 只等到一半](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/Half-Past-Fetch.md)
 - 2026-09-10 [React 19.3](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/frontend/React-19.3.md)
 - 2026-09-05 [CSS 的未来：用类名前缀选择器一次命中多个 class](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/frontend/The-Future-of-CSS-Target-Multiple-Classes-with-the-Class-Prefix-Selector.md)
 - 2026-09-03 [让 React Testing Library 测试快 43%](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/frontend/Making-React-Testing-Library-Tests-43-Faster.md)
