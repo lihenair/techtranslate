@@ -37,6 +37,8 @@
 | 保留英文 | 备注 |
 | --- | --- |
 | Restore Credentials | Google Play / Credential Manager 能力名 |
+| LocationButton / USE_LOCATION_BUTTON | Android 17 会话级定位按钮 API |
+| Cinnamon Bun | Android 17 甜点代号 |
 | Credential Manager | `androidx.credentials` |
 | WebAuthn | W3C / FIDO；可括注 Web Authentication 一次 |
 | passkey | 勿译「通行密钥」当专名替代（叙述可用中文） |
