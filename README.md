@@ -168,6 +168,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 前端
 
+- 2026-09-12 [React 现在全线锈化了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Now-Rusted-All-The-Way-Out.md)
 - 2026-09-12 [React DevTools CDT MCP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/react-devtools-cdt-mcp.md)
 - 2026-09-10 [React 19.3](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/frontend/React-19.3.md)
 - 2026-09-05 [CSS 的未来：用类名前缀选择器一次命中多个 class](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/frontend/The-Future-of-CSS-Target-Multiple-Classes-with-the-Class-Prefix-Selector.md)
