@@ -152,6 +152,10 @@
 | Live-SWE / mini-SWE / SWE-Exp | 研究系统名 |
 | SkillsBench / CODESKILL | 评测 / 方法名 |
 | Prime Agent / Hermes / Pi | agent 产品或 harness 名 |
+| PostHog / StampHog | 产品 / 内部 PR 盖章 agent |
+| Graphite | PR stacking 产品 |
+| qa-swarm / review-triage / babysit-prs / qa-frontend | skill / 仓库路径名 |
+| Extreme Programming / XP | 方法名；正文可写 Extreme Programming |
 
 ## AI / LLM Serving
 
