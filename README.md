@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-14 [Transformer 电路的数学框架](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-14/ai/A-Mathematical-Framework-for-Transformer-Circuits.md)
 - 2026-09-12 [Code review 实用技巧](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/ai/Stop-being-the-code-review-bottleneck.md)
 - 2026-09-10 [带记忆的自演进 Harness](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/ai/Self-Evolving-Harness-With-Memory.md)
 - 2026-09-10 [LLM-as-Judge 架构：把评测做进 Agent 运行时](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/ai/LLM-as-Judge-Architectures-Putting-Evals-Into-Your-Agent-Runtime.md)
