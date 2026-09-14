@@ -49,6 +49,16 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### AI
 
 - 2026-09-05 [开发者该懂的 20 个智能体 AI 术语（白话版）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/20-Agentic-AI-Terms-Every-Developer-Should-Know-Explained-Simply.md)
+- 2026-09-14 [Transformer 电路的数学框架](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-14/ai/A-Mathematical-Framework-for-Transformer-Circuits.md)
+- 2026-09-12 [Code review 实用技巧](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/ai/Stop-being-the-code-review-bottleneck.md)
+- 2026-09-10 [带记忆的自演进 Harness](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/ai/Self-Evolving-Harness-With-Memory.md)
+- 2026-09-10 [LLM-as-Judge 架构：把评测做进 Agent 运行时](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/ai/LLM-as-Judge-Architectures-Putting-Evals-Into-Your-Agent-Runtime.md)
+- 2026-09-07 [用 Gen AI Kotlin SDK 把 Gemini 接到 Android / KMP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/Using-the-new-Google-Gen-AI-SDK-for-Kotlin.md)
+- 2026-09-07 [把 LLM Serving 的 KV Cache 工程讲清楚](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/KV-Cache-Engineering-for-LLM-Serving-clearly-explained.md)
+- 2026-09-07 [LLM Routing 可能比不 Routing 更贵](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/LLM-Routing-Can-Cost-More-Than-Not-Routing.md)
+- 2026-09-07 [Grok Bot：永不休息的 AI 团队](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/Grok-Bot-The-AI-Team-That-Never-Sleeps.md)
+- 2026-09-05 [在 React Native 中构建 3D AI 形象](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Building-a-3D-AI-assistant-using-React-Native-and-GPT-Realtime.md)
+- 2026-09-05 [Grep 为何仍打赢 LSP：智能体 harness 的教训](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Grep-beats-LSP-Why-coding-agents-ignore-your-fancier-tools.md)
 - 2026-09-04 [AI 驱动的数据仓库：给每个 AI 产品的架构启示](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-04/ai/AI-Powered-Data-Warehouses-Architectural-Lessons-for-Every-AI-Product.md)
 - 2026-09-03 [我们用上下文工程把转化做到 5 倍、激活做到 2 倍](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/ai/We-used-context-engineering-to-5x-conversion-and-2x-activation.md)
 - 2026-09-03 [AI Weekly：2026 年 9 月 1 日（第 232 期）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/ai/AI-Weekly-for-Tuesday-September-1-2026-Issue-232.md)
@@ -89,6 +99,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 安全
 
+- 2026-09-11 [后量子 DNSSEC：1.1.1.1](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-11/security/1.1.1.1-now-supports-post-quantum-DNSSEC-all-2-420-bytes-of-it.md)
 - 2026-09-02 [用 React 与 Node.js 构建安全的 Google OAuth 2.0 登录](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/security/How-to-Build-a-Secure-Google-OAuth-2.0-Login-Using-React-Node.js.md)
 - 2026-08-29 [21 个字节就能崩掉 FFmpeg：一个 vibe coding 出来的 fuzzer，挖出了多年审计都没碰到的坑](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/security/21-Bytes-Can-Crash-FFmpeg-Inside-the-Vibecoded-Fuzzer-That-Found-What-Years-of-Audits-Missed.md)
 - 2026-08-28 [后量子认证：接下来该做什么](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-28/security/Post-Quantum-Authentication-Up-Next.md)
@@ -99,6 +110,9 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### Android
 
+- 2026-09-12 [从权限到会话：重新思考 Android 17 的定位访问](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/android/From-Permissions-to-Sessions-Rethinking-Location-Access-in-Android-17.md)
+- 2026-09-08 [Android 端侧图像生成：边缘生成式 AI 的系统工程](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-08/android/On-Device-Image-Generation-on-Android-Systems-Engineering-for-Edge-Generative-AI.md)
+- 2026-09-07 [Android Restore Credentials API：从零讲清](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/android/Androids-Restore-Credentials-API-Explained-From-Zero.md)
 - 2026-08-25 [用 Mesh Gradients 做好玩动画：Jetpack Compose 1.12](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/android/Fun-Animations-with-Mesh-Gradients-Jetpack-Compose-1.12.md)
 - 2026-08-25 [用 Hilt 做 Android 可观测性：在 Google Now in Android 应用上跑 Kotzilla SDK 和 MCP Server](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/android/Android-observability-with-Hilt-Kotzilla-SDK-and-MCP-Server-on-Googles-Now-in-Android-app.md)
 - 2026-08-25 [Tinder 用新的 R8 Configuration Analyzer 把应用冷启动砍掉 47%](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/android/Tinder-cuts-app-cold-starts-by-47-with-new-R8-Configuration-Analyzer.md)
@@ -146,6 +160,15 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 移动
 
+- 2026-09-05 [用 Nitro Fetch 加速 Expensify 的网络层](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Speeding-up-Expensify-s-networking-with-NitroFetch.md)
+- 2026-09-12 [React Native 导航现状](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-Navigation-Benchmarks.md)
+- 2026-09-12 [React Native 0.88.0-rc.0](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-0.88.0-rc.0.md)
+- 2026-09-12 [Expo Modules 2.0 抢先看](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/An-early-look-at-Expo-Modules-2.0.md)
+- 2026-09-11 [原生成了 Shopify 移动端的未来（2026）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-11/mobile/Native-is-now-the-future-of-mobile-at-Shopify-2026.md)
+- 2026-09-05 [使用 React Native Super App Showcase 仓库](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Working-With-the-React-Native-Super-App-Showcase-Repository.md)
+- 2026-09-05 [介绍 Expo Observe：应用可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Introducing-Observe-Performance-monitoring-for-Expo-apps-now-generally-available.md)
+- 2026-09-05 [React Native Gesture Handler 的 Touchable：我们早该有的按钮](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Gesture-Handler-s-Touchable-Button-We-Wish-We-Had-Sooner.md)
+- 2026-09-05 [React Native Bridgeless：并发引擎崩溃](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/React-Native-Bridgeless-race-conditions-with-concurrent-JS-runtimes.md)
 - 2026-08-29 [iOS Dev Weekly 第 765 期](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-29/mobile/Issue-765-iOS-Dev-Weekly.md)
 - 2026-08-26 [React Native 0.87：默认 Strict TypeScript API、Metro 更新、SwiftPM 与 AGP 9](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-26/mobile/React-Native-0.87-Strict-TypeScript-API-Metro-Update-Swift-Package-Manager-AGP-9.md)
 - 2026-08-25 [在 React Native 里做即时、正确、可保留状态的根级 Tab](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/mobile/Building-Instant-Correct-Retained-Root-Tabs-in-React-Native.md)
@@ -154,6 +177,12 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 前端
 
+- 2026-09-12 [React 现在全线锈化了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Now-Rusted-All-The-Way-Out.md)
+- 2026-09-12 [React DevTools CDT MCP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/react-devtools-cdt-mcp.md)
+- 2026-09-12 [React Compiler 的 lint：Oxlint 迎来 Rust 原生加速](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Compiler-Linting-Just-Got-a-Rust-Native-Speedup-in-Oxlint.md)
+- 2026-09-12 [Fetch 只等到一半](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/Half-Past-Fetch.md)
+- 2026-09-10 [React 19.3](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/frontend/React-19.3.md)
+- 2026-09-05 [CSS 的未来：用类名前缀选择器一次命中多个 class](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/frontend/The-Future-of-CSS-Target-Multiple-Classes-with-the-Class-Prefix-Selector.md)
 - 2026-09-03 [让 React Testing Library 测试快 43%](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/frontend/Making-React-Testing-Library-Tests-43-Faster.md)
 - 2026-09-03 [用 Vite 给 React 做静态站点生成](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/frontend/SSG-for-React-with-Vite.md)
 - 2026-08-25 [我用 React DataGrid 做了一个真实的太空任务浏览器](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/frontend/I-Used-React-DataGrid-to-Build-a-Real-Space-Mission-Explorer.md)
