@@ -158,6 +158,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 移动
 
+- 2026-09-05 [用 Nitro Fetch 加速 Expensify 的网络层](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Speeding-up-Expensify-s-networking-with-NitroFetch.md)
 - 2026-09-12 [React Native 导航现状](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-Navigation-Benchmarks.md)
 - 2026-09-12 [React Native 0.88.0-rc.0](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-0.88.0-rc.0.md)
 - 2026-09-12 [Expo Modules 2.0 抢先看](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/An-early-look-at-Expo-Modules-2.0.md)
