@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-05 [OpenAI 的 GPT-6 Astra 在 ARC-AGI-3 上](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/OpenAIs-GPT-6-Astra-on-ARC-AGI-3.md)
 - 2026-09-05 [Claude Code、Codex 和 Cursor 会选哪些工具？我们量了 16,893 场会话](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Which-tools-do-Claude-Code-Codex-and-Cursor-choose-We-measured-16893-sessions.md)
 - 2026-09-05 [开发者该懂的 20 个智能体 AI 术语（白话版）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/20-Agentic-AI-Terms-Every-Developer-Should-Know-Explained-Simply.md)
 - 2026-09-14 [Transformer 电路的数学框架](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-14/ai/A-Mathematical-Framework-for-Transformer-Circuits.md)
