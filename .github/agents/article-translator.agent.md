@@ -18,6 +18,7 @@ When assigned an issue or pull request:
 4. Run `python scripts/capture_media.py --inbox _inbox --repo-root .` when media comments exist.
 5. Write one Chinese markdown file per article under `archive/<translated_at>/<tech_domain>/` (YAML meta + body header, no `【翻译】` on GitHub). Use inbox `title_zh` as `title` when present. Update the README catalog (`python3 scripts/rebuild_readme.py`), keep `assets/<slug>/` GIFs, and delete the inbox source. The translation PR body must include `Closes #<issue>`. **Never merge** the Action inbox PR (`translate/issue-<n>`, title `Translate: …`). Close it without merging as soon as the translation PR exists; when the user asks to merge the translation, merge that PR **and** close any still-open related inbox PR for the same issue.
 6. **Voice checklist before opening/updating the PR** (skill § Voice and polish): pick the row for this article type; rewrite any paragraph that still reads like DeepL / stacked「的」/ stiff「当…的时候」; founder essays need rhythm and cold humor, not press-release Chinese; tech posts need engineer cadence, not textbook tone.
-7. Do not change unrelated translations.
+7. **Keep-English checklist**: follow `docs/keep-english-terms.md`. Do not translate product / architecture / API / engine proper names into Chinese. If you meet a new proper name, add it to that glossary in the same PR.
+8. Do not change unrelated translations.
 
 If a URL cannot be fetched and there is no inbox file, comment on the issue with the error and stop. Do not guess the article body.
