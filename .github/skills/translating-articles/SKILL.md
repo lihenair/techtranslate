@@ -107,7 +107,7 @@ Body header, in this order, blank line between blocks:
 
 发布于 2026 年 1 月 2 日。
 
-**加粗导语。术语第一次写成 中文（English）。**
+**加粗导语。通用概念才用 中文（English）；专名直接英文。**
 ```
 
 Omit any header line you cannot fill. Do not use `[原文链接](URL)`.
@@ -123,15 +123,19 @@ Omit any header line you cannot fill. Do not use `[原文链接](URL)`.
 | 工程技术文 | `ai` / `backend` / `frontend` / `devops` / `systems` / `graphics` / `security` / `android` / `mobile` | 该领域资深工程师：清楚、利落、术语准；可以说「坑」「摊开」「顶满」，少文言腔 |
 | 创业 / 创始人随笔 | `other` + startup / YC / founder 故事 | 叙事散文：有节奏、有画面；保留冷幽默与自嘲，别写成通稿 |
 | 产品 / 增长 / 运营 | 常落在 `other` 或夹带业务词 | 产品/运营人说话：结论先行，例子落地，少堆术语括号 |
-| 安全研究 | `security` | 安全研究员：精确、克制；漏洞名与概念第一次给中英对照 |
+| 安全研究 | `security` | 安全研究员：精确、克制；**漏洞代号 / CVE 留英文**；仅通用概念做中英对照 |
 
 ### 润色规则
 
 - **意译优先**：长定语、英文从句拆成短句；「It is difficult to… when…」写成中文自然因果，不要「当…的时候，很难…」一路套。
 - **忌翻译腔**：少用「进行」「进行了」「进行中」；少「一个…的…的…」叠罗汉；少「使得」「予以」「针对…进行」。
-- **术语**：技术文第一次 `中文（English）`，后文跟邻近习惯；叙事文里机构名可保留英文缩写并在首次括注全称（如 YC、ETH）。
+- **术语 / 专名（必读 `docs/keep-english-terms.md`）**：
+  - **专有英文不译**：产品名、架构名（如 Bridgeless）、API / 类 / 方法名、引擎名、协议名、标准特性正式名、常见指标缩写 → 正文直接写英文，禁止「无桥接（Bridgeless）」「应用编程接口（API）」这类硬译。
+  - **通用概念**才首次 `中文（English）`（如 `竞态（race condition）`）；后文跟邻近习惯。
+  - 表里没有的新专名：正文留英文，并**补进** `docs/keep-english-terms.md`。
+  - 叙事文机构缩写可保留英文（YC、ETH）；需要时首次括注英文全称，不要译成中文专名。
 - **语气对齐原文**：原文毒舌就毒舌，原文冷静就冷静；不要统一成公文或鸡汤。
-- **自检**：读一遍，若明显像 DeepL / 字面直译，整段重写后再提交。
+- **自检**：读一遍，若明显像 DeepL / 字面直译，整段重写后再提交；再扫一遍是否把专名译成了中文。
 
 反例（生硬）→ 正例（可接受）：
 
@@ -143,7 +147,7 @@ Omit any header line you cannot fill. Do not use `[原文链接](URL)`.
 - Simplified Chinese, **polished to the voice table above**. Keep code, commands, API names, and original raster image URLs (`png` / `jpg` / `webp`). Same-origin diagram iframes and SVG (inline or `.svg`) must be converted into `assets/<slug>/` GIF or PNG; GitHub cannot show those iframes, and Jina drops them. From `archive/<date>/<domain>/` use `../../../../assets/<slug>/visual-….gif`.
 - Copy **every** inbox raster diagram into the Chinese post at the matching section — not only `cover_image`. Skip any body image that is the same asset as `文章头图` (do not paste the cover twice). X/Twitter long posts often have 3–6 `pbs.twimg.com/media/…` diagrams that Jina keeps and x.com HTML drops. **X Articles** (`x.com/i/article/…` linked from a status) are worse: Jina may 403 and HTML often only has the cover — `article_tools` must use `api.fxtwitter.com` so inbox keeps body `MEDIA` blocks and embedded tweets. If the Chinese file only has the header cover, the body diagrams are missing.
 - Headings: `## [引言](#introduction)` — Chinese title, original slug.
-- First use of a term: `消毒（sanitization）`.
+- First use of a **general concept**: `消毒（sanitization）`. Proper names stay English per `docs/keep-english-terms.md` (e.g. `Bridgeless`, `JSI`, `Class Prefix Selector`).
 - No `iframe`. No `p9-xtjj-sign` / `link.juejin.cn` URLs.
 - Videos always keep the text link:
 
@@ -164,7 +168,14 @@ If the video is longer than 15s or yt-dlp cannot download it, `capture_media.py`
 ![嵌入内容（原站 YouTube）](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/slug/yt-ID.jpg)
 ```
 
-If capture skipped a `section` demo (`skipped-no-browser`, `skipped-too-large`), write `原文为网页动画` only when the article clearly had an inline animation with no static image. X/Twitter 长文若已有 `pbs.twimg.com` 配图，不必为误报的 section 动画补 GIF。Do not add YouTube keys or cookies. Keep the YouTube text link.
+If `capture_media.py` returns `skipped-no-browser` / `skipped-too-large` for `section-anim` / inline SVG / `page-visual`, **do not** stop at `原文为网页动画`. That phrase is a **last resort** after you tried an alternate rasterization and still have nothing usable:
+
+1. Prefer GIF when the diagram is animated (SMIL `<animate>`, CSS `@keyframes`, JS demo); PNG is OK when a single clear frame shows the same information.
+2. When Playwright is missing, still rasterize: open `_inbox/media/<slug>-N.html` (or the live article SVG) with system Chrome/Chromium headless (`--screenshot` / `--virtual-time-budget`), or `cairosvg` / similar for static SVG, and write `assets/<slug>/visual-….png` (or `.gif` if you can stitch frames).
+3. For **SMIL SVG** specifically: do not settle for one static PNG. Seek the timeline with `svg.pauseAnimations(); svg.setCurrentTime(t)` (Chrome CDP or a small HTML wrapper), capture ~6–8 fps across one loop, stitch with `ffmpeg` `palettegen`/`paletteuse`, and embed the `.gif`. Static PNG is only a stopgap if seeking fails.
+4. Only write bare `原文为网页动画` when every capture path failed **and** there is no readable diagram to embed. If you have a PNG/GIF, embed it — do not leave the placeholder instead of the asset.
+
+X/Twitter 长文若已有 `pbs.twimg.com` 配图，不必为误报的 section 动画补 GIF。Do not add YouTube keys or cookies. Keep the YouTube text link.
 
 ## README
 
