@@ -159,6 +159,9 @@
 | MAJ-EVAL | 多 agent 审议式评测 |
 | LLMBar / JudgeBench / RewardBench | judge / reward 评测基准 |
 | Bloom | Anthropic 评测工具 |
+| FermiEval / QuantSightBench | 区间校准 / 预测类评测基准 |
+| known entity | Anthropic 可解释性论文里的内部信号名 |
+| repeated sampling | 多次采样 / self-consistency 相关研究用语 |
 | rubric | 评分标准；可首次括注 |
 | harness | agent 外围程序/运行时环；专名留英文 |
 | Mem0 | 记忆产品 |
