@@ -171,6 +171,10 @@
 | SkillsBench / CODESKILL | 评测 / 方法名 |
 | Prime Agent / Hermes / Pi | agent 产品或 harness 名 |
 | PostHog / StampHog | 产品 / 内部 PR 盖章 agent |
+| WET / DRY / SOLID | 经典设计口诀；正文可留英文缩写 |
+| TanStack Query | 数据请求库；status 名 loading/pending 等留英文 |
+| Sonnet / Fable | 模型名；文中 Sonnet 5 / Fable 5 留英文 |
+| collocated | 就近摆放；可首次括注 |
 | PostHog Desktop | PostHog 桌面端产品名 |
 | generative UI | 生成式界面；专名留英文 |
 | feature flag / insight | PostHog 产品能力名；叙述可夹中文 |
