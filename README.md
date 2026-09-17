@@ -48,9 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
-- 2026-09-05 [OpenAI 的 GPT-6 Astra 在 ARC-AGI-3 上](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/OpenAIs-GPT-6-Astra-on-ARC-AGI-3.md)
-- 2026-09-05 [Claude Code、Codex 和 Cursor 会选哪些工具？我们量了 16,893 场会话](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Which-tools-do-Claude-Code-Codex-and-Cursor-choose-We-measured-16893-sessions.md)
-- 2026-09-05 [开发者该懂的 20 个智能体 AI 术语（白话版）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/20-Agentic-AI-Terms-Every-Developer-Should-Know-Explained-Simply.md)
+- 2026-09-17 [面向 2030 的软件](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/2030-shaped-software.md)
 - 2026-09-14 [Transformer 电路的数学框架](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-14/ai/A-Mathematical-Framework-for-Transformer-Circuits.md)
 - 2026-09-12 [Code review 实用技巧](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/ai/Stop-being-the-code-review-bottleneck.md)
 - 2026-09-10 [带记忆的自演进 Harness](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-10/ai/Self-Evolving-Harness-With-Memory.md)
@@ -59,8 +57,11 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 - 2026-09-07 [把 LLM Serving 的 KV Cache 工程讲清楚](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/KV-Cache-Engineering-for-LLM-Serving-clearly-explained.md)
 - 2026-09-07 [LLM Routing 可能比不 Routing 更贵](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/LLM-Routing-Can-Cost-More-Than-Not-Routing.md)
 - 2026-09-07 [Grok Bot：永不休息的 AI 团队](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-07/ai/Grok-Bot-The-AI-Team-That-Never-Sleeps.md)
+- 2026-09-05 [开发者该懂的 20 个智能体 AI 术语（白话版）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/20-Agentic-AI-Terms-Every-Developer-Should-Know-Explained-Simply.md)
 - 2026-09-05 [在 React Native 中构建 3D AI 形象](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Building-a-3D-AI-assistant-using-React-Native-and-GPT-Realtime.md)
+- 2026-09-05 [OpenAI 的 GPT-6 Astra 在 ARC-AGI-3 上](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/OpenAIs-GPT-6-Astra-on-ARC-AGI-3.md)
 - 2026-09-05 [Grep 为何仍打赢 LSP：智能体 harness 的教训](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Grep-beats-LSP-Why-coding-agents-ignore-your-fancier-tools.md)
+- 2026-09-05 [Claude Code、Codex 和 Cursor 会选哪些工具？我们量了 16,893 场会话](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/ai/Which-tools-do-Claude-Code-Codex-and-Cursor-choose-We-measured-16893-sessions.md)
 - 2026-09-04 [AI 驱动的数据仓库：给每个 AI 产品的架构启示](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-04/ai/AI-Powered-Data-Warehouses-Architectural-Lessons-for-Every-AI-Product.md)
 - 2026-09-03 [我们用上下文工程把转化做到 5 倍、激活做到 2 倍](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/ai/We-used-context-engineering-to-5x-conversion-and-2x-activation.md)
 - 2026-09-03 [AI Weekly：2026 年 9 月 1 日（第 232 期）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-03/ai/AI-Weekly-for-Tuesday-September-1-2026-Issue-232.md)
@@ -162,11 +163,11 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 移动
 
-- 2026-09-05 [用 Nitro Fetch 加速 Expensify 的网络层](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Speeding-up-Expensify-s-networking-with-NitroFetch.md)
 - 2026-09-12 [React Native 导航现状](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-Navigation-Benchmarks.md)
 - 2026-09-12 [React Native 0.88.0-rc.0](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-0.88.0-rc.0.md)
 - 2026-09-12 [Expo Modules 2.0 抢先看](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/An-early-look-at-Expo-Modules-2.0.md)
 - 2026-09-11 [原生成了 Shopify 移动端的未来（2026）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-11/mobile/Native-is-now-the-future-of-mobile-at-Shopify-2026.md)
+- 2026-09-05 [用 Nitro Fetch 加速 Expensify 的网络层](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Speeding-up-Expensify-s-networking-with-NitroFetch.md)
 - 2026-09-05 [使用 React Native Super App Showcase 仓库](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Working-With-the-React-Native-Super-App-Showcase-Repository.md)
 - 2026-09-05 [介绍 Expo Observe：应用可观测性](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Introducing-Observe-Performance-monitoring-for-Expo-apps-now-generally-available.md)
 - 2026-09-05 [React Native Gesture Handler 的 Touchable：我们早该有的按钮](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-05/mobile/Gesture-Handler-s-Touchable-Button-We-Wish-We-Had-Sooner.md)
