@@ -171,6 +171,10 @@
 | SkillsBench / CODESKILL | 评测 / 方法名 |
 | Prime Agent / Hermes / Pi | agent 产品或 harness 名 |
 | PostHog / StampHog | 产品 / 内部 PR 盖章 agent |
+| PostHog Desktop | PostHog 桌面端产品名 |
+| generative UI | 生成式界面；专名留英文 |
+| feature flag / insight | PostHog 产品能力名；叙述可夹中文 |
+| context engineering | 方法名；可首次括注 |
 | Graphite | PR stacking 产品 |
 | qa-swarm / review-triage / babysit-prs / qa-frontend | skill / 仓库路径名 |
 | Extreme Programming / XP | 方法名；正文可写 Extreme Programming |
