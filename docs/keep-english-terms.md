@@ -119,8 +119,18 @@
 | Strict Mode / Fast Refresh | |
 | Next.js / Nuxt / Vite | |
 | React Compiler | 编译器产品名；勿译成「React 编译器」当专名替代 |
-| oxc / Oxlint / oxfmt / oxc-transform-react | Rust JS 工具链；包名与产品名留英文 |
+| oxc / Oxc / Oxlint / oxfmt / oxc-transform-react | Rust JS 工具链；包名与产品名留英文 |
 | Rolldown / `@rolldown/plugin-babel` | Vite/Rolldown 生态包名 |
+| OJ | Lovable 的 Rust 预览引擎，内部绰号 Orange Juice |
+| TanStack Start | |
+| Lovable | 产品名 |
+| vite-plugin-checker | Vite 插件名 |
+| Excalidraw / Twenty | 开源应用名，作基准用例 |
+| onMounted / onUnmounted / onDeactivated / onActivated | Vue 生命周期钩子 |
+| onScopeDispose / effectScope / onWatcherCleanup | Vue 响应式作用域 / 清理 API |
+| `<KeepAlive>` / KeepAlive | Vue 内置组件 |
+| VueUse / useEventListener / useIntervalFn | |
+| Pinia / `$subscribe` / `$onAction` | |
 | Server Components / RSC | |
 | Tailwind CSS | |
 | WebAssembly / Wasm | |
@@ -142,6 +152,9 @@
 | chrome-devtools-mcp | Chrome DevTools MCP server 包名 |
 | DevTools | Chrome / React DevTools 专名 |
 | Agent / tool calling | tool calling 保留；「工具调用」可作叙述 |
+| Qwen / Qwen-2.5-1B-RLCD | 模型名；RLCD 留英文 |
+| Muon | 优化器名 |
+| explorer / compressor / reproducer | Amazon Science 压缩实验里的 agent 角色名 |
 | RAG / embedding | |
 | Cursor / Copilot | |
 | LSP / grep | 作工具名时保留 |
