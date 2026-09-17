@@ -142,6 +142,7 @@
 | chrome-devtools-mcp | Chrome DevTools MCP server 包名 |
 | DevTools | Chrome / React DevTools 专名 |
 | Agent / tool calling | tool calling 保留；「工具调用」可作叙述 |
+| reasoning model / reasoning effort | 与 inference「推理」易撞车，正文留英文 |
 | RAG / embedding | |
 | Cursor / Copilot | |
 | LSP / grep | 作工具名时保留 |
@@ -188,7 +189,20 @@
 | Gemma / Llama | 模型族名 |
 | BF16 / FP8 | 数值格式 |
 | KIVI | KV 量化方法 |
-| FLOPs / HBM | |
+| FLOPs / HBM / HBM3E / HBM4 | HBM 世代与带宽规格留英文 |
+| SRAM / DRAM | 内存类型专名；勿译成「静态/动态随机存取存储器」当专名替代 |
+| Trainium | AWS 训练/推理加速器 |
+| Cerebras / WSE-3 / Wafer-Scale Engine | 晶圆级引擎产品；叙述可写「晶圆级」 |
+| Groq / Groq 3 / LPU / Groq 3 LPX | Groq 被 Nvidia 收购后的 language-processing unit；勿与 Grok 混淆 |
+| d-Matrix / Raptor | 叠层 DRAM 推理加速器 |
+| Majestic Labs | 内存聚合创业公司 |
+| Tensordyne / Napier | 对数数值格式推理芯片与机柜 |
+| Etched / Sohu | Transformer ASIC |
+| NVFP4 / MXFP4 | 4-bit 数值格式 |
+| Vera Rubin / Rubin | Nvidia GPU 产品线 |
+| GB300 NVL72 | Nvidia rack 产品 |
+| GPT-5.3-Codex-Spark / GPT-5.4 | OpenAI 模型部署名 |
+| GTC | Nvidia 开发者大会 |
 | Needle-in-a-Haystack | 评测名 |
 | Grok / Grok Bot / Grok 4.6 | xAI 产品与模型 |
 | harness / routine | agent 运行环境 / 可复用路径；专名留英文 |
