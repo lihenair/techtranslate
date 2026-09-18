@@ -76,7 +76,28 @@
 | CodePush | |
 | OTA | 可保留 OTA；勿写「OTA（空中下载）」除非读者向科普 |
 | Expo | |
+| Expo Go | Expo 沙盒客户端产品名 |
 | Expo Router | |
+| Expo UI | Expo 原生 UI 组件库 |
+| iPhone Duo | Apple 折叠 iPhone 产品名 |
+| Xcode | Apple IDE；含版本如 Xcode 27.1 |
+| iOS SDK | 含版本如 iOS 27.1 SDK |
+| Split View | iPadOS / iOS 分屏；专名留英文 |
+| Size Classes | Apple 自适应布局尺寸类 |
+| Concentricity / ConcentricRectangle | Apple 同心圆角 API；SwiftUI |
+| UICornerConfiguration | UIKit 圆角配置 API |
+| SwiftUI / UIKit | Apple UI 框架 |
+| Live Activities | iOS 实时活动 API / 系统能力 |
+| EAS / EAS Build / EAS Simulator / EAS Update | Expo Application Services；产品能力名留英文 |
+| development build | Expo 开发构建产物类型；专名留英文 |
+| agent-device / Argent | Expo agent 控设备工具 / 产品 |
+| eas-simulator | Expo skill / 插件路径名 |
+| serve-sim | Expo web preview 底层工具仓库名 |
+| OpenMulticam | 示例 App / 仓库名 |
+| AVFoundation | Apple 媒体采集框架 |
+| WSL / Windows Subsystem for Android | Microsoft 子系统产品名 |
+| Windows on ARM / Snapdragon X | 平台 / SoC 产品线 |
+| Android Studio / VS Code | IDE 产品名 |
 | Observe | Expo 产品名 |
 | React Navigation | |
 | Reanimated / react-native-reanimated | |
@@ -88,6 +109,13 @@
 | Nitro Modules / NitroFetch | |
 | VisionCamera | |
 | FlashList | |
+| Legend State / Legend List | LegendApp 状态库与列表组件；勿译「传奇状态」 |
+| observable | Legend State API；创建与订阅分离的状态节点 |
+| useValue / useObserveEffect | Legend State hooks |
+| `$View` / `$style` | Legend State 响应式组件与响应式 props |
+| signal / signals | 细粒度响应式状态模式名；文中可作 observable 的别称 |
+| Chain React | Infinite Red 会议名 |
+| Infinite Red | 公司 / 团队名 |
 | SwiftPM / Swift Package Manager | iOS 包管理；可写 SwiftPM |
 | CocoaPods | |
 | SceneDelegate | UIKit 生命周期 API |
@@ -98,6 +126,33 @@
 | Expo Modules / Expo Modules 2.0 | Expo 原生模块 API |
 | `@ExpoModule` / `@JS` / `@Record` / `@SharedObject` / `@Event` | Expo Modules 2.0 Swift macros |
 | Flashlight / Maestro / Perfetto | 性能测量工具 |
+| Discord | 产品 / 公司名；勿译「不和谐」 |
+| Software Mansion | 公司名 |
+| Screens / react-native-screens | RN 导航库；文中可写 Screens |
+| FullWindowOverlay | react-native-screens API / 组件 |
+| Yoga | RN 布局引擎；Yoga root 留英文 |
+| View Flattening / view flattening | Fabric 优化正式名 |
+| interop layer | New Architecture 互通层；专名留英文 |
+| worklet | Reanimated UI 线程函数；专名留英文 |
+| collapsable | RN View prop；作 API 名留英文 |
+| RCTViewManager / RCT_EXTERN_MODULE / RCT_EXTERN_REMAP_MODULE | RN iOS 宏 / 类名 |
+| KMP / Kotlin Multiplatform | 跨端共享；勿译「Kotlin 多平台」当专名替代 |
+| Kotlin/Native | KMP iOS 原生后端 / runtime |
+| SwiftUI | Apple 声明式 UI；专名留英文 |
+| Compose / Jetpack Compose / Compose Multiplatform | Android / 跨端 UI；专名留英文 |
+| XCFramework / xcframework / Shared.xcframework | Apple 分发产物；文件名与专名留英文 |
+| Gradle | 构建系统；任务名 / 属性名留英文 |
+| KMMBridge | Touchlab KMP → SPM 桥接工具 |
+| SQLDelight | 跨端 SQL 库 |
+| ktor | Kotlin HTTP 客户端/服务端库 |
+| KSP | Kotlin Symbol Processing |
+| SharedBridge | 文中 Kotlin↔Swift 边界层命名；专名留英文 |
+| Bazel | 构建系统；终局远程缓存常例 |
+| configuration cache | Gradle 特性名；可留英文 |
+| ABI | Application Binary Interface；专名留英文 |
+| dylib | 动态库；专名留英文 |
+| umbrella framework / umbrella link | KMP iOS 单 framework 链接形态；专名留英文 |
+| export() / isStatic / spmDevBuild | KMP / Gradle API 与任务名 |
 
 ## Web / CSS / 前端
 
@@ -110,6 +165,12 @@
 | Chromium / Firefox / Safari | |
 | CodePen | |
 | React / Vue / Svelte / Solid | |
+| Preact / Octane | 前端框架 / 运行时；Octane 为 TSRX target |
+| TSRX | TypeScript Language Extension for Declarative UI |
+| Ripple | 响应式 UI 框架；TSRX target |
+| Lazy destructuring / lazy binding | TSRX 已移除的 `&{ }` / `&[ ]` 特性名；正文可留英文 |
+| track / Tracked / Derived | Ripple 响应式 API / 类型名 |
+| splitProps / toRefs / reactive | Solid / Vue API 名 |
 | View Transition / `<ViewTransition>` | React 19.3 API；浏览器 API 亦留英文 |
 | Fragment Refs / FragmentInstance | |
 | Suspense / Activity | |
@@ -119,7 +180,9 @@
 | Strict Mode / Fast Refresh | |
 | Next.js / Nuxt / Vite | |
 | React Compiler | 编译器产品名；勿译成「React 编译器」当专名替代 |
-| oxc / Oxlint / oxfmt / oxc-transform-react | Rust JS 工具链；包名与产品名留英文 |
+| oxc / OXC / Oxlint / oxfmt / oxc-transform-react | Rust JS 工具链；包名与产品名留英文 |
+| Yuku | TSRX 相关移植 / 工具名 |
+| Prettier / ESLint / TextMate / Tree-sitter | 格式化 / lint / 编辑器语法 |
 | Rolldown / `@rolldown/plugin-babel` | Vite/Rolldown 生态包名 |
 | Server Components / RSC | |
 | Tailwind CSS | |
@@ -131,6 +194,7 @@
 | ReadableStream / TransformStream | Web Streams |
 | ffetch | fetch-kit 库名 |
 | Testing Library / Jest / Vitest | |
+| TypeScript / JSX / ECMAScript | 语言 / 标准名 |
 
 ## AI / 智能体
 
