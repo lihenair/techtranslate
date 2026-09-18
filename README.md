@@ -49,6 +49,9 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 ### AI
 
 - 2026-09-17 [面向 2030 的软件](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/2030-shaped-software.md)
+- 2026-09-17 [蒸汽、钢铁与无限心智](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/Steam-Steel-and-Infinite-Minds.md)
+- 2026-09-17 [如何搭建 Inference Provider](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/How-to-Build-an-Inference-Provider.md)
+- 2026-09-17 [GPT-6 Astra：3D、具身 AI 及更远](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/GPT-6-Astra-3D-Embodied-AI-and-Beyond.md)
 - 2026-09-15 [用概率思维从 AI 拿到更好的答案](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-15/ai/How-to-use-probabilistic-thinking-to-get-better-answers-from-AI.md)
 - 2026-09-14 [Transformer 电路的数学框架](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-14/ai/A-Mathematical-Framework-for-Transformer-Circuits.md)
 - 2026-09-12 [Code review 实用技巧](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/ai/Stop-being-the-code-review-bottleneck.md)
