@@ -137,7 +137,28 @@
 | 保留英文 | 备注 |
 | --- | --- |
 | LLM / GPT / Claude / Gemini | |
+| AGI | Artificial General Intelligence；专名留英文 |
+| Notion | 产品名；Ivan Zhao / NotionHQ |
+| Slack | 产品名 |
+| IDE | 集成开发环境；专名留英文 |
+| Red Flag Act | 1865 英国道路法规专名 |
+| Scientific American | 期刊名 |
+| Woolworth Building | 建筑专名 |
+| GPT-6 Astra / Astra | OpenAI 模型产品名；正文留英文 |
 | OpenAI / Anthropic | |
+| Stargate | OpenAI 算力集群名 |
+| Blender | 3D 软件产品名 |
+| Mac mini / Mac Studio | Apple 硬件产品名 |
+| looped transformer | 报道中的架构说法；专名留英文 |
+| MeshyAI / DeemosTech | image-to-3D 产品 / 公司 handle |
+| Thea | EIT HAI 研究项目名 |
+| VLA | Vision-Language-Action；架构缩写留英文 |
+| SFT | Supervised Fine-Tuning；训练阶段缩写留英文 |
+| real-to-sim / real-to-sim-to-real | 具身仿真迁移管线名 |
+| agentic RL / agentic scaling | 方法名；可首次括注 |
+| move_base | ROS 导航 API 名 |
+| system card | OpenAI 模型安全文档类型名 |
+| EIT HAI | 研究组名 |
 | MCP | Model Context Protocol；勿译「模型上下文协议」当专名替代 |
 | chrome-devtools-mcp | Chrome DevTools MCP server 包名 |
 | DevTools | Chrome / React DevTools 专名 |
@@ -210,6 +231,19 @@
 | Plano / Plano-Orchestrator | DigitalOcean AI-native proxy |
 | Arch-Router / Katanemo | routing 专用小模型 |
 | Inference Router | DigitalOcean 产品名 |
+| Inference Provider | 对外提供模型推理的服务层；正文留英文 |
+| SGLang | serving 引擎；含 radix cache |
+| radix cache | SGLang 前缀匹配缓存实现 |
+| continuous batching | 持续批处理；专名留英文 |
+| speculative decoding | 推测解码方法名；专名留英文 |
+| model parallelism | 模型并行；专名留英文 |
+| data plane / control plane | 请求路径 / 配置与部署控制面 |
+| Ray Serve | Ray 的 serving / 部署层 |
+| Triton / Triton Inference Server | NVIDIA 推理服务 |
+| KServe | Kubernetes 模型 serving |
+| llama.cpp | 本地 / 受限部署推理实现 |
+| OpenPI / ActionChunkBroker | Physical Intelligence 远程推理示例与客户端 |
+| action chunk | 机器人策略返回的动作序列；专名留英文 |
 | model affinity / session pinning | agent 会话钉模型 |
 | MT Bench / Chatbot Arena | 评测 / 偏好数据源 |
 
