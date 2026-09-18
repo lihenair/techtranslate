@@ -168,6 +168,10 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 移动
 
+- 2026-09-18 [把 Discord 迁到 RN New Architecture 要做什么](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-18/mobile/What-It-Takes-to-Migrate-Discord-to-RN-s-New-Architecture.md)
+- 2026-09-18 [你的 App 准备好迎接 iPhone Duo 了吗？](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-18/mobile/Is-Your-App-Ready-for-iPhone-Duo.md)
+- 2026-09-18 [不用 Mac 也能开发 iOS 应用](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-18/mobile/You-don-t-need-a-Mac-to-develop-iOS-apps.md)
+- 2026-09-18 [KMP + SwiftUI 在 iOS 上如何扩展](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-18/mobile/How-Does-KMP-with-SwiftUI-Scale-on-iOS.md)
 - 2026-09-12 [React Native 导航现状](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-Navigation-Benchmarks.md)
 - 2026-09-12 [React Native 0.88.0-rc.0](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/React-Native-0.88.0-rc.0.md)
 - 2026-09-12 [Expo Modules 2.0 抢先看](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/mobile/An-early-look-at-Expo-Modules-2.0.md)
@@ -185,6 +189,8 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 前端
 
+- 2026-09-18 [去掉 Lazy Destructuring](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-18/frontend/Removing-Lazy-Destructuring.md)
+- 2026-09-18 [Legend State：你可能没用过的最快 React 状态库](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-18/frontend/Legend-State-The-Fastest-React-State-Library-You-re-Probably-Not-Using.md)
 - 2026-09-12 [React 现在全线锈化了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Now-Rusted-All-The-Way-Out.md)
 - 2026-09-12 [React DevTools CDT MCP](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/react-devtools-cdt-mcp.md)
 - 2026-09-12 [React Compiler 的 lint：Oxlint 迎来 Rust 原生加速](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Compiler-Linting-Just-Got-a-Rust-Native-Speedup-in-Oxlint.md)
