@@ -86,7 +86,7 @@ export const packageExtensions = [
 
 完整可筛选表在[原文页面](https://nubjs.com/blog/phantom-dependencies-package-extensions)上（按包名过滤、勾选非最新版本、悬停看规则）。下面是第 1 页截图，以及同一页的文字对照。默认显示 696 / 791 个包。
 
-![原文可筛选幽灵依赖表（第 1 页）](../../../../assets/De-phantoming-the-npm-ecosystem/visual-package-table.png)
+![原文可筛选幽灵依赖表（第 1 页）](https://raw.githubusercontent.com/lihenair/techtranslate/master/assets/De-phantoming-the-npm-ecosystem/visual-package-table.png)
 
 | # | 包 | 周下载量 | 幽灵依赖 |
 | --- | --- | --- | --- |
