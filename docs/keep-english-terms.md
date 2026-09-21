@@ -189,12 +189,46 @@
 | WebAssembly / Wasm | |
 | DOM / HTML / SVG / SMIL | |
 | Shadow DOM / Custom Elements | |
+| Declarative Shadow DOM | 声明式 Shadow DOM；特性专名留英文 |
+| CustomElementRegistry / Scoped Element Registries | 作用域 custom element 注册表 API |
+| Reference Target / shadowrootreferencetarget | Shadow DOM 内外引用桥接；属性名留英文 |
+| CSS Module Scripts | `import … with { type: 'css' }`；专名留英文 |
+| `<geolocation>` / `<usermedia>` / `<camera>` / `<microphone>` | 权限相关 HTML 元素 |
+| `<permission>` / `<install>` / `<model>` / `<persistentwidget>` | HTML 元素专名 |
+| `<selectedcontent>` | 可样式化 `<select>` 内当前选项镜像 |
+| `appearance: base-select` / `::picker(select)` / `::picker-icon` | 可样式化 select CSS |
+| MediaStream | getUserMedia / `<usermedia>` 交付对象 |
+| PWA / web application manifest / service worker | 可安装 web 应用相关；专名留英文 |
+| ARIA / `role="article"` | 可访问性；ARIA 留英文 |
+| Popover / Popover API / `popover="hint"` / interest invoker | Popover 与兴趣触发；专名留英文 |
+| `commandfor` / `command` / Invoker Commands | HTML commands API |
+| `focusgroup` / roving tabindex | 焦点组属性；roving tabindex 模式名可留英文 |
+| `hidden="until-found"` / `layoutsubtree` | HTML 属性专名 |
+| HTML-in-Canvas | Canvas 内嵌 HTML 特性名 |
+| declarative partial updates | WICG / Chrome 声明式局部更新 |
+| WWDC | Apple 开发者大会 |
+| USDZ / `.usdz` | Apple 3D 资源格式 |
+| Master.dev | 博客 / 站点名 |
 | Playwright / Puppeteer | |
 | AbortSignal / AbortController | Fetch 取消 API |
 | ReadableStream / TransformStream | Web Streams |
 | ffetch | fetch-kit 库名 |
 | Testing Library / Jest / Vitest | |
 | TypeScript / JSX / ECMAScript | 语言 / 标准名 |
+| Nub | 包管理器产品名；nubjs.com |
+| Aube | 包管理器产品名；aubepkg |
+| Bun | 运行时 / 包管理器产品名 |
+| npm / Yarn / pnpm | 包管理器产品名；含 Yarn Plug'n'Play |
+| Plug'n'Play / PnP | Yarn 解析模式；专名留英文 |
+| packageExtensions | Yarn / `@yarnpkg/extensions` / `@nubjs/extensions` API 导出名 |
+| `@yarnpkg/extensions` / `@nubjs/extensions` | npm 包名 |
+| global virtual store | pnpm / Aube / Bun 全局虚拟存储；专名留英文 |
+| node_modules | Node 依赖目录约定名 |
+| ERR_MODULE_NOT_FOUND / MODULE_NOT_FOUND / TS2307 | 运行时 / 类型错误码 |
+| CommonJS / ESM | 模块格式名 |
+| peer / optional peer / dependencies | `package.json` 依赖字段语义；作配置词留英文 |
+| skipLibCheck | TypeScript 编译选项 |
+| phantom dependency / phantom dependencies | 幻影依赖；正文可写英文专名，叙述可用「幻影依赖」；标题可意译 |
 
 ## AI / 智能体
 

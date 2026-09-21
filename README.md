@@ -189,6 +189,8 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 前端
 
+- 2026-09-21 [给 npm 生态去幻影依赖](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/frontend/De-phantoming-the-npm-ecosystem.md)
+- 2026-09-21 [2026 年中你该知道的 HTML 新变化](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/frontend/New-Things-You-Should-Know-About-HTML-Here-in-Mid-2026.md)
 - 2026-09-18 [去掉 Lazy Destructuring](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-18/frontend/Removing-Lazy-Destructuring.md)
 - 2026-09-18 [Legend State：你可能没用过的最快 React 状态库](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-18/frontend/Legend-State-The-Fastest-React-State-Library-You-re-Probably-Not-Using.md)
 - 2026-09-12 [React 现在全线锈化了](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-12/frontend/React-Now-Rusted-All-The-Way-Out.md)
