@@ -48,6 +48,11 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-21 [自己搭一套 Jev（100% 本地）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/Build-your-own-Jev-100-local.md)
+- 2026-09-21 [Jev 工程：十步给你的 Agent 装上决策大脑](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/Jev-Engineering-The-10-Step-Guide-to-Giving-Your-Agents-a-Decision-Brain.md)
+- 2026-09-21 [Jev 入门指南](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/A-Beginner-s-Guide-to-Jev.md)
+- 2026-09-21 [Jev 与又苦又甜的教训](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/Jev-and-the-bittersweet-lesson.md)
+- 2026-09-21 [AI-native 服务：千亿美元机会](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/AI-native-services-a-100B-opportunity.md)
 - 2026-09-17 [面向 2030 的软件](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/2030-shaped-software.md)
 - 2026-09-17 [蒸汽、钢铁与无限心智](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/Steam-Steel-and-Infinite-Minds.md)
 - 2026-09-17 [抽象的代价：对人与 AI Agent](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/The-Cost-of-Abstraction-for-Humans-and-AI-Agents.md)
@@ -236,6 +241,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 其他
 
+- 2026-09-21 [如何练就离谱的自律](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/other/How-to-become-disgustingly-self-disciplined.md)
 - 2026-09-02 [我们如何建起一座软件工厂，扛住 6 倍产品反馈](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/other/How-we-built-a-software-factory-to-handle-6x-more-product-feedback.md)
 - 2026-08-24 [一年前的今天，我们进了 Y Combinator](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-24/other/One-Year-Ago-Today-We-Got-Into-Y-Combinator.md)
 

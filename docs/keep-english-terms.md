@@ -201,6 +201,23 @@
 | 保留英文 | 备注 |
 | --- | --- |
 | LLM / GPT / Claude / Gemini | |
+| Jev | TypeSafe AI 的 System One 决策模型；产品名留英文 |
+| TypeSafe AI / TypeSafe | Jev 厂商；公司名留英文 |
+| System One | TypeSafe 对 Jev 的产品定位（相对长推理模型）；专名留英文 |
+| Choice / Score / Noul | Jev 三种问题类型 / primitive；API 名留英文 |
+| Jev Playground / Playground | TypeSafe / DAIR.AI 试用界面；产品名留英文 |
+| Auto Mode | TypeSafe 拦危险 tool call 的闸门；产品能力名留英文 |
+| RLCD | Jev 训练流程名；专名留英文 |
+| DAIR.AI | 教程 / academy 站点 |
+| The Bitter Lesson | Rich Sutton 论文标题；叙述可写「苦涩的教训」并保留英文标题 |
+| TAM | Total Addressable Market；专名留英文 |
+| Harvey / EvenUp / Kick | AI-native 法律 / 记账服务公司 |
+| QuickBooks | Intuit 记账产品 |
+| forward-deployed engineer | 嵌客户现场的工程师模式；专名留英文 |
+| Eden | Dan Koe 数字产品 / AI 商店；产品名留英文 |
+| Custom GPT | OpenAI 产品能力名 |
+| Atomic Habits / The Power of Habit | 书名留英文 |
+| SmolLM2 / TinyLlama | 小模型名 |
 | AGI | Artificial General Intelligence；专名留英文 |
 | Notion | 产品名；Ivan Zhao / NotionHQ |
 | Slack | 产品名 |
