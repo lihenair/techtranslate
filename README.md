@@ -48,6 +48,8 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-09-21 [你已经是一具肉身 Proxy](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/You-re-Already-a-Meat-Proxy.md)
+- 2026-09-21 [Jev Engineering：10 步搭出最快的 AI Agent Brain](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/Jev-Engineering-how-to-build-the-fastest-AI-Agent-Brain-in-10-Steps-Full-Setup.md)
 - 2026-09-17 [面向 2030 的软件](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/2030-shaped-software.md)
 - 2026-09-17 [蒸汽、钢铁与无限心智](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/Steam-Steel-and-Infinite-Minds.md)
 - 2026-09-17 [抽象的代价：对人与 AI Agent](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-17/ai/The-Cost-of-Abstraction-for-Humans-and-AI-Agents.md)
@@ -204,6 +206,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### 后端
 
+- 2026-09-21 [设计 API（一）：REST、gRPC 与 tRPC](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/backend/Designing-APIs-Part-1-REST-gRPC-and-tRPC.md)
 - 2026-09-02 [如何在 OpenTelemetry 中正确结构化日志](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-02/backend/How-to-Structure-Logs-Properly-in-OpenTelemetry-A-Complete-Guide.md)
 - 2026-08-30 [序列化与反序列化：后端工程的通用语言](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-30/backend/Serialization-and-Deserialization-The-Universal-Language-of-Backend-Engineering.md)
 - 2026-08-25 [签名要诚实：Kotlin 里的领域错误与函数式处理](https://github.com/lihenair/techtranslate/blob/master/archive/2026-08-25/backend/Signatures-be-true-domain-errors-and-functional-handling-in-Kotlin.md)

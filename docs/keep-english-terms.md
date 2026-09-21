@@ -228,7 +228,23 @@
 | DevTools | Chrome / React DevTools 专名 |
 | Agent / tool calling | tool calling 保留；「工具调用」可作叙述 |
 | RAG / embedding | |
-| Cursor / Copilot | |
+| Cursor / Copilot / Claude Code / Codex | coding harness / 产品名；正文留英文 |
+| Jev / Jev 1.13 / jev-1.13.0 | TypeSafe AI 的 System One 决策模型 |
+| TypeSafe / TypeSafe AI / TypeSafe Playground / typesafe-sdk | 公司 / 产品 / Playground / Python SDK |
+| System One | TypeSafe 决策模型族；专名留英文 |
+| Jevons Paradox | 杰文斯悖论；专名可留英文，叙述可写中文并括注 |
+| Choice / Score / Noul | Jev 问题类型；API 名留英文 |
+| AutoModeMiddleware / ModelRouterMiddleware / ModelChoice | LangChain × TypeSafe middleware / 类型名 |
+| Browser Use | 浏览器 agent 产品 / 项目名 |
+| OpenRouter | 模型路由产品名 |
+| compaction | agent 上下文压缩步骤名；专名可留英文 |
+| meat proxy | 文中「肉身 Proxy」对应的职位隐喻；专名可夹英文 |
+| ThoughtWorks / Hashrocket | 咨询公司 / 工作室名 |
+| Ruby on Rails | Web 框架产品名 |
+| Jira / Confluence | Atlassian 产品名 |
+| Opus | Anthropic 模型名；与 Fable / Sonnet 并列留英文 |
+| regenerative software | Chad Fowler 书中的系统替换方法名 |
+| GPT-5.6-Luna / luna / sol | OpenAI 模型产品名 |
 | LSP / grep | 作工具名时保留 |
 | token / tokenizer | 常留 token |
 | Gen AI SDK / google-genai-kotlin | Google 官方 Kotlin Gemini 客户端 |
@@ -238,7 +254,7 @@
 | LoRA | 微调方法名 |
 | Flow / coroutines | Kotlin 并发原语，专名留英文 |
 | LLM-as-judge / judge | 评测架构模式；judge 作角色名留英文 |
-| LangSmith / Phoenix / DeepEval | 应用评测产品 |
+| LangChain / LangSmith / Phoenix / DeepEval | agent 框架 / 评测产品 |
 | G-Eval / Prometheus | 评测方法 / 专用 judge 模型 |
 | Galileo | 评估产品 |
 | MAJ-EVAL | 多 agent 审议式评测 |
@@ -315,8 +331,14 @@
 
 | 保留英文 | 备注 |
 | --- | --- |
-| API / SDK / CLI / RPC / gRPC | |
-| HTTP / HTTPS / WebSocket / TCP / UDP | |
+| API / SDK / CLI / RPC / REST / gRPC / tRPC | |
+| GraphQL / OpenAPI / Swagger | API 风格 / 契约格式；专名留英文 |
+| HTTP/2 / SPDY | 传输协议；专名留英文 |
+| SSE / Server-Sent Events | 服务端推送；专名留英文 |
+| Protocol Buffers / protobuf / `.proto` / stub | gRPC schema 与生成代码；专名留英文 |
+| superjson | tRPC 常用序列化库 |
+| CDN | 内容分发网络；专名留英文 |
+| HTTP / HTTPS / WebSocket / WebSockets / TCP / UDP | |
 | SQL / SQLite / PostgreSQL / Redis | |
 | Kubernetes / K8s / Docker | |
 | CI / CD / GitHub Actions | |
