@@ -179,6 +179,12 @@
 | startTransition / useDeferredValue / useEffectEvent | Hooks / API 名 |
 | Strict Mode / Fast Refresh | |
 | Next.js / Nuxt / Vite | |
+| Remix / React Router / TanStack Start | meta-framework / 路由库；专名留英文 |
+| create-react-app / CRA | |
+| shadcn/ui / Radix / Reach UI | React 组件 / 无障碍基座 |
+| Hot Module Replacement / HMR | |
+| Laravel / Ruby on Rails / Meteor | 非 JS / 全栈框架名 |
+| vibe coding / agentic programming | 叙述可留英文；勿硬译专名 |
 | React Compiler | 编译器产品名；勿译成「React 编译器」当专名替代 |
 | oxc / OXC / Oxlint / oxfmt / oxc-transform-react | Rust JS 工具链；包名与产品名留英文 |
 | Yuku | TSRX 相关移植 / 工具名 |
