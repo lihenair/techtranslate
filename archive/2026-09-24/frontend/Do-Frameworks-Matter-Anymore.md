@@ -19,13 +19,13 @@ tags: [frontend, react, frameworks, agents, remix]
 
 发布于 2026 年 9 月 16 日。
 
-**不是抬杠。我真想想清楚：2026 年，在 vibe coding、agentic programming，以及各种 loop / graph 之类图示隐喻工程最火的时代，你用哪个 web framework，还重要吗？更重要的是（对我和我的兴趣而言），我们还该不该做新框架？**
+**不是抬杠。我真想想清楚：2026 年，在 vibe coding、agentic programming 的时代，你用哪个 web framework 还重要吗？更要紧的是——我们还该不该做新框架？**
 
 不是抬杠。我真想想清楚：2026 年，在 vibe coding、agentic programming、loop 或 graph 或随便哪种当下最火的图示隐喻工程的时代，你用哪个 web framework，还重要吗？更重要的是（对我和我的兴趣而言），冒着[自己给自己套上 Betteridge 定律](https://en.wikipedia.org/wiki/Betteridge%27s_law_of_headlines)的风险：我们还该不该做新框架？
 
 React 赢了，所以我们还要不要试新东西？
 
-是不是只剩下更多niche空间？没人在乎实现细节。没人在乎 `.tsx` 里装了什么。这是打开了试新东西的门，还是「既然无所谓，全行业就永远用最稳的那套」？
+是不是只剩下更多 niche 空间？没人在乎实现细节。没人在乎 `.tsx` 里装了什么。这是打开了试新东西的门，还是「既然无所谓，全行业就永远用最稳的那套」？
 
 大动荡里，我们有机会重思最佳实践（或者像 Remix 那样，再重思一遍），把[一切重新摊上桌面](https://youtu.be/2n41YjR5QfU?t=993)。
 
