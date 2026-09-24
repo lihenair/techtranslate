@@ -177,7 +177,8 @@
 | Server Components / RSC | |
 | Trusted Types | 浏览器安全 API |
 | startTransition / useDeferredValue / useEffectEvent | Hooks / API 名 |
-| Strict Mode / Fast Refresh | |
+| useEffect / useLayoutEffect / useSyncExternalStore | Hooks / API 名；外部 store 订阅用 useSyncExternalStore |
+| Strict Mode / StrictMode / Fast Refresh | |
 | Next.js / Nuxt / Vite | |
 | React Compiler | 编译器产品名；勿译成「React 编译器」当专名替代 |
 | oxc / OXC / Oxlint / oxfmt / oxc-transform-react | Rust JS 工具链；包名与产品名留英文 |
