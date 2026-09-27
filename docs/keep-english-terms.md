@@ -346,6 +346,27 @@
 | Big Pineapple | Cloudflare DNS 平台专名（正文随原文） |
 | 1.1.1.1 | Cloudflare 公共 DNS resolver |
 
+## 系统 / GPU / CUDA
+
+| 保留英文 | 备注 |
+| --- | --- |
+| CUDA | NVIDIA 并行计算平台 / 编程模型 |
+| kernel | CUDA 里在 device 上运行的函数；专名留英文，勿译「核函数」当替代 |
+| GPU / CPU | 硬件专名 |
+| SM / Streaming Multiprocessor | GPU 流式多处理器；可写 SM |
+| warp / warp scheduler | 32 thread 一组的执行单元 / 调度器 |
+| tensor cores | SM 内的张量计算单元 |
+| grid / block / thread | CUDA 执行模型层级；专名留英文 |
+| host / device | CUDA 中 CPU 侧 / GPU 侧 |
+| global memory / shared memory | CUDA 内存层级；首次可括注（全局内存 / 共享内存） |
+| VRAM / DRAM | 显存 / 动态随机存取存储器；专名留英文 |
+| ALU | Arithmetic Logic Unit |
+| GEMM | 通用矩阵乘法；专名留英文 |
+| `threadIdx` / `blockDim` / `blockIdx` | CUDA 内置变量名 |
+| `__global__` | CUDA kernel 限定符 |
+| row-major | 行优先存储；首次可括注 |
+| GPU Puzzles / LeetGPU | 练习 / 刷题站点名 |
+
 ## 指标与缩写
 
 | 保留英文 | 备注 |
