@@ -284,6 +284,14 @@
 | Graphite | PR stacking 产品 |
 | qa-swarm / review-triage / babysit-prs / qa-frontend | skill / 仓库路径名 |
 | Extreme Programming / XP | 方法名；正文可写 Extreme Programming |
+| Monaco / Monaco Memory / Monaco chat | 产品名 / 记忆系统 / 对话产品；专名留英文 |
+| organization memory / user memory | Monaco Memory 的两种形态；首次可括注（组织记忆 / 用户记忆） |
+| system of record / system of intelligence | 平台定位概念名；首次可括注（记录系统 / 智能系统） |
+| reflection / consolidation | Monaco 记忆更新中的定时进程 / 合并步骤名 |
+| ideal customer profile / ICP | 理想客户画像；专名留英文 |
+| prospecting / demand agent / objection handling | 销售场景专名；首次可括注（开发 / 选客户 Agent / 异议处理） |
+| pub-sub | 发布订阅；事件触发机制名 |
+| Ashby / ashbyhq | 招聘平台名 |
 
 ## AI / LLM Serving
 
