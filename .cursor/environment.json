@@ -1,0 +1,4 @@
+{
+  "name": "techtranslate",
+  "install": "bash scripts/cloud-agent-install.sh"
+}
