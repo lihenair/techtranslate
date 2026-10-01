@@ -48,6 +48,7 @@ Issue 关闭后，工作流 `close-inbox-pr.yml` 会自动关掉同号 inbox PR�
 
 ### AI
 
+- 2026-10-01 [Helix：驱动 Shopify App 迁回原生的内部工具](https://github.com/lihenair/techtranslate/blob/master/archive/2026-10-01/ai/Helix-The-internal-tool-powering-our-Shopify-apps-native-migration.md)
 - 2026-09-30 [我们如何为持续学习的销售 Agent 构建记忆系统](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-30/ai/How-We-Built-Memory-For-Continually-Learning-Sales-Agents.md)
 - 2026-09-21 [自己搭一套 Jev（100% 本地）](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/Build-your-own-Jev-100-local.md)
 - 2026-09-21 [Jev 工程：十步给你的 Agent 装上决策大脑](https://github.com/lihenair/techtranslate/blob/master/archive/2026-09-21/ai/Jev-Engineering-The-10-Step-Guide-to-Giving-Your-Agents-a-Decision-Brain.md)

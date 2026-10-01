@@ -292,6 +292,11 @@
 | prospecting / demand agent / objection handling | 销售场景专名；首次可括注（开发 / 选客户 Agent / 异议处理） |
 | pub-sub | 发布订阅；事件触发机制名 |
 | Ashby / ashbyhq | 招聘平台名 |
+| Helix | Shopify 内部 LLM 迁移工具名 |
+| checkpoint / gate | Helix 的工作切片 / 质量关卡；首次可括注（检查点 / 关卡） |
+| orchestrator | Helix 中负责截图与调度的编排器（GPT）；专名留英文 |
+| adversarial review | Helix 对抗式代码评审；首次可括注 |
+| guardrail | 护栏；可首次括注 |
 
 ## AI / LLM Serving
 
