@@ -297,6 +297,14 @@
 | orchestrator | Helix 中负责截图与调度的编排器（GPT）；专名留英文 |
 | adversarial review | Helix 对抗式代码评审；首次可括注 |
 | guardrail | 护栏；可首次括注 |
+| agentic | 形容词；可写「agentic 系统」或首次括注 |
+| ars umbris / arsumbris / @arsumbrisai | 作者在做的本地优先知识系统框架 / 工作区产品名 |
+| knowledge work engineering | 作者自造概念；首次可括注（知识工作工程） |
+| agent repo | ars umbris 中捆绑知识与能力的仓库；首次可括注 |
+| type engine / typed markdown / wikilink | ars umbris 的类型引擎 / 带类型 markdown / 维基链接 |
+| grounding / claim / commitment / stance / basis | ars umbris 中自定义类型名；代码与行文均留英文 |
+| au-weave / au-competency / au-govern / au-base-types / evidence-review / method-library | ars umbris 包名 |
+| harness | agent 外围运行环境；专名留英文 |
 
 ## AI / LLM Serving
 
