@@ -202,6 +202,20 @@
 | --- | --- |
 | LLM / GPT / Claude / Gemini | |
 | Jev | TypeSafe AI 的 System One 决策模型；产品名留英文 |
+| Gero-4B | 用 RL 微调训出的 Jev 风格决策模型；产品名留英文 |
+| MLX / mlx-lm | Apple 机器学习框架 / 包名 |
+| Qwen3-4B / Qwen3ForSequenceClassification | Qwen 模型与 Hugging Face 架构名 |
+| Inspect AI | UK AISI 评测框架 |
+| promptfoo | 声明式评测 / 红队工具 |
+| Langfuse | 观测 / eval 平台 |
+| RAGAS / ARES | RAG 评测库 / 方法 |
+| GAUGE | LLM-as-judge 审计名 |
+| IFEval / GSM8K / GSM1k | 公开基准 |
+| SWE-bench / SWE-bench Verified / SWE-Explore | 编码基准 / 论文 |
+| τ-bench / τ²-bench | Agent 客服基准 |
+| HHEM / LettuceDetect / MiniCheck / SelfCheckGPT | 幻觉检测器 |
+| pass@k / pass^k | Agent 能力 / 可靠性指标 |
+| hit@k / recall@k | 检索指标 |
 | TypeSafe AI / TypeSafe | Jev 厂商；公司名留英文 |
 | System One | TypeSafe 对 Jev 的产品定位（相对长推理模型）；专名留英文 |
 | Choice / Score / Noul | Jev 三种问题类型 / primitive；API 名留英文 |
@@ -401,6 +415,9 @@
 | 背压 | backpressure |
 | 热重载 | hot reload（叙述可用中文；产品 Hot Reload 可留英文） |
 | 冷启动 / 热启动 | cold start / warm start |
+| 校准 | calibrated / calibration |
+| 标准漂移 | criteria drift |
+| 验证视界 | verification horizon |
 
 ---
 
