@@ -195,6 +195,16 @@
 | ffetch | fetch-kit 库名 |
 | Testing Library / Jest / Vitest | |
 | TypeScript / JSX / ECMAScript | 语言 / 标准名 |
+| Nub / Aube | JS 包管理器产品名 |
+| Yarn / Yarn Plug'n'Play / PnP | 勿译「即插即用」当专名 |
+| pnpm / Bun / npm | 包管理器产品名 |
+| packageExtensions | Yarn / Nub 扩展表导出名 |
+| `@yarnpkg/extensions` / `@nubjs/extensions` | npm 包名 |
+| node_modules | 安装布局目录名 |
+| skipLibCheck | TypeScript 编译选项 |
+| ERR_MODULE_NOT_FOUND / MODULE_NOT_FOUND | Node 错误码 |
+| CommonJS / ESM | 模块格式 |
+| pnpapi | Yarn PnP 运行时模块 |
 
 ## AI / 智能体
 
